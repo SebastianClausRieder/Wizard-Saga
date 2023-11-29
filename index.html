@@ -6,17 +6,29 @@
     
     <link rel="stylesheet" href="style.css">
 
+    <!-- Classes -->
+    <!-- Super Classes -->
+    <script src="model-classes/super-classes/movable-object.class.js"></script>
+
+    <!-- Classes -->
+    <script src="model-classes/world.class.js"></script>
+    <script src="model-classes/character.class.js"></script>
+    <script src="model-classes/lizard.class.js"></script>
+    <script src="model-classes/cloud-black-1.class.js"></script>
+
+
     <!-- Java Script -->
-    <script src="js-files/script.js"></script>
+    <script src="js-files/global.js"></script>
+    <script src="js-files/game.js"></script>
     
     <title>Wizard Saga</title>
 
 </head>
-<body>
+<body onload="init()">
 
     <h1>Wizard Saga</h1>
 
-    <canvas width="720" height="480">
+    <canvas id="game-display" width="720" height="480">
 
     </canvas>
     
