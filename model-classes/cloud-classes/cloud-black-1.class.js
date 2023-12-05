@@ -1,4 +1,4 @@
-class CloudBlack1 extends MovableObject {
+class CloudBlack01 extends MovableObject {
     width = 272;
     height = 62;
 
@@ -7,5 +7,7 @@ class CloudBlack1 extends MovableObject {
         
         this.posiX = Math.random() * 1000;
         this.posiY = 25 + Math.random() * 50;
+
+        this.animation();
     }
 }

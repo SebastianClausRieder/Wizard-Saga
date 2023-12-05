@@ -7,3 +7,8 @@
 function element(inputID) {
     return document.getElementById(inputID);
 }
+
+// Canvas
+
+let canvasHeight = 500;
+let canvasWidth = 1000;
