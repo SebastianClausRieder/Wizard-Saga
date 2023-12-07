@@ -23,10 +23,10 @@ class Lizard extends MovableObject {
         //this.loadImages(this.IMAGES_IDLE);
         //this.animateIdle();
         this.loadImages(this.IMAGES_WALKIN);
-        this.animateWalkin();
-        this.moveLeft();
+        this.animateWalkinEnemies(225);
+        this.moveLeft(this.speed, 1000 / 60);
 
-        this.posiX = 200 + Math.random() * 500;
-        this.posiY = canvasHeight - this.height + 8;
+        this.posiX = 300 + Math.random() * 500;
+        this.posiY = canvasHeight - this.height + 43;
     }
 }

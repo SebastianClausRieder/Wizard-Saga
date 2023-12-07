@@ -7,7 +7,10 @@ class MovableObject {
 
     img;
     imageCache = {};
-    currentImage = 0;
+    currentImageIdle = 0;
+    currentImageWalk = 0;
+    currentImageRun = 0;
+    otherDirection = false;
     
     speed = 0.1;
 
@@ -27,35 +30,35 @@ class MovableObject {
     }
 
     animation() {
-        this.moveLeft();
+        this.moveLeft(0.1, 1000 / 60);
     }
 
     animateIdle() {
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_IDLE.length;
+            let i = this.currentImageIdle % this.IMAGES_IDLE.length;
             let path = this.IMAGES_IDLE[i];
             this.img = this.imageCache[path];
-            this.currentImage++;
+            this.currentImageIdle++;
         }, 225);
     }
 
-    animateWalkin() {
+    animateWalkinEnemies(ri) {
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_WALKIN.length;
+            let i = this.currentImageWalk % this.IMAGES_WALKIN.length;
             let path = this.IMAGES_WALKIN[i];
             this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 225);
+            this.currentImageWalk++;
+        }, ri);
     }
 
     moveRight() {
 
     }
 
-    moveLeft() {
+    moveLeft(speed, ri) {
         setInterval(() => {
-            this.posiX -= this.speed;
-        }, 1000 / 60);
+            this.posiX -= speed;
+        }, ri);
     }
 
     jump() {

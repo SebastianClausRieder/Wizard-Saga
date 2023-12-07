@@ -1,40 +1,42 @@
 class World {
-    bgMountens01 = [
-        new BGMounten01('img/wizard-saga/mountains/m1/1.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/2.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/3.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/4.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/5.png', 0, 0),
-    ];
-    cloud01 = new CloudBlack01();
-    path01 = new PathGreen01();
+    lvl = lvl1;
+    
     character = new Character();
-    enemies = [
-        new Lizard(),
-        new Lizard(),
-        new Lizard(),
-    ];
-    canvas;
-    ctx
 
-    constructor(canvas) {
+    canvas;
+    ctx;
+    keyboard;
+    cam_X;
+
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
+    }
+
+    setWorld() {
+        this.character.world = this;
+        // this.bgMountens01.world = this;
     }
 
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        
-        this.addObjectsToMap(this.bgMountens01);
-       
-        this.addToMap(this.cloud01);
 
-        this.addToMap(this.path01);
+        this.ctx.translate(-this.cam_X, 0);
+        
+        this.addObjectsToMap(this.lvl.bgMountens01);
+       
+        this.addObjectsToMap(this.lvl.cloud01);
+
+        this.addObjectsToMap(this.lvl.path01);
        
         this.addToMap(this.character);
         
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.lvl.enemies);
+
+        this.ctx.translate(this.cam_X, 0);
 
         let self = this;
         requestAnimationFrame(function() {
@@ -49,6 +51,18 @@ class World {
     }
 
     addToMap(mo) {
+        if (mo.otherDirection) {
+            this.ctx.save();
+            this.ctx.translate(mo.img.width, 0);
+            this.ctx.scale(-1, 1);
+            mo.posiX = mo.posiX * -1;
+        }
+
         this.ctx.drawImage(mo.img, mo.posiX, mo.posiY, mo.width, mo.height);
+
+        if (mo.otherDirection) {
+            this.ctx.restore();
+            mo.posiX = mo.posiX * -1;
+        }
     }
 }
