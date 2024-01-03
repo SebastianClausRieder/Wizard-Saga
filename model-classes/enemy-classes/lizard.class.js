@@ -7,6 +7,8 @@ class Lizard extends MovableObject {
     hitBoxY = 70;
 
     speed = 0.15 + Math.random() * 0.5;
+    LP = 100;
+    MP = 100;
     doesDMG = 5;
     
     IMAGES_IDLE = [

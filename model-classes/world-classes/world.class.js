@@ -8,6 +8,11 @@ class World {
     keyboard;
     cam_X;
 
+    lifeStatusBar = new LifeStatusBar();
+    manaStatusBar = new ManaStatusBar();
+    blueMineralStatusBar = new BlueMineralStatusBar();
+    redMineralStatusBar = new RedMineralStatusBar();
+
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -17,12 +22,34 @@ class World {
         this.checkCollosins();
     }
 
+    checkHitEnemy() {
+        setInterval(() => {
+                this.lvl.enemies.forEach((enemy) => {
+                    if (enemy.isColliding(this.character)) {
+                        enemy.LP -= this.character.doesDMG;
+                        // enemy.animateHurts();
+                    }
+                });
+        }, 200);
+    }
+
+    checkEarnMineral() {
+        setInterval(() => {
+            this.lvl.mineralsforEach((mineral) => {
+                if (this.character.isColliding(mineral)) {
+                    this.co
+                }
+            });
+        }, 200);
+    }
+
     checkCollosins() {
         setInterval(() => {
             if (!this.character.hurts && !this.character.playerDEAD) {
                 this.lvl.enemies.forEach((enemy) => {
                     if (this.character.isColliding(enemy)) {
                         this.character.LP -= enemy.doesDMG;
+                        this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
                         this.character.animateHurts();
                     }
                 });
@@ -46,6 +73,17 @@ class World {
 
         this.addObjectsToMap(this.lvl.path01);
        
+        this.ctx.translate(this.cam_X, 0);
+        // <--- place vor fixed objects --->
+
+        this.addToMap(this.lifeStatusBar);
+        this.addToMap(this.manaStatusBar);
+        this.addToMap(this.redMineralStatusBar);
+        this.addToMap(this.blueMineralStatusBar);
+
+        // <--- place vor fixed objects endes --->
+        this.ctx.translate(-this.cam_X, 0);
+
         this.addToMap(this.character);
         
         this.addObjectsToMap(this.lvl.enemies);
@@ -71,6 +109,9 @@ class World {
 
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
+        if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
+            mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
+        }
 
         if (mo.otherDirection) {
             this.standartImage(mo);

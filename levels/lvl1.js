@@ -28,5 +28,8 @@ const lvl1 = new Level(
         // new Lizard(),
         // new Lizard(),
         new Endboss01()
+    ],
+    [   // minerals
+        // new Mineral()
     ]
 );

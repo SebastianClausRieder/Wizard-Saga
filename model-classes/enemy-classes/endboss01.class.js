@@ -7,6 +7,8 @@ class Endboss01 extends MovableObject {
     hitBoxY = 45;
 
     speed = 0.5;
+    LP = 100;
+    MP = 100;
     doesDMG = 15;
 
     IMAGES_WALKING = [

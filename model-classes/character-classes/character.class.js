@@ -11,8 +11,9 @@ class Character extends MovableObject {
     world;
     intervalSequenz = 0;
 
-    LP = 20;
+    LP = 100;
     MP = 100;
+    doesDMG = 0;
 
     walking_sound = new Audio('audio/walking.mp3');
     running_sound = new Audio('audio/walking.mp3');
@@ -177,7 +178,7 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animateJumpingCharacter();
         this.jumpAnimation();
-        // this.attackAnimation();
+        this.attackAnimation();
         // this.fireballAnimation();
         // this.fireburstAnimation();
 
@@ -187,7 +188,7 @@ class Character extends MovableObject {
 
     animateIdle() {
         setInterval(() => {
-            if (!this.moving && !this.jumping && !this.hurts && !this.playerDEAD) {
+            if (!this.moving && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
                 console.log('idle');
             }
@@ -221,6 +222,7 @@ class Character extends MovableObject {
                 this.running = false;
                 this.currentImageIdle = 0;
                 this.walking_sound.play();
+                console.log('walk');
             } else {
                 this.walking_sound.currentTime = 0;
                 if (!this.running) {
@@ -259,6 +261,7 @@ class Character extends MovableObject {
                 this.walking = false;
                 this.currentImageIdle = 0;
                 this.running_sound.play();
+                console.log('run');
             } else {
                 if (!this.walking) {
                     this.moving = false;
@@ -284,9 +287,11 @@ class Character extends MovableObject {
             if (this.gravitaSpeed > 0) {
                 this.loadImage(this.IMAGES_JUMP[0]);
                 this.jumping = true;
+                console.log('jump up');
             } else if (this.gravitaSpeed < 0) {
                 this.loadImage(this.IMAGES_JUMP[1]);
                 this.jumping = true;
+                console.log('jump down');
             }
         }, 1000 / 60);
     }
@@ -314,13 +319,33 @@ class Character extends MovableObject {
                     clearInterval(deadInterval);
                     this.intervalSequenz = 0;
                 }
-            }, 200);
+            }, 100);
         }
     }
 
-    // attackAnimation() {
-    //         if (this.world.keyboard.ATTACK1) {
-    //             this.playActionAnimation(this.IMAGES_ATTACK1);
-    //         }
-    // }
+    attackAnimation() {
+        setInterval(() => {
+            if (this.world.keyboard.ATTACK1 || this.attack) {
+                this.playActionAnimation(this.IMAGES_ATTACK1);
+                this.attack = true;
+                this.currentImageAttack++
+                console.log('attack1');
+                // this.hitEnemy();
+            } 
+            
+            if (this.currentImageAttack >= this.IMAGES_ATTACK1.length) {
+                this.attack = false;
+                this.currentImageAttack = 0;
+            }
+        }, 125);
+    }
+
+    hitEnemy() {
+        this.world.lvl.enemies.forEach((enemy) => {
+            if (enemy.isColliding(this.character)) {
+                enemy.LP -= this.character.doesDMG;
+                enemy.animateHurts();
+            }
+        });
+    }
 }
