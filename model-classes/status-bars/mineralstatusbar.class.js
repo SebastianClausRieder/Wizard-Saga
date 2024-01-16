@@ -1,5 +1,6 @@
 class RedMineralStatusBar extends DrawableObject {
     width = 30;
+    height = 30;
     collectedRedMineral = 0;
 
     constructor() {
@@ -15,6 +16,7 @@ class RedMineralStatusBar extends DrawableObject {
 
 class BlueMineralStatusBar extends DrawableObject {
     width = 30;
+    height = 30;
     collectedBlueMineral = 0;
 
     constructor() {

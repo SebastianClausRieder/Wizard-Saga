@@ -9,4 +9,11 @@ class Keyboard {
     MAGIC1 = false;
     MAGIC2 = false;
     RUN = false;
+
+    
+    keyIsHold_JUMP = false;
+    keyIsHold_ATTACK1 = false;
+    keyIsHold_ATTACK2 = false;
+    keyIsHold_MAGIC1 = false;
+    keyIsHold_MAGIC2 = false;
 }

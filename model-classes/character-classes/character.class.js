@@ -1,15 +1,15 @@
 class Character extends MovableObject {
     width = 200;
+    height = 100;
 
-    hitBoxWidth = 50;
+    hitBoxWidth = 35;
     hitBoxHeight = 70;
-    hitBoxX = 30;
+    hitBoxX = 35;
     hitBoxY = 30;
 
     speedWalk = 1.5;
     speedRun = 3;
     world;
-    intervalSequenz = 0;
 
     LP = 100;
     MP = 100;
@@ -22,9 +22,7 @@ class Character extends MovableObject {
     moving = false;
     walking = false;
     running = false;
-    jumping = false;
-    hurts = false;
-    playerDEAD = false;
+    attack = false;
 
     IMAGES_IDLE = [
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
@@ -126,21 +124,6 @@ class Character extends MovableObject {
         'img/wizard-saga/characters/Fire-Wizard/fireball-move/Fireball-move-08.png'
     ];
 
-    IMAGES_FIREBALL = [
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-01.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-02.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-03.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-04.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-05.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-06.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-07.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-08.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-09.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-10.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-11.png',
-        'img/wizard-saga/characters/Fire-Wizard/fireball-attack/Fireball-attack-12.png'
-    ];
-
     IMAGES_FIREBURST = [
         'img/wizard-saga/characters/Fire-Wizard/fireburst/Fireburst-01.png',
         'img/wizard-saga/characters/Fire-Wizard/fireburst/Fireburst-02.png',
@@ -170,7 +153,6 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK1);
         this.loadImages(this.IMAGES_ATTACK2);
         this.loadImages(this.IMAGES_FIREBALLMOVE);
-        this.loadImages(this.IMAGES_FIREBALL);
         this.loadImages(this.IMAGES_FIREBURST);
         this.animateIdle();
         this.animateWalkingCharacter();
@@ -178,7 +160,6 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animateJumpingCharacter();
         this.jumpAnimation();
-        this.attackAnimation();
         // this.fireballAnimation();
         // this.fireburstAnimation();
 
@@ -197,12 +178,12 @@ class Character extends MovableObject {
 
     animateWalkingCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD) {
+            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD && !this.attack) {
                 this.posiX += this.speedWalk;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.playerDEAD) {
+            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.playerDEAD && !this.attack) {
                 this.posiX -= this.speedWalk;
                 this.otherDirection = true;
             }
@@ -215,7 +196,7 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             this.walking_sound.volume = 0.2;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.jumping && !this.hurts && !this.playerDEAD) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {                
                 this.playMoveAnimation(this.IMAGES_WALK);
                 this.moving = true;
                 this.walking = true;
@@ -235,12 +216,12 @@ class Character extends MovableObject {
 
     animateRunCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD) {
+            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD && !this.attack) {
                 this.posiX += this.speedRun;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0) {
+            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.playerDEAD && !this.attack) {
                 this.posiX -= this.speedRun;
                 this.otherDirection = true;
             }
@@ -254,7 +235,7 @@ class Character extends MovableObject {
             this.running_sound.pause();
             this.running_sound.volume = 0.3;
             this.running_sound.playbackRate = 1.1;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.jumping && !this.hurts && !this.playerDEAD) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {                
                 this.playMoveAnimation(this.IMAGES_RUN);
                 this.moving = true;
                 this.running = true;
@@ -275,9 +256,10 @@ class Character extends MovableObject {
     animateJumpingCharacter() {
         setInterval(() => {
             this.jumping_sound.playbackRate = 1;
-            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.playerDEAD) {
+            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.playerDEAD && !this.world.keyboard.keyIsHold_JUMP) {
                 this.jump(18);
                 this.jumping_sound.play();
+                this.world.keyboard.keyIsHold_JUMP = true;
             }
         }, 1000 / 60);
     }
@@ -296,56 +278,37 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
-    animateHurts() {
-        if (this.LP > 0) {
-            this.hurts = true;
-            const hurtsInterval = setInterval(() => {
-                this.playActionAnimation(this.IMAGES_HURT);
-                this.intervalSequenz++;
-                console.log('hurts');
-                if (this.intervalSequenz === this.IMAGES_HURT.length) {
-                    clearInterval(hurtsInterval);
-                    this.intervalSequenz = 0;
-                    this.hurts = false;
-                }
-            }, 100);
-        } else {
-            this.playerDEAD = true;
-            const deadInterval = setInterval(() => {
-                this.playActionAnimation(this.IMAGES_DEAD);
-                this.intervalSequenz++;
-                console.log('dead');
-                if (this.intervalSequenz === this.IMAGES_DEAD.length) {
-                    clearInterval(deadInterval);
-                    this.intervalSequenz = 0;
-                }
-            }, 100);
-        }
-    }
-
-    attackAnimation() {
-        setInterval(() => {
-            if (this.world.keyboard.ATTACK1 || this.attack) {
-                this.playActionAnimation(this.IMAGES_ATTACK1);
-                this.attack = true;
-                this.currentImageAttack++
-                console.log('attack1');
-                // this.hitEnemy();
-            } 
+    attackAnimation(IMAGES) {
+        const attack = setInterval(() => {
+            this.playActionAnimation(IMAGES);
+            this.attack = true;
+            this.currentImageAttack++;
+            console.log('attack');
             
-            if (this.currentImageAttack >= this.IMAGES_ATTACK1.length) {
+            if (this.currentImageAttack >= IMAGES.length) {
+                clearInterval(attack);
                 this.attack = false;
+                this.doesDMG = 0;
                 this.currentImageAttack = 0;
+                this.currentImageAction = 0;
+                this.currentImageIdle = 0;
+                this.world.charATK = [];
+                this.isItAnComboAttack();
+                this.isItAnFireballAttack();
             }
         }, 125);
     }
 
-    hitEnemy() {
-        this.world.lvl.enemies.forEach((enemy) => {
-            if (enemy.isColliding(this.character)) {
-                enemy.LP -= this.character.doesDMG;
-                enemy.animateHurts();
-            }
-        });
+    isItAnComboAttack() {
+        if (this.comboAttack) {
+            this.comboAttack = false;
+        }
+    }
+
+    isItAnFireballAttack() {
+        if (this.fireballAttack) {
+            this.fireballAttack = false;
+            this.world.fireball();
+        }
     }
 }

@@ -1,5 +1,6 @@
 class LifeStatusBar extends DrawableObject {
     width = 250;
+    height = 50;
     
     LIFE_BAR = [
         'img/wizard-saga/statusbars/life-bar/life-bar-00.png',

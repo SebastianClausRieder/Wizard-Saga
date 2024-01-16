@@ -1,5 +1,6 @@
 class CloudBlack01 extends MovableObject {
     width = 272;
+    height = 62;
 
     constructor(imagePath) {
         super().loadImage(imagePath);

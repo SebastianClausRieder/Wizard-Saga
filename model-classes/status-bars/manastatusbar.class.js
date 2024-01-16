@@ -1,5 +1,6 @@
 class ManaStatusBar extends DrawableObject {
     width = 240;
+    height = 48;
     
     MANA_BAR = [
         'img/wizard-saga/statusbars/mana-bar/mana-bar-00.png',

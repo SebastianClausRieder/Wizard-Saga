@@ -24,12 +24,9 @@ const lvl1 = new Level(
         new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 960)
     ],
     [   // enemies
+        new Lizard(),
         // new Lizard(),
         // new Lizard(),
-        // new Lizard(),
-        new Endboss01()
-    ],
-    [   // minerals
-        // new Mineral()
+        // new Endboss01()
     ]
 );

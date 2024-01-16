@@ -53,6 +53,10 @@ document.addEventListener('keydown', (event) => {
     if (event.code == "ShiftLeft") {
         keyboard.RUN = true;
     }
+
+    if (event.code == "F10") {
+        canvas.requestFullscreen();
+    }
 });
 
 document.addEventListener('keyup', (event) => {
@@ -74,22 +78,27 @@ document.addEventListener('keyup', (event) => {
 
     if (event.code == "Space") {
         keyboard.JUMP = false;
+        keyboard.keyIsHold_JUMP = false;
     }
 
     if (event.code == "Digit4") {
         keyboard.ATTACK1 = false;
+        keyboard.keyIsHold_ATTACK1 = false;
     }
 
     if (event.code == "Digit5") {
         keyboard.ATTACK2 = false;
+        keyboard.keyIsHold_ATTACK2 = false;
     }
 
     if (event.code == "Digit1") {
         keyboard.MAGIC1 = false;
+        keyboard.keyIsHold_MAGIC1 = false;
     }
 
     if (event.code == "Digit2") {
         keyboard.MAGIC2 = false;
+        keyboard.keyIsHold_MAGIC2 = false;
     }
 
     if (event.code == "ShiftLeft") {
