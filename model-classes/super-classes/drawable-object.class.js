@@ -44,6 +44,21 @@ class DrawableObject {
     drawFrame(ctx) {
         if (this instanceof Character || this.isAttackInstance(this) || this.isEnemyInstance(this) || this.isItemInstance(this)) {
         
+            // Voller Rahmen Original Bild
+            ctx.beginPath();
+            ctx.lineWidth = '6';
+            ctx.strokeStyle = 'green';
+            ctx.rect(this.posiX, this.posiY, this.width, this.height);
+            ctx.stroke();
+
+            // Voller Rahmen HitBox
+            ctx.beginPath();
+            ctx.lineWidth = '4';
+            ctx.strokeStyle = 'yellow';
+            ctx.rect(this.posiX + this.hitBoxX, this.posiY + this.hitBoxY, this.hitBoxWidth, this.hitBoxHeight);
+            // ctx.rect(this.posiX, this.hitBoxWidth, this.posiY, this.hitBoxHeight);
+            ctx.stroke();
+
             // Linke Seite (z.B. rot)
             ctx.beginPath();
             ctx.lineWidth = '3';

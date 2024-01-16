@@ -11,11 +11,9 @@ class CharAttack1 extends MovableObject {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.posiX = charPosiX;
         this.posiY = charPosiY;
-        this.otherDirection = charDirection;
 
         if (charDirection) {
-            this.posiX = this.posiX - this.hitBoxWidth;
-            this.hitBoxX = this.hitBoxX - this.hitBoxWidth;
+            this.hitBoxX = this.hitBoxX - this.hitBoxWidth - 20;
         }
     }
 }
@@ -33,11 +31,9 @@ class CharAttack2 extends MovableObject {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.posiX = charPosiX;
         this.posiY = charPosiY;
-        this.otherDirection = charDirection;
 
         if (charDirection) {
-            this.posiX = this.posiX - this.hitBoxWidth;
-            this.hitBoxX = this.hitBoxX - this.hitBoxWidth;
+            this.hitBoxX = this.hitBoxX - this.hitBoxWidth - 20;
         }
     }
 }
@@ -78,7 +74,7 @@ class CharAttackFireball extends MovableObject {
         this.otherDirection = charDirection;
 
         if (charDirection) {
-            this.hitBoxX = this.hitBoxX - this.hitBoxWidth;
+            this.posiX += 20;
         }
 
         this.flyingFireball();
@@ -121,11 +117,9 @@ class CharAttackFireburst extends MovableObject {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.posiX = charPosiX;
         this.posiY = charPosiY;
-        this.otherDirection = charDirection;
 
         if (charDirection) {
-            this.posiX = this.posiX - this.hitBoxWidth;
-            this.hitBoxX = this.hitBoxX - this.hitBoxWidth;
+            this.hitBoxX = this.hitBoxX - this.hitBoxWidth - 20;
         }
     }
 }

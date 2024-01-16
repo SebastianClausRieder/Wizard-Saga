@@ -2,9 +2,9 @@ class Lizard extends MovableObject {
     width = 175;
     height = 175;
     
-    hitBoxWidth = 40;
+    hitBoxWidth = 30;
     hitBoxHeight = 40;
-    hitBoxX = 70;
+    hitBoxX = 80;
     hitBoxY = 70;
 
     speed = 0.15 + Math.random() * 0.5;

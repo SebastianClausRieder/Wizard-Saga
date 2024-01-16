@@ -8,7 +8,7 @@ class MovableObject extends DrawableObject {
 
     walkingInterval;
     movingInterval;
-    
+
     speed = 0.1;
 
     gravitaSpeed = 0;
@@ -21,7 +21,7 @@ class MovableObject extends DrawableObject {
     firstChance = 0;
     secondChance = 0;
     thirdChance = 0;
-    
+
     intervalSequenz = 0;
 
     jumping = false;
@@ -103,10 +103,10 @@ class MovableObject extends DrawableObject {
     }
 
     isColliding(mo) {
-        return  this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX &&
-                this.posiY + this.hitBoxY + this.hitBoxHeight > mo.posiY + mo.hitBoxY &&
-                this.posiX + this.hitBoxX < mo.posiX + mo.hitBoxX + mo.hitBoxWidth &&
-                this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight;
+        return this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX &&
+            this.posiY + this.hitBoxY + this.hitBoxHeight > mo.posiY + mo.hitBoxY &&
+            this.posiX + this.hitBoxX < mo.posiX + mo.hitBoxX + mo.hitBoxWidth &&
+            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight;
     }
 
     // Checken, ob du den Gegner von oben triffst

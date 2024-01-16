@@ -2,10 +2,10 @@ class Character extends MovableObject {
     width = 200;
     height = 100;
 
-    hitBoxWidth = 35;
-    hitBoxHeight = 70;
-    hitBoxX = 35;
-    hitBoxY = 30;
+    hitBoxWidth = 20;
+    hitBoxHeight = 60;
+    hitBoxX = 45;
+    hitBoxY = 35;
 
     speedWalk = 1.5;
     speedRun = 3;

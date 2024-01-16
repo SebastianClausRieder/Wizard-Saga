@@ -63,7 +63,7 @@ class World {
     }
 
     meleeAttack1() {
-        if (this.keyboard.ATTACK1 && !this.keyboard.keyIsHold_ATTACK1) {
+        if (this.keyboard.ATTACK1 && !this.keyboard.keyIsHold_ATTACK1 && !this.character.attack) {
             this.keyboard.keyIsHold_ATTACK1 = true;
             this.character.comboAttack = true;
             let attack1 = new CharAttack1(this.character.posiX, this.character.posiY, this.character.otherDirection);
@@ -92,7 +92,7 @@ class World {
             this.keyboard.keyIsHold_MAGIC1 = true;
             this.character.fireballAttack = true;
             this.fireballFly = true;
-            this.character.MP -= 0;
+            this.character.MP -= 20;
             this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
             this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
         }
