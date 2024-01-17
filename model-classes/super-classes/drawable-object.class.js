@@ -16,9 +16,9 @@ class DrawableObject {
     
     collectedRedMineral = 0;
 
-    enemyClasses = [Lizard, Endboss01];
+    enemyClasses = [Lizard, Demon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
-    itemClasses = [BlueMineral];
+    itemClasses = [BlueMineral, RedMineral];
 
     world;
 

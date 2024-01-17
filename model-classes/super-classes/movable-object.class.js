@@ -30,6 +30,10 @@ class MovableObject extends DrawableObject {
     attack = false;
     toBeRemoved = false;
 
+    firstChance = 0.5; // Höhere Chance für erste Variable
+    secondChance = 0.3; // Mittlere Chance für zweite Variable
+    thirdChance = 0.2; // Geringere Chance für dritte Variable
+
     world;
 
     animation() {
@@ -135,15 +139,14 @@ class MovableObject extends DrawableObject {
     }
 
     animateDeath(IMAGES_DEAD) {
+        this.dead = true;
         const deadInterval = setInterval(() => {
             this.playActionAnimation(IMAGES_DEAD);
             this.intervalSequenz++;
-            console.log('Sequenz', this.intervalSequenz);
             if (this.intervalSequenz >= IMAGES_DEAD.length) {
                 clearInterval(deadInterval);
                 this.intervalSequenz = 0;
                 this.currentImageAction = 0;
-                console.log('Sequenz end', this.intervalSequenz);
             }
         }, 100);
     }
@@ -153,7 +156,41 @@ class MovableObject extends DrawableObject {
         clearInterval(this.movingInterval);
     }
 
-    dropItem() {
+    // Item Drop
 
+    firstVariable(IMAGE_ARRAY) {
+        this.dropAnimation(IMAGE_ARRAY[0])
+        this.value += 5;
+        setTimeout(() => {
+            this.itemDrop(IMAGE_ARRAY);
+        }, 1500);
+    }
+
+    secondVariable(IMAGE_ARRAY) {
+        this.dropAnimation(IMAGE_ARRAY[0])
+        this.value += 10;
+        setTimeout(() => {
+            this.itemDrop(IMAGE_ARRAY);
+        }, 1500);
+    }
+
+    thirdVariable(IMAGE_ARRAY) {
+        this.dropAnimation(IMAGE_ARRAY[0])
+        this.value += 20;
+        setTimeout(() => {
+            this.itemDrop(IMAGE_ARRAY);
+        }, 1500);
+    }
+
+    dropAnimation(IMAGE) {
+        this.loadImage(IMAGE);
+        this.gravitaSpeed = 10;
+        this.applyGravity();
+    }
+
+    itemDrop(IMAGES) {
+        setInterval(() => {
+            this.playActionAnimation(IMAGES);
+        }, 250);
     }
 }

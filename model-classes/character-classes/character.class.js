@@ -160,8 +160,6 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animateJumpingCharacter();
         this.jumpAnimation();
-        // this.fireballAnimation();
-        // this.fireburstAnimation();
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;

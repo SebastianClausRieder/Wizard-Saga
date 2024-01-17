@@ -97,7 +97,7 @@ class CharAttackFireball extends MovableObject {
                 this.currentImageAttack = 0;
                 this.currentImageAction = 0;
                 this.currentImageIdle = 0;
-                this.doesDMG = 0;
+                this.world.character.doesDMG = 0;
                 this.world.charATK = [];
             }
         }, 100);

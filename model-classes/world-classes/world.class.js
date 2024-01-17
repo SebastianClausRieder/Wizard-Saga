@@ -33,13 +33,14 @@ class World {
         setInterval(() => {
             this.checkCollosinWithEnemy();
             this.checkUseAttackKey();
+            this.checkEarnMineral();
         }, 100);
     }
 
     checkCollosinWithEnemy() {
         if (!this.character.hurts && !this.character.playerDEAD) {
             this.lvl.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy) && !enemy.toBeRemoved) {
+                if (this.character.isColliding(enemy) && !enemy.dead) {
                     this.character.LP -= enemy.doesDMG;
                     this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
                     if (this.character.LP > 0) {
@@ -120,7 +121,7 @@ class World {
 
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
-            if (this.charATK[0].isColliding(enemy) && !enemy.dead) {
+            if (this.charATK[0].isColliding(enemy) && !enemy.hurts && !enemy.dead) {
                 enemy.stopWalkingEnemies();
                 enemy.LP -= this.character.doesDMG;
                 enemy.intervalSequenz = 0;
@@ -134,7 +135,7 @@ class World {
                     enemy.dead = true;
                     enemy.animateDeath(enemy.IMAGES_DEAD);
                     setTimeout(() => {
-                        let item = new BlueMineral(enemy.posiX, enemy.posiY);
+                        let item = this.whatItemDrop(enemy);
                         enemy.removeFromMap();
                         this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
                         this.itemDrop.push(item);
@@ -144,14 +145,25 @@ class World {
         });
     }
 
+    whatItemDrop(enemy) {
+        if (enemy instanceof Lizard) {
+            return new BlueMineral(enemy.posiX, enemy.posiY);
+        } else if (enemy instanceof Demon) {
+            return new RedMineral(enemy.posiX, enemy.posiY);
+        }
+    }
+
     checkEarnMineral() {
-        setInterval(() => {
-            this.lvl.mineralsforEach((mineral) => {
-                if (this.character.isColliding(mineral)) {
-                    this.co
+        this.itemDrop.forEach((mineral, index) => {
+            if (this.character.isColliding(mineral)) {
+                if (mineral instanceof BlueMineral) {
+                    this.blueMineralStatusBar.collectBlueMineral(mineral.value);
+                } else if (mineral instanceof RedMineral) {
+                    this.redMineralStatusBar.collectRedMineral(mineral.value);
                 }
-            });
-        }, 200);
+                this.itemDrop.splice(index, 1);
+            }
+        });
     }
 
     setWorld() {

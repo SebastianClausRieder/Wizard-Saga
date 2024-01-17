@@ -1,32 +1,36 @@
+// bgMountens01
+const bgMounten = [];
+const mountainCount = 11;
+const mountainDistanceIncrement = 999;
+
+for (let i = 0; i < mountainCount; i++) {
+    for (let j = 1; j <= 5; j++) {
+        const mountain = new BGMounten01(`img/wizard-saga/mountains/m1/${j}.png`, i * mountainDistanceIncrement, 0);
+        bgMounten.push(mountain);
+    }
+}
+
+// path01
+const path = [];
+const pathCount = 66;
+const pathDistanceIncrement = 160;
+
+for (let i = 0; i < pathCount; i++) {
+    const path = new PathGreen01(`img/wizard-saga/paths/finish-paths/green-path01.png`, i * pathDistanceIncrement, 0);
+    bgMounten.push(path);
+}
+
 const lvl1 = new Level(
-    [   // bgMountens01
-        new BGMounten01('img/wizard-saga/mountains/m1/1.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/2.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/3.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/4.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/5.png', 0, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/1.png', 999, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/2.png', 999, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/3.png', 999, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/4.png', 999, 0),
-        new BGMounten01('img/wizard-saga/mountains/m1/5.png', 999, 0)
-    ],
+    bgMounten,
     [   // cloud01
         new CloudBlack01('img/wizard-saga/clouds/PNG/Clouds_black/Shape2/cloud_shape2_1.png')
     ],
-    [   // path01
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 0),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 160),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 320),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 480),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 640),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 800),
-        new PathGreen01('img/wizard-saga/paths/finish-paths/green-path01.png', 960)
-    ],
+    path,
     [   // enemies
         new Lizard(),
         // new Lizard(),
         // new Lizard(),
+        new Demon(),
         // new Endboss01()
     ]
 );

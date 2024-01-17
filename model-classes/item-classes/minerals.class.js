@@ -7,6 +7,8 @@ class BlueMineral extends MovableObject {
     hitBoxX = 1;
     hitBoxY = 2;
 
+    value = 0;
+
     IMAGES_BLUE_M1 = [
         'img/wizard-saga/minerals/PNG/Transperent/Icon33.png',
         'img/wizard-saga/minerals/PNG/Transperent/Icon33.png',
@@ -71,55 +73,111 @@ class BlueMineral extends MovableObject {
         
         this.mainPosiY = canvasHeight - this.height - 25;
 
-        this.firstChance = 0.6; // Höhere Chance für erste Variable
-        this.secondChance = 0.4; // Mittlere Chance für zweite Variable
-        this.thirdChance = 0.2; // Geringere Chance für dritte Variable
+        this.executeRandomAction();
+    }
+
+    executeRandomAction() {
+        const randomNumber = Math.random();
+        console.log('randomNumber', randomNumber);
+
+        if (randomNumber < this.firstChance) {
+            this.firstVariable(this.IMAGES_BLUE_M1, this.color);
+        } else if (randomNumber < this.secondChance + this.firstChance) {
+            this.secondVariable(this.IMAGES_BLUE_M2, this.color);
+        } else if (randomNumber < this.thirdChance + this.secondChance + this.firstChance) {
+            this.thirdVariable(this.IMAGES_BLUE_M3, this.color);
+        }
+    }
+}
+
+class RedMineral extends MovableObject {
+    width = 32;
+    height = 32;
+
+    hitBoxWidth = 30;
+    hitBoxHeight = 30;
+    hitBoxX = 1;
+    hitBoxY = 2;
+
+    value = 0;
+
+    IMAGES_RED_M1 = [
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon25-light.png'
+    ];
+
+    IMAGES_RED_M2 = [
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon12-light.png'
+    ];
+
+    IMAGES_RED_M3 = [
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3.png',
+        'img/wizard-saga/minerals/PNG/Transperent/Icon3-light.png'
+    ];
+
+    constructor(NPCposiX, NPCposiY) {
+        super().loadImage('img/wizard-saga/characters/empty-box.png');
+        this.loadImages(this.IMAGES_RED_M1);
+        this.loadImages(this.IMAGES_RED_M2);
+        this.loadImages(this.IMAGES_RED_M3);
+        this.posiX = NPCposiX + 75;
+        this.posiY = NPCposiY + 90;
+        
+        this.mainPosiY = canvasHeight - this.height - 25;
 
         this.executeRandomAction();
     }
 
     executeRandomAction() {
         const randomNumber = Math.random();
+        console.log('randomNumber', randomNumber);
 
         if (randomNumber < this.firstChance) {
-            this.firstVariable();
+            this.firstVariable(this.IMAGES_RED_M1);
         } else if (randomNumber < this.secondChance + this.firstChance) {
-            this.secondVariable();
+            this.secondVariable(this.IMAGES_RED_M2);
         } else if (randomNumber < this.thirdChance + this.secondChance + this.firstChance) {
-            this.thirdVariable();
+            this.thirdVariable(this.IMAGES_RED_M3);
         }
-    }
-
-    firstVariable() {
-        this.dropAnimation(this.IMAGES_BLUE_M1[0])
-        setTimeout(() => {
-            this.blueMineralDrop(this.IMAGES_BLUE_M1);
-        }, 1500);
-    }
-
-    secondVariable() {
-        this.dropAnimation(this.IMAGES_BLUE_M2[0])
-        setTimeout(() => {
-            this.blueMineralDrop(this.IMAGES_BLUE_M2);
-        }, 1500);
-    }
-
-    thirdVariable() {
-        this.dropAnimation(this.IMAGES_BLUE_M3[0])
-        setTimeout(() => {
-            this.blueMineralDrop(this.IMAGES_BLUE_M3);
-        }, 1500);
-    }
-
-    dropAnimation(IMAGE) {
-        this.loadImage(IMAGE);
-        this.gravitaSpeed = 10;
-        this.applyGravity();
-    }
-
-    blueMineralDrop(IMAGES) {
-        setInterval(() => {
-            this.playActionAnimation(IMAGES);
-        }, 250);
     }
 }
