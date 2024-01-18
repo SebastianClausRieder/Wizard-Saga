@@ -7,7 +7,8 @@ class MovableObject extends DrawableObject {
     otherDirection = false;
 
     walkingInterval;
-    movingInterval;
+    movingRightInterval;
+    movingLeftInterval;
 
     speed = 0.1;
 
@@ -29,6 +30,8 @@ class MovableObject extends DrawableObject {
     dead = false;
     attack = false;
     toBeRemoved = false;
+    isMovingLeft = false;
+    isMovingRight = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
     secondChance = 0.3; // Mittlere Chance für zweite Variable
@@ -38,6 +41,10 @@ class MovableObject extends DrawableObject {
 
     animation() {
         this.moveLeft(0.1, 1000 / 60);
+    }
+
+    bgAnimation() {
+        this.moveRight(0.03, 1000 / 60);
     }
 
     animateIdle() {
@@ -75,12 +82,14 @@ class MovableObject extends DrawableObject {
         this.img = this.imageCache[path];
     }
 
-    moveRight() {
-
+    moveRight(speed, fps) {
+        this.movingRightInterval = setInterval(() => {
+            this.posiX += speed;
+        }, fps);
     }
 
     moveLeft(speed, fps) {
-        this.movingInterval = setInterval(() => {
+        this.movingLeftInterval = setInterval(() => {
             this.posiX -= speed;
         }, fps);
     }
@@ -153,7 +162,8 @@ class MovableObject extends DrawableObject {
 
     stopWalkingEnemies() {
         clearInterval(this.walkingInterval);
-        clearInterval(this.movingInterval);
+        clearInterval(this.movingRightInterval);
+        clearInterval(this.movingLeftInterval);
     }
 
     // Item Drop

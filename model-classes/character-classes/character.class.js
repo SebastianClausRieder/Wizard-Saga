@@ -163,13 +163,13 @@ class Character extends MovableObject {
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
+        this.posiX = 9500;
     }
 
     animateIdle() {
         setInterval(() => {
             if (!this.moving && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
-                console.log('idle');
             }
         }, 225);
     }

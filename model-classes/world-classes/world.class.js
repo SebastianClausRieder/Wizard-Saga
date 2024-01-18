@@ -89,11 +89,11 @@ class World {
     }
 
     magicAttack1() {
-        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && this.character.MP >= 20) {
+        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && this.character.MP >= 15) {
             this.keyboard.keyIsHold_MAGIC1 = true;
             this.character.fireballAttack = true;
             this.fireballFly = true;
-            this.character.MP -= 20;
+            this.character.MP -= 15;
             this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
             this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
         }
@@ -107,13 +107,13 @@ class World {
     }
 
     magicAttack2() {
-        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && this.character.MP >= 25) {
+        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && this.character.MP >= 20) {
             this.keyboard.keyIsHold_MAGIC2 = true;
             let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
             this.charATK.push(fireburst);
             this.character.attackAnimation(this.character.IMAGES_FIREBURST);
             this.character.doesDMG = 20;
-            this.character.MP -= 25;
+            this.character.MP -= 20;
             this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
             this.checkHitEnemy();
         }
@@ -128,8 +128,13 @@ class World {
                 if (enemy.LP > 0) {
                     enemy.animateHurts(enemy.IMAGES_HURT);
                     setTimeout(() => {
-                        enemy.animateWalkingEnemies(225);
-                        enemy.moveLeft(enemy.speed, 1000 / 60);
+                        if (enemy instanceof Endboss01) {
+                            this.endbossDirection(enemy);
+                            enemy.checkPosition();
+                        } else {
+                            enemy.animateWalkingEnemies(225);
+                            enemy.moveLeft(enemy.speed, 1000 / 60);
+                        }
                     }, 1500);
                 } else {
                     enemy.dead = true;
@@ -145,10 +150,20 @@ class World {
         });
     }
 
+    endbossDirection(enemy) {
+        if (enemy.isMovingLeft) {
+            enemy.moveLeft(enemy.speed, 1000 / 60);
+        } else if (enemy.isMovingRight) {
+            enemy.moveRight(enemy.speed, 1000 / 60)
+        }
+    }
+
     whatItemDrop(enemy) {
         if (enemy instanceof Lizard) {
             return new BlueMineral(enemy.posiX, enemy.posiY);
         } else if (enemy instanceof Demon) {
+            return new RedMineral(enemy.posiX, enemy.posiY);
+        } else {
             return new RedMineral(enemy.posiX, enemy.posiY);
         }
     }
@@ -178,6 +193,7 @@ class World {
         this.ctx.translate(-this.cam_X, 0);
         
         this.addObjectsToMap(this.lvl.bgMountens01);
+        this.addObjectsToMap(this.lvl.objects);
         this.addObjectsToMap(this.lvl.cloud01);
         this.addObjectsToMap(this.lvl.path01);
        
@@ -220,7 +236,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
         }
