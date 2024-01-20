@@ -32,10 +32,12 @@ class MovableObject extends DrawableObject {
     toBeRemoved = false;
     isMovingLeft = false;
     isMovingRight = false;
+    standing = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
     secondChance = 0.3; // Mittlere Chance für zweite Variable
     thirdChance = 0.2; // Geringere Chance für dritte Variable
+
 
     world;
 

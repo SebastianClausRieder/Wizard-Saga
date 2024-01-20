@@ -68,18 +68,25 @@ class Endboss01 extends MovableObject {
 
     checkPosition() {
         this.walkingInterval = setInterval(() => {
+            const randomDelay = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
             if (this.posiX <= 9600 && !this.isMovingRight) {
-                    this.moveRight(this.speed, 1000 / 60)
-                    clearInterval(this.movingLeftInterval);
                     this.isMovingRight = true;
                     this.isMovingLeft = false;
-                    this.standing = false;
+                    this.standing = true;
+                    clearInterval(this.movingLeftInterval);
+                    setTimeout(() => {                
+                        this.moveRight(this.speed, 1000 / 60)
+                        this.standing = false;
+                    }, randomDelay);
             } else if (this.posiX >= 9750 && !this.isMovingLeft) {
-                    this.moveLeft(this.speed, 1000 / 60);
-                    clearInterval(this.movingRightInterval);
                     this.isMovingRight = false;
                     this.isMovingLeft = true;
-                    this.standing = false;
+                    this.standing = true;
+                    clearInterval(this.movingRightInterval);
+                    setTimeout(() => {
+                        this.moveLeft(this.speed, 1000 / 60);
+                        this.standing = false;
+                    }, randomDelay);
             }
         }, 250);
     }
