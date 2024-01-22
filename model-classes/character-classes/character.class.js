@@ -160,15 +160,15 @@ class Character extends MovableObject {
         this.applyGravity();
         this.animateJumpingCharacter();
         this.jumpAnimation();
+        this.checkCharPosiX();
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
-        this.posiX = 9500;
     }
 
     animateIdle() {
         setInterval(() => {
-            if (!this.moving && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {
+            if (!this.moving && !this.jumping && !this.hurts && !this.dead && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
             }
         }, 225);
@@ -308,5 +308,17 @@ class Character extends MovableObject {
             this.fireballAttack = false;
             this.world.fireball();
         }
+    }
+
+    checkCharPosiX() {
+        setInterval(() => {
+            if (this.posiX >= 9500) {
+                world.lvl.enemies.forEach(enemy => {
+                    if (enemy instanceof Endboss01) {
+                        enemy.randomAttack();
+                    }
+                });
+            }
+        }, 125);
     }
 }

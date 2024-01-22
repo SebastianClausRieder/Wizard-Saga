@@ -6,6 +6,7 @@ class World {
     
     character = new Character();
     charATK = [];
+    enemyATK = [];
     itemDrop = [];
 
     canvas;
@@ -43,16 +44,21 @@ class World {
                 if (this.character.isColliding(enemy) && !enemy.dead) {
                     this.character.LP -= enemy.doesDMG;
                     this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
-                    if (this.character.LP > 0) {
-                        this.character.animateHurts(this.character.IMAGES_HURT);
-                    } else {
-                        this.character.animateDeath(this.character.IMAGES_DEAD);
-                        setTimeout(() => {
-                            console.log('you are dead');
-                        }, 5000);
-                    }
+                    this.hitCharacter();
                 }
             });
+        }
+    }
+
+    hitCharacter() {
+        if (this.character.LP > 0) {
+            this.character.animateHurts(this.character.IMAGES_HURT);
+        } else {
+            this.character.resetImageCache();
+            this.character.animateDeath(this.character.IMAGES_DEAD);
+            setTimeout(() => {
+                console.log('you are dead');
+            }, 5000);
         }
     }
 
@@ -61,6 +67,7 @@ class World {
         this.meleeAttack2();
         this.magicAttack1();
         this.magicAttack2();
+        this.enemyAttack();
     }
 
     meleeAttack1() {
@@ -119,6 +126,26 @@ class World {
         }
     }
 
+    enemyAttack() {
+        this.lvl.enemies.forEach(enemy => {
+            if (enemy instanceof Endboss01) {
+                if (enemy.enemyDoesAttack) {
+                    enemy.enemyDoesAttack = false;
+                    this.stoneBlowBegin();
+                }
+            }
+        });
+    }
+		
+    stoneBlowBegin() {
+        let enemyAttack = new StoneBlow(this.character.posiX, this.character.posiY);
+        enemyAttack.world = this;
+        this.enemyATK.push(enemyAttack);
+        this.character.LP -= 20;
+        this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
+        this.hitCharacter();
+    }
+
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
             if (this.charATK[0].isColliding(enemy) && !enemy.hurts && !enemy.dead) {
@@ -129,7 +156,7 @@ class World {
                     enemy.animateHurts(enemy.IMAGES_HURT);
                     setTimeout(() => {
                         if (enemy instanceof Endboss01) {
-                            this.endbossDirection(enemy);
+                            enemy.endbossDirection();
                             enemy.checkPosition();
                         } else {
                             enemy.animateWalkingEnemies(225);
@@ -148,14 +175,6 @@ class World {
                 }
             }
         });
-    }
-
-    endbossDirection(enemy) {
-        if (enemy.isMovingLeft) {
-            enemy.moveLeft(enemy.speed, 1000 / 60);
-        } else if (enemy.isMovingRight) {
-            enemy.moveRight(enemy.speed, 1000 / 60)
-        }
     }
 
     whatItemDrop(enemy) {
@@ -210,6 +229,7 @@ class World {
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.charATK);
+        this.addObjectsToMap(this.enemyATK);
         
         this.addObjectsToMap(this.lvl.enemies);
         this.addObjectsToMap(this.itemDrop);

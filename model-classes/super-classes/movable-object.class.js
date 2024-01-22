@@ -33,6 +33,8 @@ class MovableObject extends DrawableObject {
     isMovingLeft = false;
     isMovingRight = false;
     standing = false;
+    attackDelay = false;
+    enemyDoesAttack = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
     secondChance = 0.3; // Mittlere Chance für zweite Variable
@@ -49,15 +51,9 @@ class MovableObject extends DrawableObject {
         this.moveRight(0.03, 1000 / 60);
     }
 
-    animateIdle() {
-        setInterval(() => {
-            this.playIdleAnimation(this.IMAGES_IDLE);
-        }, 225);
-    }
-
     animateWalkingEnemies(fps) {
         this.walkingInterval = setInterval(() => {
-            this.playMoveAnimation(this.IMAGES_WALKING);
+                this.playMoveAnimation(this.IMAGES_WALKING);
         }, fps);
     }
 
@@ -82,6 +78,13 @@ class MovableObject extends DrawableObject {
     images(IMAGES, i) {
         let path = IMAGES[i];
         this.img = this.imageCache[path];
+    }
+
+    resetImageCache() {
+        this.currentImageAction = 0;
+        this.currentImageAttack = 0;
+        this.currentImageIdle = 0;
+        this.currentImageWalk = 0;
     }
 
     moveRight(speed, fps) {
@@ -139,7 +142,6 @@ class MovableObject extends DrawableObject {
         const hurtsInterval = setInterval(() => {
             this.playActionAnimation(IMAGES_HURT);
             this.intervalSequenz++;
-            console.log('hurts');
             if (this.intervalSequenz > IMAGES_HURT.length) {
                 clearInterval(hurtsInterval);
                 this.intervalSequenz = 0;
