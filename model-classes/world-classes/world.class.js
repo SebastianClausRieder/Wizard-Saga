@@ -33,13 +33,14 @@ class World {
     checkCollosins() {
         setInterval(() => {
             this.checkCollosinWithEnemy();
+            this.checkJumpOnLizard();
             this.checkUseAttackKey();
             this.checkEarnMineral();
         }, 100);
     }
 
     checkCollosinWithEnemy() {
-        if (!this.character.hurts && !this.character.playerDEAD) {
+        if (!this.character.hurts && !this.character.dead) {
             this.lvl.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && !enemy.dead) {
                     this.character.LP -= enemy.doesDMG;
@@ -48,6 +49,19 @@ class World {
                 }
             });
         }
+    }
+
+    checkJumpOnLizard() {
+        this.lvl.enemies.forEach((enemy) => {
+            if (enemy instanceof Lizard) {
+                if (this.character.isHittingFromAbove(enemy) && !enemy.dead) {
+                    enemy.stopWalkingEnemies();
+                    enemy.LP = 0;
+                    enemy.intervalSequenz = 0;
+                    this.isEnemyDead(enemy);
+                }
+            }
+        });
     }
 
     hitCharacter() {
@@ -149,32 +163,44 @@ class World {
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
             if (this.charATK[0].isColliding(enemy) && !enemy.hurts && !enemy.dead) {
-                enemy.stopWalkingEnemies();
-                enemy.LP -= this.character.doesDMG;
-                enemy.intervalSequenz = 0;
-                if (enemy.LP > 0) {
-                    enemy.animateHurts(enemy.IMAGES_HURT);
-                    setTimeout(() => {
-                        if (enemy instanceof Endboss01) {
-                            enemy.endbossDirection();
-                            enemy.checkPosition();
-                        } else {
-                            enemy.animateWalkingEnemies(225);
-                            enemy.moveLeft(enemy.speed, 1000 / 60);
-                        }
-                    }, 1500);
-                } else {
-                    enemy.dead = true;
-                    enemy.animateDeath(enemy.IMAGES_DEAD);
-                    setTimeout(() => {
-                        let item = this.whatItemDrop(enemy);
-                        enemy.removeFromMap();
-                        this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
-                        this.itemDrop.push(item);
-                    }, 2000);
-                }
+                this.hitEnemy(enemy);
             }
         });
+    }
+
+    hitEnemy(enemy) {
+        enemy.stopWalkingEnemies();
+        enemy.LP -= this.character.doesDMG;
+        enemy.intervalSequenz = 0;
+        if (enemy.LP > 0) {
+            this.isEnemyLPnotZero(enemy);
+        } else {
+            this.isEnemyDead(enemy);
+        }
+    }
+
+    isEnemyLPnotZero(enemy) {
+        enemy.animateHurts(enemy.IMAGES_HURT);
+        setTimeout(() => {
+            if (enemy instanceof Endboss01) {
+                enemy.endbossDirection();
+                enemy.checkPosition();
+            } else {
+                enemy.animateWalkingEnemies(225);
+                enemy.moveLeft(enemy.speed, 1000 / 60);
+            }
+        }, 1500);
+    }
+
+    isEnemyDead(enemy) {
+        enemy.dead = true;
+        enemy.animateDeath(enemy.IMAGES_DEAD);
+        setTimeout(() => {
+            let item = this.whatItemDrop(enemy);
+            enemy.removeFromMap();
+            this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
+            this.itemDrop.push(item);
+        }, 2000);
     }
 
     whatItemDrop(enemy) {
@@ -256,7 +282,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
         }

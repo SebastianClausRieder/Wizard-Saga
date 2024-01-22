@@ -129,9 +129,11 @@ class MovableObject extends DrawableObject {
 
     // Checken, ob du den Gegner von oben triffst
     isHittingFromAbove(mo) {
+        const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
+        const enemyTop = mo.posiY + mo.hitBoxY;
+        
         return (
-            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight &&
-            this.posiY + this.hitBoxY > mo.posiY &&
+            charBottom < enemyTop && // Charakter untere Kante über Gegner obere Kante
             this.posiX + this.hitBoxX < mo.posiX + mo.hitBoxX + mo.hitBoxWidth &&
             this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX
         );
