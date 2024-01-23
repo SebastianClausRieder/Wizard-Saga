@@ -36,7 +36,9 @@ class World {
             this.checkJumpOnLizard();
             this.checkUseAttackKey();
             this.checkEarnMineral();
-        }, 100);
+            this.checkIsCollidingPlatform()
+            this.checkJumpOnPlatform();
+        }, 1000 / 60);
     }
 
     checkCollosinWithEnemy() {
@@ -54,7 +56,7 @@ class World {
     checkJumpOnLizard() {
         this.lvl.enemies.forEach((enemy) => {
             if (enemy instanceof Lizard) {
-                if (this.character.isHittingFromAbove(enemy) && !enemy.dead) {
+                if (this.character.isHittingFromAbove(enemy) && !enemy.dead && !this.character.hurts) {
                     enemy.stopWalkingEnemies();
                     enemy.LP = 0;
                     enemy.intervalSequenz = 0;
@@ -226,6 +228,40 @@ class World {
         });
     }
 
+    checkIsCollidingPlatform() {
+        this.lvl.platforms.forEach((platform) => {
+            if (platform instanceof Platform02) {
+                if (this.character.isCollidingLeft(platform)) {
+                    this.character.collidingPlatformLeft = true;
+                } else {
+                    this.character.collidingPlatformLeft = false;
+                }
+
+                if (this.character.isCollidingRight(platform)) {
+                    this.character.collidingPlatformRight = true;
+                } else {
+                    this.character.collidingPlatformRight = false;
+                }
+            }
+        });
+        console.log(this.character.collidingPlatformLeft, this.character.collidingPlatformRight);
+    }
+
+    checkJumpOnPlatform() {
+        let onPlatform = false;
+
+        this.lvl.platforms.forEach((platform) => {
+            if (this.character.isHittingFromAbove(platform)) {
+                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
+                onPlatform = true;
+            }
+            
+            if (!onPlatform && !this.character.jumping) {
+                this.character.mainPosiY = canvasHeight - this.character.height - 25;
+            }
+        });
+    }
+
     setWorld() {
         this.character.world = this;
         this.drawableObject.world = this;
@@ -240,6 +276,7 @@ class World {
         this.addObjectsToMap(this.lvl.bgMountens01);
         this.addObjectsToMap(this.lvl.objects);
         this.addObjectsToMap(this.lvl.cloud01);
+        this.addObjectsToMap(this.lvl.platforms);
         this.addObjectsToMap(this.lvl.path01);
        
         this.ctx.translate(this.cam_X, 0);

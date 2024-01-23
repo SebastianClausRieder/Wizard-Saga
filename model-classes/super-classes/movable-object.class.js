@@ -26,6 +26,7 @@ class MovableObject extends DrawableObject {
     intervalSequenz = 0;
 
     jumping = false;
+    falling = false;
     hurts = false;
     dead = false;
     attack = false;
@@ -35,6 +36,8 @@ class MovableObject extends DrawableObject {
     standing = false;
     attackDelay = false;
     enemyDoesAttack = false;
+    collidingPlatformLeft = false;
+    collidingPlatformRight = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
     secondChance = 0.3; // Mittlere Chance für zweite Variable
@@ -104,13 +107,17 @@ class MovableObject extends DrawableObject {
     }
 
     applyGravity() {
-        setInterval(() => {
+        const gravityInterV = setInterval(() => {
             if (this.isAboveGround() || this.gravitaSpeed > 0) {
                 this.posiY -= this.gravitaSpeed;
                 this.gravitaSpeed -= this.acceleration;
             } else {
                 this.posiY = this.mainPosiY;
                 this.gravitaSpeed = 0;
+                this.falling = false;
+            }
+
+            if (!this.isAboveGround()) {
                 this.jumping = false;
             }
         }, 1000 / 30);
@@ -127,13 +134,40 @@ class MovableObject extends DrawableObject {
             this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight;
     }
 
-    // Checken, ob du den Gegner von oben triffst
+    isCollidingLeft(mo) {
+        const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
+        const platformTop = mo.posiY + mo.hitBoxY;
+        const charRight = this.posiX + this.hitBoxX + this.hitBoxWidth;
+        const platformLeft = mo.posiX + mo.hitBoxX;
+    
+        return (
+            charBottom >= platformTop && // Charakter untere Kante über oder auf der Plattform oberen Kante
+            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Charakter obere Kante unter oder auf der Plattform unteren Kante
+            this.posiX + this.hitBoxX < platformLeft && // Charakter rechte Seite links von der Plattform
+            charRight > platformLeft // Charakter rechte Seite rechts von der Plattform
+        );
+    }
+
+    isCollidingRight(mo) {
+        const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
+        const platformTop = mo.posiY + mo.hitBoxY;
+        const charLeft = this.posiX + this.hitBoxX;
+        const platformRight = mo.posiX + mo.hitBoxX + mo.hitBoxWidth;
+    
+        return (
+            charBottom >= platformTop && // Charakter untere Kante über oder auf der Plattform oberen Kante
+            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Charakter obere Kante unter oder auf der Plattform unteren Kante
+            charLeft < platformRight && // Charakter linke Seite links von der Plattform
+            charLeft + this.hitBoxWidth > platformRight // Charakter rechte Seite rechts von der Plattform
+        );
+    }
+
     isHittingFromAbove(mo) {
         const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
         const enemyTop = mo.posiY + mo.hitBoxY;
         
         return (
-            charBottom < enemyTop && // Charakter untere Kante über Gegner obere Kante
+            charBottom <= enemyTop && charBottom - mo.posiY >= 0 &&// Charakter untere Kante über Gegner obere Kante
             this.posiX + this.hitBoxX < mo.posiX + mo.hitBoxX + mo.hitBoxWidth &&
             this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX
         );

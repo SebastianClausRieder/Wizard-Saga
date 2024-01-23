@@ -19,6 +19,7 @@ class DrawableObject {
     enemyClasses = [Lizard, Demon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
     itemClasses = [BlueMineral, RedMineral];
+    platformClasses = [Platform01, Platform02];
 
     world;
 
@@ -42,7 +43,7 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this.isAttackInstance(this) || this.isEnemyInstance(this) || this.isItemInstance(this)) {
+        if (this instanceof Character || this.isPlatformInstance(this) || this.isAttackInstance(this) || this.isEnemyInstance(this) || this.isItemInstance(this)) {
         
             // Voller Rahmen Original Bild
             ctx.beginPath();
@@ -51,13 +52,13 @@ class DrawableObject {
             ctx.rect(this.posiX, this.posiY, this.width, this.height);
             ctx.stroke();
 
-            // Voller Rahmen HitBox
-            ctx.beginPath();
-            ctx.lineWidth = '4';
-            ctx.strokeStyle = 'yellow';
-            ctx.rect(this.posiX + this.hitBoxX, this.posiY + this.hitBoxY, this.hitBoxWidth, this.hitBoxHeight);
-            // ctx.rect(this.posiX, this.hitBoxWidth, this.posiY, this.hitBoxHeight);
-            ctx.stroke();
+            // // Voller Rahmen HitBox
+            // ctx.beginPath();
+            // ctx.lineWidth = '4';
+            // ctx.strokeStyle = 'yellow';
+            // ctx.rect(this.posiX + this.hitBoxX, this.posiY + this.hitBoxY, this.hitBoxWidth, this.hitBoxHeight);
+            // // ctx.rect(this.posiX, this.hitBoxWidth, this.posiY, this.hitBoxHeight);
+            // ctx.stroke();
 
             // Linke Seite (z.B. rot)
             ctx.beginPath();
@@ -74,6 +75,22 @@ class DrawableObject {
             ctx.moveTo(this.posiX + this.hitBoxX + this.hitBoxWidth, this.posiY + this.hitBoxY);
             ctx.lineTo(this.posiX + this.hitBoxX + this.hitBoxWidth, this.posiY + this.hitBoxY + this.hitBoxHeight);
             ctx.stroke();
+
+            // Obere Seite (z.B. orange)
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'orange';
+            ctx.moveTo(this.posiX + this.hitBoxX, this.posiY + this.hitBoxY);
+            ctx.lineTo(this.posiX + this.hitBoxX + this.hitBoxWidth, this.posiY + this.hitBoxY);
+            ctx.stroke();
+        
+            // Untere Seite (z.B. purple)
+            ctx.beginPath();
+            ctx.lineWidth = '3';
+            ctx.strokeStyle = 'purple';
+            ctx.moveTo(this.posiX + this.hitBoxX, this.posiY + this.hitBoxY + this.hitBoxHeight);
+            ctx.lineTo(this.posiX + this.hitBoxX + this.hitBoxWidth, this.posiY + this.hitBoxY + this.hitBoxHeight);
+            ctx.stroke();
         }
     }
 
@@ -87,6 +104,10 @@ class DrawableObject {
 
     isItemInstance(obj) {
         return this.itemClasses.some(itemClass => obj instanceof itemClass);
+    }
+
+    isPlatformInstance(obj) {
+        return this.platformClasses.some(platformClass => obj instanceof platformClass);
     }
 
     drawText(ctx, redMineral, blueMineral) {

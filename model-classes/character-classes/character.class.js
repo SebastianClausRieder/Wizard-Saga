@@ -168,7 +168,7 @@ class Character extends MovableObject {
 
     animateIdle() {
         setInterval(() => {
-            if (!this.moving && !this.jumping && !this.hurts && !this.dead && !this.attack) {
+            if (!this.moving && !this.falling && !this.hurts && !this.dead && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
             }
         }, 225);
@@ -176,12 +176,12 @@ class Character extends MovableObject {
 
     animateWalkingCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD && !this.attack) {
+            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.collidingPlatformLeft) {
                 this.posiX += this.speedWalk;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.playerDEAD && !this.attack) {
+            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.collidingPlatformRight) {
                 this.posiX -= this.speedWalk;
                 this.otherDirection = true;
             }
@@ -194,14 +194,13 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             this.walking_sound.volume = 0.2;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_WALK);
                 this.moving = true;
                 this.walking = true;
                 this.running = false;
                 this.currentImageIdle = 0;
                 this.walking_sound.play();
-                console.log('walk');
             } else {
                 this.walking_sound.currentTime = 0;
                 if (!this.running) {
@@ -214,12 +213,12 @@ class Character extends MovableObject {
 
     animateRunCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.playerDEAD && !this.attack) {
+            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.collidingPlatformLeft) {
                 this.posiX += this.speedRun;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.playerDEAD && !this.attack) {
+            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.dead && !this.attack && !this.collidingPlatformRight) {
                 this.posiX -= this.speedRun;
                 this.otherDirection = true;
             }
@@ -233,14 +232,13 @@ class Character extends MovableObject {
             this.running_sound.pause();
             this.running_sound.volume = 0.3;
             this.running_sound.playbackRate = 1.1;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.jumping && !this.hurts && !this.playerDEAD && !this.attack) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_RUN);
                 this.moving = true;
                 this.running = true;
                 this.walking = false;
                 this.currentImageIdle = 0;
                 this.running_sound.play();
-                console.log('run');
             } else {
                 if (!this.walking) {
                     this.moving = false;
@@ -254,7 +252,7 @@ class Character extends MovableObject {
     animateJumpingCharacter() {
         setInterval(() => {
             this.jumping_sound.playbackRate = 1;
-            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.playerDEAD && !this.world.keyboard.keyIsHold_JUMP) {
+            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.dead && !this.world.keyboard.keyIsHold_JUMP) {
                 this.jump(18);
                 this.jumping_sound.play();
                 this.world.keyboard.keyIsHold_JUMP = true;
@@ -266,12 +264,11 @@ class Character extends MovableObject {
         setInterval(() => {
             if (this.gravitaSpeed > 0) {
                 this.loadImage(this.IMAGES_JUMP[0]);
-                this.jumping = true;
-                console.log('jump up');
+                this.falling = true;
             } else if (this.gravitaSpeed < 0) {
                 this.loadImage(this.IMAGES_JUMP[1]);
+                this.falling = true;
                 this.jumping = true;
-                console.log('jump down');
             }
         }, 1000 / 60);
     }
@@ -281,7 +278,6 @@ class Character extends MovableObject {
             this.playActionAnimation(IMAGES);
             this.attack = true;
             this.currentImageAttack++;
-            console.log('attack');
             
             if (this.currentImageAttack >= IMAGES.length) {
                 clearInterval(attack);

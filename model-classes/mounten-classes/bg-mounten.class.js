@@ -9,7 +9,7 @@ class BGMounten01 extends MovableObject {
         this.posiY = y;
 
         if (imagePath == "img/wizard-saga/mountains/m1/2.png") {
-            this.posiX = x - 50;
+            this.posiX = x - 500;
             this.bgAnimation();
         }
     }

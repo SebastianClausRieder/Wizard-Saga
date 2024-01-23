@@ -39,14 +39,6 @@ const lvl1 = new Level(
         new Cloud01('img/wizard-saga/clouds/PNG/Clouds_gray/Shape3/cloud_shape3_1.png'),
         new Cloud01('img/wizard-saga/clouds/PNG/Clouds_gray/Shape4/cloud_shape4_1.png')
     ],
-    path,
-    [   // enemies
-        new Lizard(),
-        // new Lizard(),
-        // new Lizard(),
-        // new Demon(),
-        new Endboss01()
-    ],
     [   // objects (imagePath, imageW, imageH, imageX, imageY)
         new Objects('img/wizard-saga/trees/PNG/Assets_separately/Trees_texture_shadow_dark/Autumn_tree1.png', 100, 100, 120, 265),
         new Objects('img/wizard-saga/ruins/PNG/Assets_texture_shadow_dark/Snow_ruins4-lighted.png', 25, 25, 345, 165),
@@ -78,5 +70,18 @@ const lvl1 = new Level(
         new Objects('img/wizard-saga/ruins/PNG/Assets_texture_shadow_dark/Brown-gray_ruins2.png', 75, 75, 8900, 350),
         new Objects('img/wizard-saga/area-objects/PNG/Objects_separately/Dragon_bones_full_ground_shadow-flipt.png', 85, 85, 9650, 245),
         new Objects('img/wizard-saga/trees/PNG/Assets_separately/Trees_texture_shadow_dark/Moss_tree2.png', 175, 175, 10050, 270)
+    ],
+    path,
+    [   // enemies
+        // new Lizard(),
+        // new Lizard(),
+        // new Lizard(),
+        // new Demon(),
+        new Endboss01()
+    ],
+    [   // platforms (imagePath, imageW, imageH, imageX, imageY)
+        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 350, 375),
+        new Platform02('img/wizard-saga/platforms/finisht-platform/plattform5x3.png', 305, 185, 650, 270),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 950, 170)
     ]
 );
