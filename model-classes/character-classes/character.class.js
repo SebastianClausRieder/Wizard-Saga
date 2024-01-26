@@ -164,6 +164,7 @@ class Character extends MovableObject {
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
+        this.posiX = 80;
     }
 
     animateIdle() {

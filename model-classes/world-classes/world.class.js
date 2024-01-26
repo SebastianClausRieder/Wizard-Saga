@@ -8,6 +8,7 @@ class World {
     charATK = [];
     enemyATK = [];
     itemDrop = [];
+    platformCache = [];
 
     canvas;
     ctx;
@@ -244,7 +245,6 @@ class World {
                 }
             }
         });
-        console.log(this.character.collidingPlatformLeft, this.character.collidingPlatformRight);
     }
 
     checkJumpOnPlatform() {
@@ -252,12 +252,25 @@ class World {
 
         this.lvl.platforms.forEach((platform) => {
             if (this.character.isHittingFromAbove(platform)) {
-                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
                 onPlatform = true;
+                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
+                console.log('colliding with plattform', onPlatform);
+            } else if (this.character.isInPosiXFromPlatform(platform) && this.character.isOverThePlatform(platform)) {
+                onPlatform = true;
+                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
+                console.log('over plattform', onPlatform);
+            } else if (this.character.isInPosiXFromPlatform(platform)) {
+                onPlatform = true;
+                console.log('in posiX from Platform');
+            } else if (this.character.mainPosiY <= platform.posiY - platform.hitBoxY - 70) {
+                this.character.mainPosiY += 1;
+                onPlatform = true;
+                console.log('main posiY is smaler');
             }
             
             if (!onPlatform && !this.character.jumping) {
                 this.character.mainPosiY = canvasHeight - this.character.height - 25;
+                console.log('colliding end', onPlatform);
             }
         });
     }

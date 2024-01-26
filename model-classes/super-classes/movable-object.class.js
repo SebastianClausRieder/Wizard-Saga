@@ -173,6 +173,20 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    isInPosiXFromPlatform(platform) {
+        return (
+            this.posiX + this.hitBoxX + this.hitBoxWidth >= platform.posiX + platform.hitBoxX &&
+            this.posiX + this.hitBoxX <= platform.posiX + platform.hitBoxX + platform.hitBoxWidth
+        );
+    }
+
+    isOverThePlatform(platform) {
+        const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
+        const platformTop = platform.posiY + platform.hitBoxY;
+
+        return charBottom <= platformTop
+    }
+
     animateHurts(IMAGES_HURT) {
         this.hurts = true;
         const hurtsInterval = setInterval(() => {
