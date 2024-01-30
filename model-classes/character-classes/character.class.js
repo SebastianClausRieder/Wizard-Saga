@@ -157,6 +157,7 @@ class Character extends MovableObject {
         this.animateIdle();
         this.animateWalkingCharacter();
         this.animateRunCharacter();
+        this.camPosition();
         this.applyGravity();
         this.animateJumpingCharacter();
         this.jumpAnimation();
@@ -185,10 +186,6 @@ class Character extends MovableObject {
             if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.collidingPlatformRight) {
                 this.posiX -= this.speedWalk;
                 this.otherDirection = true;
-            }
-
-            if (this.posiX > 500) {
-                this.world.cam_X = this.posiX - 500;
             }
         }, 1000 /60);
 
@@ -223,10 +220,6 @@ class Character extends MovableObject {
                 this.posiX -= this.speedRun;
                 this.otherDirection = true;
             }
-
-            if (this.posiX > 500) {
-                this.world.cam_X = this.posiX - 500;
-            }
         }, 1000 /60);
 
         setInterval(() => {
@@ -248,6 +241,18 @@ class Character extends MovableObject {
                 }
             }
         }, 125);   
+    }
+
+    camPosition() {
+        setInterval(() => {
+            if (this.posiX > 500) {
+                this.world.cam_X = this.posiX - 500;
+            } else { this.world.cam_X = 0;}
+    
+            if (this.posiY < 250) {
+                this.world.cam_Y = this.posiY - 250;
+            } else { this.world.cam_Y = 0;}
+        }, 1000 / 60);
     }
 
     animateJumpingCharacter() {

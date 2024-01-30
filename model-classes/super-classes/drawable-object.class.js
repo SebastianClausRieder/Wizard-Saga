@@ -19,7 +19,8 @@ class DrawableObject {
     enemyClasses = [Lizard, Demon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
     itemClasses = [BlueMineral, RedMineral];
-    platformClasses = [Platform01, Platform02];
+    platformClasses = [Platform01, Platform02, Platform03];
+    usableObjectClasses = [UsableObjectDoor];
 
     world;
 
@@ -43,7 +44,7 @@ class DrawableObject {
     }
 
     drawFrame(ctx) {
-        if (this instanceof Character || this.isPlatformInstance(this) || this.isAttackInstance(this) || this.isEnemyInstance(this) || this.isItemInstance(this)) {
+        if (this instanceof Character || this.isPlatformInstance(this) || this.isAttackInstance(this) || this.isEnemyInstance(this) || this.isItemInstance(this) || this.isUsableObjectInstance(this)) {
         
             // Voller Rahmen Original Bild
             ctx.beginPath();
@@ -108,6 +109,10 @@ class DrawableObject {
 
     isPlatformInstance(obj) {
         return this.platformClasses.some(platformClass => obj instanceof platformClass);
+    }
+
+    isUsableObjectInstance(obj) {
+        return this.usableObjectClasses.some(usableObjectClass => obj instanceof usableObjectClass);
     }
 
     drawText(ctx, redMineral, blueMineral) {

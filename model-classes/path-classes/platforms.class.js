@@ -31,3 +31,20 @@ class Platform02 extends MovableObject {
         this.posiY = imageY;
     }
 }
+
+class Platform03 extends MovableObject {
+    hitBoxWidth = 57;
+    hitBoxHeight = 25;
+    hitBoxX = 3;
+    hitBoxY = 8;
+
+    constructor(imagePath, imageW, imageH, imageX, imageY) {
+        super().loadImage(imagePath);
+        
+        this.width = imageW;
+        this.height = imageH;
+
+        this.posiX = imageX;
+        this.posiY = imageY;
+    }
+}

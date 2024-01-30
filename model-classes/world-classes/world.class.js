@@ -14,6 +14,7 @@ class World {
     ctx;
     keyboard;
     cam_X;
+    cam_Y;
 
     lifeStatusBar = new LifeStatusBar();
     manaStatusBar = new ManaStatusBar();
@@ -37,8 +38,9 @@ class World {
             this.checkJumpOnLizard();
             this.checkUseAttackKey();
             this.checkEarnMineral();
-            this.checkIsCollidingPlatform()
+            this.checkIsCollidingPlatform();
             this.checkJumpOnPlatform();
+            this.checkCollidingUsableObject();
         }, 1000 / 60);
     }
 
@@ -230,47 +232,60 @@ class World {
     }
 
     checkIsCollidingPlatform() {
-        this.lvl.platforms.forEach((platform) => {
-            if (platform instanceof Platform02) {
-                if (this.character.isCollidingLeft(platform)) {
-                    this.character.collidingPlatformLeft = true;
-                } else {
-                    this.character.collidingPlatformLeft = false;
-                }
+        this.lvl.platformsFG.forEach((platform) => {
+            if (this.character.isCollidingLeft(platform)) {
+                this.character.collidingPlatformLeft = true;
+            } else {
+                this.character.collidingPlatformLeft = false;
+            }
 
-                if (this.character.isCollidingRight(platform)) {
-                    this.character.collidingPlatformRight = true;
-                } else {
-                    this.character.collidingPlatformRight = false;
-                }
+            if (this.character.isCollidingRight(platform)) {
+                this.character.collidingPlatformRight = true;
+            } else {
+                this.character.collidingPlatformRight = false;
             }
         });
     }
 
+    checkPlatformCollision(platform) {
+        if (this.character.isHittingFromAbove(platform)) {
+            this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
+            return true;
+        } else if (this.character.isInPosiXFromPlatform(platform) && this.character.isOverThePlatform(platform)) {
+            this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
+            return true;
+        } else if (this.character.isInPosiXFromPlatform(platform)) {
+            return true;
+        }
+        return false;
+    }
+    
     checkJumpOnPlatform() {
         let onPlatform = false;
-
-        this.lvl.platforms.forEach((platform) => {
-            if (this.character.isHittingFromAbove(platform)) {
+    
+        this.lvl.platformsBG.forEach((platform) => {
+            if (this.checkPlatformCollision(platform)) {
                 onPlatform = true;
-                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
-                console.log('colliding with plattform', onPlatform);
-            } else if (this.character.isInPosiXFromPlatform(platform) && this.character.isOverThePlatform(platform)) {
-                onPlatform = true;
-                this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
-                console.log('over plattform', onPlatform);
-            } else if (this.character.isInPosiXFromPlatform(platform)) {
-                onPlatform = true;
-                console.log('in posiX from Platform');
-            } else if (this.character.mainPosiY <= platform.posiY - platform.hitBoxY - 70) {
-                this.character.mainPosiY += 1;
-                onPlatform = true;
-                console.log('main posiY is smaler');
             }
-            
-            if (!onPlatform && !this.character.jumping) {
-                this.character.mainPosiY = canvasHeight - this.character.height - 25;
-                console.log('colliding end', onPlatform);
+        });
+    
+        this.lvl.platformsFG.forEach((platform) => {
+            if (this.checkPlatformCollision(platform)) {
+                onPlatform = true;
+            }
+        });
+    
+        if (!onPlatform && !this.character.jumping) {
+            this.character.mainPosiY = canvasHeight - this.character.height - 25;
+        }
+    }
+
+    checkCollidingUsableObject() {
+        this.lvl.usableObject.forEach((object) => {
+            if (object instanceof UsableObjectDoor) {
+                if (this.character.isColliding(object) && this.keyboard.UP) {
+                    console.log('enter cave');
+                }
             }
         });
     }
@@ -284,15 +299,17 @@ class World {
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.translate(-this.cam_X, 0);
+        this.ctx.translate(-this.cam_X, -this.cam_Y);
         
         this.addObjectsToMap(this.lvl.bgMountens01);
         this.addObjectsToMap(this.lvl.objects);
+        this.addObjectsToMap(this.lvl.platformsBG);
         this.addObjectsToMap(this.lvl.cloud01);
-        this.addObjectsToMap(this.lvl.platforms);
         this.addObjectsToMap(this.lvl.path01);
+        this.addObjectsToMap(this.lvl.usableObject);
+        this.addObjectsToMap(this.lvl.platformsFG);
        
-        this.ctx.translate(this.cam_X, 0);
+        this.ctx.translate(this.cam_X, this.cam_Y);
         // <--- place vor fixed objects --->
 
         this.addToMap(this.lifeStatusBar);
@@ -301,7 +318,7 @@ class World {
         this.addToMap(this.blueMineralStatusBar);
 
         // <--- place vor fixed objects endes --->
-        this.ctx.translate(-this.cam_X, 0);
+        this.ctx.translate(-this.cam_X, -this.cam_Y);
 
         this.addToMap(this.character);
         this.addObjectsToMap(this.charATK);
@@ -310,7 +327,7 @@ class World {
         this.addObjectsToMap(this.lvl.enemies);
         this.addObjectsToMap(this.itemDrop);
 
-        this.ctx.translate(this.cam_X, 0);
+        this.ctx.translate(this.cam_X, this.cam_Y);
 
         let self = this;
         requestAnimationFrame(function() {
@@ -332,7 +349,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
         }

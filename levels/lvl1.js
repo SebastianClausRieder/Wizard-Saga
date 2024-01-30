@@ -10,14 +10,19 @@ for (let j = 1; j <= 5; j++) {
     }
 }
 
+for (let i = 0; i < mountainCount; i++) {
+    const mountain = new BGMounten01(`img/wizard-saga/mountains/m1/0.png`, i * (mountainDistanceIncrement), -499);
+    bgMounten.push(mountain);
+}
+
 // path01
-const path = [];
+const myPaths = [];
 const pathCount = 66;
 const pathDistanceIncrement = 160;
 
 for (let i = 0; i < pathCount; i++) {
     const path = new PathGreen01(`img/wizard-saga/paths/finish-paths/green-path01.png`, i * pathDistanceIncrement, 0);
-    bgMounten.push(path);
+    myPaths.push(path);
 }
 
 const lvl1 = new Level(
@@ -71,17 +76,24 @@ const lvl1 = new Level(
         new Objects('img/wizard-saga/area-objects/PNG/Objects_separately/Dragon_bones_full_ground_shadow-flipt.png', 85, 85, 9650, 245),
         new Objects('img/wizard-saga/trees/PNG/Assets_separately/Trees_texture_shadow_dark/Moss_tree2.png', 175, 175, 10050, 270)
     ],
-    path,
+    [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
+        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 3050, 365)
+    ],
+    [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
+        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 350, 375),
+        new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 2000, 290),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 650, 260),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform7x6.png', 375, 435, 3000, 70)
+    ],
+    myPaths,
+    [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)
+        new Platform02('img/wizard-saga/platforms/finisht-platform/plattform5x3.png', 305, 185, 1600, 355)
+    ],
     [   // enemies
         // new Lizard(),
         // new Lizard(),
         // new Lizard(),
         // new Demon(),
         new Endboss01()
-    ],
-    [   // platforms (imagePath, imageW, imageH, imageX, imageY)
-        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 350, 375),
-        new Platform02('img/wizard-saga/platforms/finisht-platform/plattform5x3.png', 305, 185, 650, 270),
-        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 950, 170)
     ]
 );
