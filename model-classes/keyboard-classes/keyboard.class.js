@@ -11,6 +11,7 @@ class Keyboard {
     RUN = false;
 
     
+    keyIsHold_UP = false;
     keyIsHold_JUMP = false;
     keyIsHold_ATTACK1 = false;
     keyIsHold_ATTACK2 = false;

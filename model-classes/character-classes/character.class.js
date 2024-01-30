@@ -10,6 +10,7 @@ class Character extends MovableObject {
     speedWalk = 1.5;
     speedRun = 3;
     world;
+    moveCamPosiY = 250;
 
     LP = 100;
     MP = 100;
@@ -165,7 +166,7 @@ class Character extends MovableObject {
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
-        this.posiX = 80;
+        this.posiX = 3080;
     }
 
     animateIdle() {
@@ -178,12 +179,12 @@ class Character extends MovableObject {
 
     animateWalkingCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.collidingPlatformLeft) {
+            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
                 this.posiX += this.speedWalk;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.collidingPlatformRight) {
+            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
                 this.posiX -= this.speedWalk;
                 this.otherDirection = true;
             }
@@ -192,7 +193,7 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             this.walking_sound.volume = 0.2;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_WALK);
                 this.moving = true;
                 this.walking = true;
@@ -211,12 +212,12 @@ class Character extends MovableObject {
 
     animateRunCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.collidingPlatformLeft) {
+            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
                 this.posiX += this.speedRun;
                 this.otherDirection = false;
             }
             
-            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.dead && !this.attack && !this.collidingPlatformRight) {
+            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
                 this.posiX -= this.speedRun;
                 this.otherDirection = true;
             }
@@ -226,7 +227,7 @@ class Character extends MovableObject {
             this.running_sound.pause();
             this.running_sound.volume = 0.3;
             this.running_sound.playbackRate = 1.1;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
+            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_RUN);
                 this.moving = true;
                 this.running = true;
@@ -249,8 +250,8 @@ class Character extends MovableObject {
                 this.world.cam_X = this.posiX - 500;
             } else { this.world.cam_X = 0;}
     
-            if (this.posiY < 250) {
-                this.world.cam_Y = this.posiY - 250;
+            if (this.posiY < this.moveCamPosiY) {
+                this.world.cam_Y = this.posiY - this.moveCamPosiY;
             } else { this.world.cam_Y = 0;}
         }, 1000 / 60);
     }
@@ -258,7 +259,7 @@ class Character extends MovableObject {
     animateJumpingCharacter() {
         setInterval(() => {
             this.jumping_sound.playbackRate = 1;
-            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.dead && !this.world.keyboard.keyIsHold_JUMP) {
+            if (this.world.keyboard.JUMP && !this.isAboveGround() && !this.dead && !this.attack && !this.onLoad && !this.world.keyboard.keyIsHold_JUMP) {
                 this.jump(18);
                 this.jumping_sound.play();
                 this.world.keyboard.keyIsHold_JUMP = true;

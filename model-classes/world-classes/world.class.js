@@ -1,5 +1,6 @@
 class World {
     lvl = lvl1;
+    inCave = false;
 
     drawableObject = new DrawableObject();
     moveableObject = new MovableObject();
@@ -8,7 +9,8 @@ class World {
     charATK = [];
     enemyATK = [];
     itemDrop = [];
-    platformCache = [];
+    loadSequenz = [];
+
 
     canvas;
     ctx;
@@ -90,7 +92,7 @@ class World {
     }
 
     meleeAttack1() {
-        if (this.keyboard.ATTACK1 && !this.keyboard.keyIsHold_ATTACK1 && !this.character.attack) {
+        if (this.keyboard.ATTACK1 && !this.keyboard.keyIsHold_ATTACK1 && !this.character.attack && !this.character.onLoad) {
             this.keyboard.keyIsHold_ATTACK1 = true;
             this.character.comboAttack = true;
             let attack1 = new CharAttack1(this.character.posiX, this.character.posiY, this.character.otherDirection);
@@ -115,7 +117,7 @@ class World {
     }
 
     magicAttack1() {
-        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && this.character.MP >= 15) {
+        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && this.character.MP >= 15 && !this.character.attack && !this.character.onLoad) {
             this.keyboard.keyIsHold_MAGIC1 = true;
             this.character.fireballAttack = true;
             this.fireballFly = true;
@@ -133,7 +135,7 @@ class World {
     }
 
     magicAttack2() {
-        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && this.character.MP >= 20) {
+        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && this.character.MP >= 20 && !this.character.attack && !this.character.onLoad) {
             this.keyboard.keyIsHold_MAGIC2 = true;
             let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
             this.charATK.push(fireburst);
@@ -283,11 +285,45 @@ class World {
     checkCollidingUsableObject() {
         this.lvl.usableObject.forEach((object) => {
             if (object instanceof UsableObjectDoor) {
-                if (this.character.isColliding(object) && this.keyboard.UP) {
-                    console.log('enter cave');
-                }
+                this.useDoor(object);
             }
+            
         });
+    }
+
+    useDoor(object) {
+        if (this.character.isColliding(object) && this.keyboard.UP && !this.keyboard.keyIsHold_UP) {
+            this.keyboard.keyIsHold_UP = true;
+            this.character.onLoad = true;
+            let newLoadSequenz = new LoadSequenz(this.cam_X, this.cam_Y, this);
+            this.loadSequenz.push(newLoadSequenz);
+            this.loadSequenz[0].startLoadSequenz();
+            setTimeout(() => {
+                if (!this.inCave) {
+                    this.gosInCave();
+                } else {
+                    this.gosOutFromCave();
+                }
+            }, 1500);
+        }
+    }
+
+    gosInCave() {
+        this.inCave = true;
+        this.lvl = lvl1Cave;
+        this.character.moveCamPosiY = 1;
+        this.loadSequenz[0].endLoadSequenz();
+    }
+
+    gosOutFromCave() {
+        this.inCave = false;
+        this.lvl = lvl1;
+        this.character.moveCamPosiY = 250;
+        this.loadSequenz[0].endLoadSequenz();
+    }
+
+    openTreasure(object) {
+
     }
 
     setWorld() {
@@ -326,6 +362,8 @@ class World {
         
         this.addObjectsToMap(this.lvl.enemies);
         this.addObjectsToMap(this.itemDrop);
+
+        this.addObjectsToMap(this.loadSequenz);
 
         this.ctx.translate(this.cam_X, this.cam_Y);
 

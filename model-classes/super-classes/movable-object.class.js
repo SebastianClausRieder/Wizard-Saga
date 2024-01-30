@@ -38,6 +38,7 @@ class MovableObject extends DrawableObject {
     enemyDoesAttack = false;
     collidingPlatformLeft = false;
     collidingPlatformRight = false;
+    onLoad = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
     secondChance = 0.3; // Mittlere Chance für zweite Variable

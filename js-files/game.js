@@ -70,6 +70,7 @@ document.addEventListener('keyup', (event) => {
 
     if (event.code == "KeyW" || event.code == "ArrowUp") {
         keyboard.UP = false;
+        keyboard.keyIsHold_UP = false;
     }
 
     if (event.code == "KeyS" || event.code == "ArrowDown") {
