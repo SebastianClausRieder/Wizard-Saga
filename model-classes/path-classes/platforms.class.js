@@ -48,3 +48,20 @@ class Platform03 extends MovableObject {
         this.posiY = imageY;
     }
 }
+
+class Platform04Wall extends MovableObject {
+    hitBoxWidth = 605;
+    hitBoxHeight = 470;
+    hitBoxX = 7;
+    hitBoxY = 15;
+
+    constructor(imagePath, imageW, imageH, imageX, imageY) {
+        super().loadImage(imagePath);
+        
+        this.width = imageW;
+        this.height = imageH;
+
+        this.posiX = imageX;
+        this.posiY = imageY;
+    }
+}

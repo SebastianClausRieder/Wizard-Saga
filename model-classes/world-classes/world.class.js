@@ -338,8 +338,8 @@ class World {
         this.ctx.translate(-this.cam_X, -this.cam_Y);
         
         this.addObjectsToMap(this.lvl.bgMountens01);
-        this.addObjectsToMap(this.lvl.objects);
         this.addObjectsToMap(this.lvl.platformsBG);
+        this.addObjectsToMap(this.lvl.objects);
         this.addObjectsToMap(this.lvl.cloud01);
         this.addObjectsToMap(this.lvl.path01);
         this.addObjectsToMap(this.lvl.usableObject);

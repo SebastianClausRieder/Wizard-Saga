@@ -18,10 +18,10 @@ for (let i = 0; i < mountainCount; i++) {
 // path01
 const myPaths = [];
 const pathCount = 66;
-const pathDistanceIncrement = 160;
+const pathDistanceIncrement = 159;
 
 for (let i = 0; i < pathCount; i++) {
-    const path = new PathGreen01(`img/wizard-saga/paths/finish-paths/green-path01.png`, i * pathDistanceIncrement, 0);
+    const path = new PathGreen01(`img/wizard-saga/paths/finish-paths/green-path01.png`, i * pathDistanceIncrement);
     myPaths.push(path);
 }
 
@@ -80,14 +80,14 @@ const lvl1 = new Level(
         new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 3050, 365)
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
-        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 350, 375),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 350, 375),
         new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 2000, 290),
-        new Platform01('img/wizard-saga/platforms/finisht-platform/plattform4x2.png', 250, 120, 650, 260),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 650, 260),
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform7x6.png', 375, 435, 3000, 70)
     ],
     myPaths,
     [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)
-        new Platform02('img/wizard-saga/platforms/finisht-platform/plattform5x3.png', 305, 185, 1600, 355)
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platform5x3.png', 305, 185, 1600, 355)
     ],
     [   // enemies
         // new Lizard(),
