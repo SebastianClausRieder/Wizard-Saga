@@ -68,8 +68,4 @@ class Demon extends MovableObject {
         this.posiX = 900 + Math.random() * 10000;
         this.posiY = canvasHeight - this.height + 23;
     }
-
-    removeFromMap() {
-        this.toBeRemoved = true;
-    }
 }

@@ -1,5 +1,5 @@
 class World {
-    lvl = lvl1;
+    lvl = lvl1Cave;
     inCave = false;
 
     drawableObject = new DrawableObject();
@@ -49,10 +49,14 @@ class World {
     checkCollosinWithEnemy() {
         if (!this.character.hurts && !this.character.dead) {
             this.lvl.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy) && !enemy.dead) {
-                    this.character.LP -= enemy.doesDMG;
-                    this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
-                    this.hitCharacter();
+                if (enemy instanceof UsableObjectChest) {
+
+                } else {
+                    if (this.character.isColliding(enemy) && !enemy.dead) {
+                        this.character.LP -= enemy.doesDMG;
+                        this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
+                        this.hitCharacter();
+                    }
                 }
             });
         }
@@ -170,9 +174,27 @@ class World {
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
             if (this.charATK[0].isColliding(enemy) && !enemy.hurts && !enemy.dead) {
-                this.hitEnemy(enemy);
+                this.whatsHitet(enemy);
             }
         });
+    }
+
+    whatsHitet(enemy) {
+        if (enemy instanceof UsableObjectChest) {
+            this.hitChest(enemy);
+        } else {
+            this.hitEnemy(enemy);
+        }
+    }
+
+    hitChest(enemy) {
+        enemy.loadImage('img/wizard-saga/platforms/PNG/Details/chest-open.png');
+        setTimeout(() => {
+            let item = this.whatItemDrop(enemy);
+            enemy.removeFromMap();
+            this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
+            this.itemDrop.push(item);
+        }, 2000);
     }
 
     hitEnemy(enemy) {
@@ -215,18 +237,22 @@ class World {
             return new BlueMineral(enemy.posiX, enemy.posiY);
         } else if (enemy instanceof Demon) {
             return new RedMineral(enemy.posiX, enemy.posiY);
+        } else if (enemy instanceof UsableObjectChest) {
+            return new BluePotion(enemy.posiX, enemy.posiY);
         } else {
             return new RedMineral(enemy.posiX, enemy.posiY);
         }
     }
 
     checkEarnMineral() {
-        this.itemDrop.forEach((mineral, index) => {
-            if (this.character.isColliding(mineral)) {
-                if (mineral instanceof BlueMineral) {
-                    this.blueMineralStatusBar.collectBlueMineral(mineral.value);
-                } else if (mineral instanceof RedMineral) {
-                    this.redMineralStatusBar.collectRedMineral(mineral.value);
+        this.itemDrop.forEach((item, index) => {
+            if (this.character.isColliding(item)) {
+                if (item instanceof BlueMineral) {
+                    this.blueMineralStatusBar.collectBlueMineral(item.value);
+                } else if (item instanceof RedMineral) {
+                    this.redMineralStatusBar.collectRedMineral(item.value);
+                } else if (item instanceof BluePotion) {
+                    
                 }
                 this.itemDrop.splice(index, 1);
             }
@@ -234,16 +260,20 @@ class World {
     }
 
     checkIsCollidingPlatform() {
+        let collidingPlatform = false;
+
         this.lvl.platformsFG.forEach((platform) => {
             if (this.character.isCollidingLeft(platform)) {
+                collidingPlatform = true;
                 this.character.collidingPlatformLeft = true;
-            } else {
+            } else if (!collidingPlatform) {
                 this.character.collidingPlatformLeft = false;
             }
 
             if (this.character.isCollidingRight(platform)) {
+                collidingPlatform = true;
                 this.character.collidingPlatformRight = true;
-            } else {
+            } else if (!collidingPlatform) {
                 this.character.collidingPlatformRight = false;
             }
         });
@@ -287,7 +317,6 @@ class World {
             if (object instanceof UsableObjectDoor) {
                 this.useDoor(object);
             }
-            
         });
     }
 
@@ -338,8 +367,9 @@ class World {
         this.ctx.translate(-this.cam_X, -this.cam_Y);
         
         this.addObjectsToMap(this.lvl.bgMountens01);
+        this.addObjectsToMap(this.lvl.behindObjects);
         this.addObjectsToMap(this.lvl.platformsBG);
-        this.addObjectsToMap(this.lvl.objects);
+        this.addObjectsToMap(this.lvl.beforObjects);
         this.addObjectsToMap(this.lvl.cloud01);
         this.addObjectsToMap(this.lvl.path01);
         this.addObjectsToMap(this.lvl.usableObject);
@@ -355,12 +385,13 @@ class World {
 
         // <--- place vor fixed objects endes --->
         this.ctx.translate(-this.cam_X, -this.cam_Y);
-
+        
+        this.addObjectsToMap(this.lvl.enemies);
+        
         this.addToMap(this.character);
         this.addObjectsToMap(this.charATK);
         this.addObjectsToMap(this.enemyATK);
-        
-        this.addObjectsToMap(this.lvl.enemies);
+
         this.addObjectsToMap(this.itemDrop);
 
         this.addObjectsToMap(this.loadSequenz);
@@ -387,7 +418,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
         }

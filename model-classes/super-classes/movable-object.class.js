@@ -221,27 +221,29 @@ class MovableObject extends DrawableObject {
         clearInterval(this.movingLeftInterval);
     }
 
+    removeFromMap() {
+        this.toBeRemoved = true;
+    }
+
     // Item Drop
 
     firstVariable(IMAGE_ARRAY) {
-        this.dropAnimation(IMAGE_ARRAY[0])
         this.value += 5;
-        setTimeout(() => {
-            this.itemDrop(IMAGE_ARRAY);
-        }, 1500);
+        this.dropItem(IMAGE_ARRAY);
     }
 
     secondVariable(IMAGE_ARRAY) {
-        this.dropAnimation(IMAGE_ARRAY[0])
         this.value += 10;
-        setTimeout(() => {
-            this.itemDrop(IMAGE_ARRAY);
-        }, 1500);
+        this.dropItem(IMAGE_ARRAY);
     }
 
     thirdVariable(IMAGE_ARRAY) {
-        this.dropAnimation(IMAGE_ARRAY[0])
         this.value += 20;
+        this.dropItem(IMAGE_ARRAY);
+    }
+
+    dropItem(IMAGE_ARRAY) {
+        this.dropAnimation(IMAGE_ARRAY[0])
         setTimeout(() => {
             this.itemDrop(IMAGE_ARRAY);
         }, 1500);

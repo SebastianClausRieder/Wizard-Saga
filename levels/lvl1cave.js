@@ -25,16 +25,18 @@ const lvl1Cave = new Level(
     [   // cloud01
 
     ],
-    [   // objects (imagePath, imageW, imageH, imageX, imageY)
-        new Objects('img/wizard-saga/platforms/PNG/Details/lava_drop1_1.png', 128, 128, 2812, 350),
+    [   // behindObjects (imagePath, imageW, imageH, imageX, imageY)
+        new Objects('img/wizard-saga/platforms/PNG/Details/lava_drop1_1.png', 128, 128, 2812, 350)
+    ],
+    [   // beforObjects (imagePath, imageW, imageH, imageX, imageY)
         new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 2965, 406), // 280 to next Torch
         new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 3245, 396),
         new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 3525, 408),
         new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 3805, 396),
-        new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 4085, 406),
+        new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 4085, 406)
     ],
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
-        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_ground_shadow.png', 120, 120, 3050, 365)
+        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_ground_shadow.png', 120, 120, 3050, 365),
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120 , 3150, 370),
@@ -47,6 +49,6 @@ const lvl1Cave = new Level(
         new Platform04Wall('img/wizard-saga/platforms/finisht-platform/platform10x8.png', 620, 500, 4300, 140)
     ],
     [   // enemies
-
+        new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 3845, 135)
     ]
 );

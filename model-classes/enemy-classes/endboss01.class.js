@@ -194,8 +194,4 @@ class Endboss01 extends MovableObject {
             }
         }, 225);
     }
-
-    removeFromMap() {
-        this.toBeRemoved = true;
-    }
 }

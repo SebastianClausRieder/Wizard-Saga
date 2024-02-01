@@ -18,9 +18,9 @@ class DrawableObject {
 
     enemyClasses = [Lizard, Demon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
-    itemClasses = [BlueMineral, RedMineral];
+    itemClasses = [BlueMineral, RedMineral, BluePotion, RedPotion];
     platformClasses = [Platform01, Platform02, Platform03, Platform04Wall];
-    usableObjectClasses = [UsableObjectDoor];
+    usableObjectClasses = [UsableObjectDoor, UsableObjectChest];
 
     world;
 
@@ -117,7 +117,7 @@ class DrawableObject {
 
     drawText(ctx, redMineral, blueMineral) {
         ctx.font = 'bold 24px Arial';
-        ctx.fillStyle = 'black';
+        ctx.fillStyle = 'gray';
 
         ctx.fillText(`${redMineral}`, 60, 122);
         ctx.fillText(`${blueMineral}`, 145, 122);

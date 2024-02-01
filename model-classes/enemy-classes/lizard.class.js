@@ -68,8 +68,4 @@ class Lizard extends MovableObject {
         this.posiX = 300 + Math.random() * 500;
         this.posiY = canvasHeight - this.height + 43;
     }
-
-    removeFromMap() {
-        this.toBeRemoved = true;
-    }
 }

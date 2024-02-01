@@ -65,3 +65,39 @@ class ObjectTorch extends MovableObject {
         }, 125);
     }
 }
+
+class ObjectLavaDrop extends MovableObject {
+
+    IMAGE_LAVA_DROP1 = [
+        'img/wizard-saga/platforms/animatetObjects/lava-drop1-01.png'
+    ];
+
+    constructor(imagePath, imageW, imageH, imageX, imageY) {
+        super().loadImage(imagePath);
+        this.loadImages(this.IMAGE_LAVA_DROP1);
+        
+        this.width = imageW;
+        this.height = imageH;
+
+        this.posiX = imageX;
+        this.posiY = imageY;
+
+        // this.torchAnimation(imagePath);
+    }
+
+    torchAnimation(imagePath) {
+        if (imagePath.includes('torch1_1.png')) {
+            this.startTorchAnimation(this.IMAGE_TORCH1);
+        } else if (imagePath.includes('torch2_1.png')) {
+            this.startTorchAnimation(this.IMAGE_TORCH2);
+        } else {
+            this.startTorchAnimation(this.IMAGE_TORCH3);
+        }
+    }
+
+    startTorchAnimation(imageArray) {
+        const torchInterV = setInterval(() => {
+            this.playActionAnimation(imageArray);
+        }, 125);
+    }
+}
