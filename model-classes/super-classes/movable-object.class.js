@@ -33,7 +33,7 @@ class MovableObject extends DrawableObject {
     toBeRemoved = false;
     isMovingLeft = false;
     isMovingRight = false;
-    standing = false;
+    standing = true;
     attackDelay = false;
     enemyDoesAttack = false;
     collidingPlatformLeft = false;

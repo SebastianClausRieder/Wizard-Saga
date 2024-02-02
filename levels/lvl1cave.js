@@ -49,6 +49,8 @@ const lvl1Cave = new Level(
         new Platform04Wall('img/wizard-saga/platforms/finisht-platform/platform10x8.png', 620, 500, 4300, 140)
     ],
     [   // enemies
-        new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 3845, 135)
+        new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 3845, 135),
+        new SmallDragon(3300),
+        new SmallDragon(3300)
     ]
 );

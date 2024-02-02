@@ -63,13 +63,17 @@ class BlueMineral extends MovableObject {
         'img/wizard-saga/minerals/PNG/Transperent/Icon40-light.png'
     ];
 
-    constructor(NPCposiX, NPCposiY) {
+    constructor(NPCposiX, NPCposiY, dropRatA, dropRatB, dropRatC) {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.loadImages(this.IMAGES_BLUE_M1);
         this.loadImages(this.IMAGES_BLUE_M2);
         this.loadImages(this.IMAGES_BLUE_M3);
         this.posiX = NPCposiX + 75;
         this.posiY = NPCposiY + 90;
+
+        firstChance = dropRatA;
+        secondChance = dropRatB;
+        thirdChance = dropRatC;
         
         this.mainPosiY = canvasHeight - this.height - 25;
 

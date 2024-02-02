@@ -1,6 +1,6 @@
 class LoadSequenz extends MovableObject {
     width = 1000;
-    height = 500;
+    height = 530;
 
     world;
 

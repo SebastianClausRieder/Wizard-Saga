@@ -16,7 +16,7 @@ class DrawableObject {
     
     collectedRedMineral = 0;
 
-    enemyClasses = [Lizard, Demon, Endboss01];
+    enemyClasses = [Lizard, Demon, SmallDragon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
     itemClasses = [BlueMineral, RedMineral, BluePotion, RedPotion];
     platformClasses = [Platform01, Platform02, Platform03, Platform04Wall];
@@ -115,12 +115,14 @@ class DrawableObject {
         return this.usableObjectClasses.some(usableObjectClass => obj instanceof usableObjectClass);
     }
 
-    drawText(ctx, redMineral, blueMineral) {
+    drawText(ctx, redMineral, blueMineral, redPotion, bluePotion) {
         ctx.font = 'bold 24px Arial';
         ctx.fillStyle = 'gray';
 
         ctx.fillText(`${redMineral}`, 60, 122);
         ctx.fillText(`${blueMineral}`, 145, 122);
+        ctx.fillText(`${redPotion}`, 305, 58);
+        ctx.fillText(`${bluePotion}`, 305, 88);
     }
 
     setPercentage(percentage, BAR) {

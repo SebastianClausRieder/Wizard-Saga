@@ -1,5 +1,5 @@
 class World {
-    lvl = lvl1Cave;
+    lvl = lvl1;
     inCave = false;
 
     drawableObject = new DrawableObject();
@@ -22,6 +22,8 @@ class World {
     manaStatusBar = new ManaStatusBar();
     blueMineralStatusBar = new BlueMineralStatusBar();
     redMineralStatusBar = new RedMineralStatusBar();
+    bluePotionStatusBar = new BluePotionStatusBar();
+    redPotionStatusBar = new RedPotionStatusBar();
 
     fireballFly = false;
 
@@ -39,7 +41,7 @@ class World {
             this.checkCollosinWithEnemy();
             this.checkJumpOnLizard();
             this.checkUseAttackKey();
-            this.checkEarnMineral();
+            this.checkEarnItem();
             this.checkIsCollidingPlatform();
             this.checkJumpOnPlatform();
             this.checkCollidingUsableObject();
@@ -211,7 +213,7 @@ class World {
     isEnemyLPnotZero(enemy) {
         enemy.animateHurts(enemy.IMAGES_HURT);
         setTimeout(() => {
-            if (enemy instanceof Endboss01) {
+            if (enemy instanceof Endboss01 || enemy instanceof SmallDragon) {
                 enemy.endbossDirection();
                 enemy.checkPosition();
             } else {
@@ -234,9 +236,11 @@ class World {
 
     whatItemDrop(enemy) {
         if (enemy instanceof Lizard) {
-            return new BlueMineral(enemy.posiX, enemy.posiY);
+            return new BlueMineral(enemy.posiX, enemy.posiY, 0.5, 0.3, 0.2);
         } else if (enemy instanceof Demon) {
-            return new RedMineral(enemy.posiX, enemy.posiY);
+            return new BlueMineral(enemy.posiX, enemy.posiY, 0.1, 0.6, 0.3);
+        } else if (enemy instanceof SmallDragon) {
+            return new RedMineral(enemy.posiX, enemy.posiY - 35);
         } else if (enemy instanceof UsableObjectChest) {
             return new BluePotion(enemy.posiX, enemy.posiY);
         } else {
@@ -244,7 +248,7 @@ class World {
         }
     }
 
-    checkEarnMineral() {
+    checkEarnItem() {
         this.itemDrop.forEach((item, index) => {
             if (this.character.isColliding(item)) {
                 if (item instanceof BlueMineral) {
@@ -252,7 +256,9 @@ class World {
                 } else if (item instanceof RedMineral) {
                     this.redMineralStatusBar.collectRedMineral(item.value);
                 } else if (item instanceof BluePotion) {
-                    
+                    this.bluePotionStatusBar.collectBluePotion();
+                } else if (item instanceof RedPotion) {
+                    this.redPotionStatusBar.collectRedPotion();
                 }
                 this.itemDrop.splice(index, 1);
             }
@@ -382,6 +388,8 @@ class World {
         this.addToMap(this.manaStatusBar);
         this.addToMap(this.redMineralStatusBar);
         this.addToMap(this.blueMineralStatusBar);
+        this.addToMap(this.redPotionStatusBar);
+        this.addToMap(this.bluePotionStatusBar);
 
         // <--- place vor fixed objects endes --->
         this.ctx.translate(-this.cam_X, -this.cam_Y);
@@ -419,8 +427,8 @@ class World {
 
         mo.draw(this.ctx);
         mo.drawFrame(this.ctx);
-        if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar) {
-            mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral);
+        if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
+            mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }
 
         if (mo.otherDirection) {
@@ -430,7 +438,11 @@ class World {
 
     mirroredImage(mo) {
         this.ctx.save();
-        this.ctx.translate(mo.img.width - 85, 0);
+        if (mo instanceof Character) {
+            this.ctx.translate(mo.img.width - 85, 0);
+        } else if (mo instanceof SmallDragon) {
+            this.ctx.translate(mo.img.width + 20, 0);
+        }
         this.ctx.scale(-1, 1);
         mo.posiX = mo.posiX * -1;
     }
