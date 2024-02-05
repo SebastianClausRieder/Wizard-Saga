@@ -25,6 +25,9 @@ for (let i = 0; i < pathCount; i++) {
     myPaths.push(path);
 }
 
+const numLizards = 5;
+const numDemons = 1;
+
 const lvl1 = new Level(
     bgMounten,
     [   // cloud01
@@ -90,13 +93,11 @@ const lvl1 = new Level(
     ],
     myPaths,
     [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)
-        new Platform02('img/wizard-saga/platforms/finisht-platform/platform5x3.png', 305, 185, 1600, 355)
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 1600, 355)
     ],
     [   // enemies
-        // new Lizard(),
-        // new Lizard(),
-        // new Lizard(),
-        // new Demon(),
+        ...Array(numLizards).fill().map(() => new Lizard()),
+        ...Array(numDemons).fill().map(() => new Demon()),
         new Endboss01()
     ]
 );

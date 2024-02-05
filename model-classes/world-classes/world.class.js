@@ -45,6 +45,7 @@ class World {
             this.checkIsCollidingPlatform();
             this.checkJumpOnPlatform();
             this.checkCollidingUsableObject();
+            this.enemyCollidingPlatform();
         }, 1000 / 60);
     }
 
@@ -67,7 +68,7 @@ class World {
     checkJumpOnLizard() {
         this.lvl.enemies.forEach((enemy) => {
             if (enemy instanceof Lizard) {
-                if (this.character.isHittingFromAbove(enemy) && !enemy.dead && !this.character.hurts) {
+                if (this.character.isHittingFromAbove(enemy) && !enemy.dead && !this.character.hurts && this.character.posiY >= 335) {
                     enemy.stopWalkingEnemies();
                     enemy.LP = 0;
                     enemy.intervalSequenz = 0;
@@ -94,7 +95,7 @@ class World {
         this.meleeAttack2();
         this.magicAttack1();
         this.magicAttack2();
-        this.enemyAttack();
+        this.medusaAttack();
     }
 
     meleeAttack1() {
@@ -153,7 +154,7 @@ class World {
         }
     }
 
-    enemyAttack() {
+    medusaAttack() {
         this.lvl.enemies.forEach(enemy => {
             if (enemy instanceof Endboss01) {
                 if (enemy.enemyDoesAttack) {
@@ -175,8 +176,14 @@ class World {
 
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
-            if (this.charATK[0].isColliding(enemy) && !enemy.hurts && !enemy.dead) {
-                this.whatsHitet(enemy);
+            if (this.charATK[0] instanceof CharAttackFireball) {
+                if (this.charATK[0].isColliding(enemy) && !enemy.dead && !enemy.hurts) {
+                    this.whatsHitet(enemy);
+                }
+            } else {
+                if (this.charATK[0].isColliding(enemy) && !enemy.dead) {
+                    this.whatsHitet(enemy);
+                }
             }
         });
     }
@@ -203,9 +210,9 @@ class World {
         enemy.stopWalkingEnemies();
         enemy.LP -= this.character.doesDMG;
         enemy.intervalSequenz = 0;
-        if (enemy.LP > 0) {
+        if (enemy.LP > 0 && !enemy.hurts) {
             this.isEnemyLPnotZero(enemy);
-        } else {
+        } else if (enemy.LP <= 0) {
             this.isEnemyDead(enemy);
         }
     }
@@ -213,18 +220,13 @@ class World {
     isEnemyLPnotZero(enemy) {
         enemy.animateHurts(enemy.IMAGES_HURT);
         setTimeout(() => {
-            if (enemy instanceof Endboss01 || enemy instanceof SmallDragon) {
-                enemy.endbossDirection();
-                enemy.checkPosition();
-            } else {
-                enemy.animateWalkingEnemies(225);
-                enemy.moveLeft(enemy.speed, 1000 / 60);
-            }
+            enemy.enemyDirection();
         }, 1500);
     }
 
     isEnemyDead(enemy) {
         enemy.dead = true;
+        enemy.cancelHurts();
         enemy.animateDeath(enemy.IMAGES_DEAD);
         setTimeout(() => {
             let item = this.whatItemDrop(enemy);
@@ -283,6 +285,44 @@ class World {
                 this.character.collidingPlatformRight = false;
             }
         });
+    }
+
+    enemyCollidingPlatform() {
+        this.lvl.enemies.forEach((enemy) => {
+            if (enemy instanceof Demon) {
+                this.lvl.platformsFG.forEach((platform) => {
+                    if (enemy.isCollidingLeft(platform) && !enemy.collidedPlatform) {
+                        enemy.collidedPlatform = true;
+                        this.letMoveLeft(enemy);
+                        setTimeout(() => { enemy.collidedPlatform = false; }, 2000);
+                    } else if (enemy.isCollidingRight(platform) && !enemy.collidedPlatform) {
+                        enemy.collidedPlatform = true;
+                        this.letMoveRight(enemy);
+                        setTimeout(() => { enemy.collidedPlatform = false; }, 2000);
+                    }
+                });
+            }
+        });
+    }
+
+    letMoveLeft(enemy) {
+        clearInterval(enemy.movingRightInterval);
+        clearInterval(enemy.walkingInterval);
+        enemy.otherDirection = false;
+        enemy.isMovingLeft = true;
+        enemy.isMovingRight = false;
+        enemy.resetImageCache();
+        enemy.enemyDirection();
+    }
+
+    letMoveRight(enemy) {
+        clearInterval(enemy.movingLeftInterval);
+        clearInterval(enemy.walkingInterval);
+        enemy.otherDirection = true;
+        enemy.isMovingLeft = false;
+        enemy.isMovingRight = true;
+        enemy.resetImageCache();
+        enemy.enemyDirection();
     }
 
     checkPlatformCollision(platform) {
@@ -379,7 +419,6 @@ class World {
         this.addObjectsToMap(this.lvl.cloud01);
         this.addObjectsToMap(this.lvl.path01);
         this.addObjectsToMap(this.lvl.usableObject);
-        this.addObjectsToMap(this.lvl.platformsFG);
        
         this.ctx.translate(this.cam_X, this.cam_Y);
         // <--- place vor fixed objects --->
@@ -401,6 +440,7 @@ class World {
         this.addObjectsToMap(this.enemyATK);
 
         this.addObjectsToMap(this.itemDrop);
+        this.addObjectsToMap(this.lvl.platformsFG);
 
         this.addObjectsToMap(this.loadSequenz);
 
@@ -426,7 +466,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }
@@ -442,6 +482,8 @@ class World {
             this.ctx.translate(mo.img.width - 85, 0);
         } else if (mo instanceof SmallDragon) {
             this.ctx.translate(mo.img.width + 20, 0);
+        } else if (mo instanceof Demon) {
+            this.ctx.translate(mo.img.width - 35, 0);
         }
         this.ctx.scale(-1, 1);
         mo.posiX = mo.posiX * -1;

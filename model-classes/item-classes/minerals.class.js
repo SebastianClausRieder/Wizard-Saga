@@ -71,9 +71,9 @@ class BlueMineral extends MovableObject {
         this.posiX = NPCposiX + 75;
         this.posiY = NPCposiY + 90;
 
-        firstChance = dropRatA;
-        secondChance = dropRatB;
-        thirdChance = dropRatC;
+        this.firstChance = dropRatA;
+        this.secondChance = dropRatB;
+        this.thirdChance = dropRatC;
         
         this.mainPosiY = canvasHeight - this.height - 25;
 

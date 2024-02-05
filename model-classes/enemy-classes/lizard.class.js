@@ -11,6 +11,9 @@ class Lizard extends MovableObject {
     LP = 10;
     MP = 0;
     doesDMG = 5;
+
+    standing = false;
+    isMovingLeft = true;
     
     IMAGES_IDLE = [
         'img/wizard-saga/monsters/PNG/lizard/Idle1.png',
@@ -65,7 +68,7 @@ class Lizard extends MovableObject {
         this.animateWalkingEnemies(225);
         this.moveLeft(this.speed, 1000 / 60);
 
-        this.posiX = 300 + Math.random() * 500;
+        this.posiX = 300 + Math.random() * 9500;
         this.posiY = canvasHeight - this.height + 43;
     }
 }

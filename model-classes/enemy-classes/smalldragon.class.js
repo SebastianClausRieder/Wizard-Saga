@@ -8,8 +8,8 @@ class SmallDragon extends MovableObject {
     hitBoxY = 50;
 
     speed = 0.5;
-    LP = 5;
-    MP = 100;
+    LP = 30;
+    MP = 0;
     doesDMG = 10;
 
     IMAGES_IDLE = [
@@ -64,101 +64,14 @@ class SmallDragon extends MovableObject {
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.animateIdle();
         this.checkPosition();
         this.randomAttack();
 
         this.mainPosiX = posiX + Math.random() * 600;
         this.posiX = this.mainPosiX;
         this.posiY = canvasHeight - this.height + 15;
-    }
-
-    animateIdle() {
-        setInterval(() => {
-            if (this.standing && !this.attack) {
-                this.playIdleAnimation(this.IMAGES_IDLE);
-            }
-        }, 225);
-    }
-
-    checkPosition() {
-        this.draogonWalkingInterval = setInterval(() => {
-            const randomDelay = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
-            if (this.posiX <= this.mainPosiX && !this.isMovingRight) {
-                this.letMoveRight(randomDelay);
-            } else if (this.posiX >= this.mainPosiX + 300 && !this.isMovingLeft) {
-                this.letMoveLeft(randomDelay);
-            } else if (!this.isMovingLeft && !this.isMovingRight) {
-                this.letMoveLeft(randomDelay);
-            }
-        }, 250);
-    }
-
-    letMoveRight(randomDelay) {
-        this.isMovingRight = true;
-        this.isMovingLeft = false;
-        this.standing = true;
-        this.stopWalkingBoss(this.movingLeftInterval);
-        setTimeout(() => {
-            this.otherDirection = true;
-            this.currentImageIdle = 0;
-            this.currentImageWalk = 0;
-            if (this.hurts) {
-                setTimeout(() => {
-                    this.animateWalkingEnemies(225);
-                    this.beginMoveRight();
-                }, 1500);
-            } else {
-                this.animateWalkingEnemies(225);
-                this.beginMoveRight()
-            }
-        }, randomDelay);
-    }
-
-    beginMoveRight() {
-        this.standing = false;
-        this.moveRight(this.speed, 1000 / 60)
-    }
-
-    letMoveLeft(randomDelay) {
-        this.isMovingRight = false;
-        this.isMovingLeft = true;
-        this.standing = true;
-        this.stopWalkingBoss(this.movingRightInterval);
-        setTimeout(() => {
-                this.otherDirection = false;
-            this.currentImageIdle = 0;
-            this.currentImageWalk = 0;
-            if (this.hurts) {
-                setTimeout(() => {
-                    this.animateWalkingEnemies(225);
-                    this.beginMoveLeft();
-                }, 1500);
-            } else {
-                this.animateWalkingEnemies(225);
-                this.beginMoveLeft();
-            }
-        }, randomDelay);
-    }
-
-    beginMoveLeft() {
-        this.standing = false;
-        this.moveLeft(this.speed, 1000 / 60);
-    }
-
-    endbossDirection() {
-        if (this.isMovingLeft && !this.standing) {
-            this.moveLeft(this.speed, 1000 / 60);
-            this.animateWalkingEnemies(225);
-        } else if (this.isMovingRight && !this.standing) {
-            this.moveRight(this.speed, 1000 / 60);
-            this.animateWalkingEnemies(225);
-        }
-    }
-
-    stopWalkingBoss(movingInterval) {
-        clearInterval(movingInterval);
-        clearInterval(this.walkingInterval);
-
+        this.walkArea = 300;
     }
 
     randomAttack() {
@@ -169,7 +82,7 @@ class SmallDragon extends MovableObject {
                 setTimeout(() => {
                     this.doesDMG = 15;
                     this.hitBoxX = 15;
-										this.hitBoxWidth = 95;
+					this.hitBoxWidth = 95;
                     this.enemyAttack();
                 }, randomDelay);
             }
@@ -185,13 +98,12 @@ class SmallDragon extends MovableObject {
 
             if (this.currentImageAttack >= this.IMAGES_ATTACK.length) {
                 clearInterval(enemyAttackInterV);
-                this.endbossDirection();
-                this.checkPosition();
+                this.enemyDirection();
                 this.attack = false;
                 this.attackDelay = false;
                 this.doesDMG = 10;
                 this.hitBoxX = 45;
-								this.hitBoxWidth = 65;
+				this.hitBoxWidth = 65;
                 this.resetImageCache();
             }
         }, 225);

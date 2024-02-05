@@ -9,8 +9,10 @@ class MovableObject extends DrawableObject {
     walkingInterval;
     movingRightInterval;
     movingLeftInterval;
+    hurtsInterval;
 
     speed = 0.1;
+    walkArea = 150;
 
     gravitaSpeed = 0;
     acceleration = 1.5;
@@ -34,10 +36,12 @@ class MovableObject extends DrawableObject {
     isMovingLeft = false;
     isMovingRight = false;
     standing = true;
+    endBoss = false;
     attackDelay = false;
     enemyDoesAttack = false;
     collidingPlatformLeft = false;
     collidingPlatformRight = false;
+    collidedPlatform = false;
     onLoad = false;
 
     firstChance = 0.5; // Höhere Chance für erste Variable
@@ -53,6 +57,14 @@ class MovableObject extends DrawableObject {
 
     bgAnimation() {
         this.moveRight(0.03, 1000 / 60);
+    }
+
+    animateIdle() {
+        setInterval(() => {
+            if (this.standing && !this.attack) {
+                this.playIdleAnimation(this.IMAGES_IDLE);
+            }
+        }, 225);
     }
 
     animateWalkingEnemies(fps) {
@@ -101,6 +113,95 @@ class MovableObject extends DrawableObject {
         this.movingLeftInterval = setInterval(() => {
             this.posiX -= speed;
         }, fps);
+    }
+
+    checkPosition() {
+        setInterval(() => {
+            const randomDelay = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
+            if (this.posiX <= this.mainPosiX && !this.isMovingRight) {
+                this.letMoveRight(randomDelay);
+            } else if (this.posiX >= this.mainPosiX + this.walkArea && !this.isMovingLeft) {
+                this.letMoveLeft(randomDelay);
+            } else if (!this.isMovingLeft && !this.isMovingRight) {
+                this.letMoveLeft(randomDelay);
+            }
+        }, 250);
+    }
+
+    letMoveRight(randomDelay) {
+        this.isMovingRight = true;
+        this.isMovingLeft = false;
+        this.standing = true;
+        this.stopWalkingEnemies();
+        setTimeout(() => {
+            this.doOtherDirection('right');
+            this.currentImageIdle = 0;
+            this.currentImageWalk = 0;
+            this.startMoving('Right');
+        }, randomDelay);
+    }
+
+    beginMoveRight() {
+        this.standing = false;
+        this.moveRight(this.speed, 1000 / 60)
+    }
+
+    letMoveLeft(randomDelay) {
+        this.isMovingRight = false;
+        this.isMovingLeft = true;
+        this.standing = true;
+        this.stopWalkingEnemies();
+        setTimeout(() => {
+            this.doOtherDirection('left');
+            this.currentImageIdle = 0;
+            this.currentImageWalk = 0;
+            this.startMoving('Left');
+        }, randomDelay);
+    }
+
+    beginMoveLeft() {
+        this.standing = false;
+        this.moveLeft(this.speed, 1000 / 60);
+    }
+
+    doOtherDirection(moveDirection) {
+        if (this.endBoss) {
+
+        } else {
+            if (moveDirection == 'right') {
+                this.otherDirection = true;
+            } else {
+                this.otherDirection = false;
+            }
+        }
+    }
+
+    startMoving(moveDirection) {
+        if (this.hurts) {
+            setTimeout(() => {
+                this.animateWalkingEnemies(225);
+                this[`beginMove${moveDirection}`]();
+            }, 1500);
+        } else {
+            this.animateWalkingEnemies(225);
+            this[`beginMove${moveDirection}`]();
+        }
+    }
+
+    stopWalkingEnemies() {
+        clearInterval(this.walkingInterval);
+        clearInterval(this.movingRightInterval);
+        clearInterval(this.movingLeftInterval);
+    }
+
+    enemyDirection() {
+        if (this.isMovingLeft && !this.standing) {
+            this.moveLeft(this.speed, 1000 / 60);
+            this.animateWalkingEnemies(225);
+        } else if (this.isMovingRight && !this.standing) {
+            this.moveRight(this.speed, 1000 / 60);
+            this.animateWalkingEnemies(225);
+        }
     }
 
     jump(height) {
@@ -190,16 +291,20 @@ class MovableObject extends DrawableObject {
 
     animateHurts(IMAGES_HURT) {
         this.hurts = true;
-        const hurtsInterval = setInterval(() => {
+        this.hurtsInterval = setInterval(() => {
             this.playActionAnimation(IMAGES_HURT);
             this.intervalSequenz++;
             if (this.intervalSequenz > IMAGES_HURT.length) {
-                clearInterval(hurtsInterval);
-                this.intervalSequenz = 0;
-                this.currentImageAction = 0;
-                this.hurts = false;
+                this.cancelHurts();
             }
         }, 100);
+    }
+
+    cancelHurts() {
+        clearInterval(this.hurtsInterval);
+        this.intervalSequenz = 0;
+        this.currentImageAction = 0;
+        this.hurts = false;
     }
 
     animateDeath(IMAGES_DEAD) {
@@ -213,12 +318,6 @@ class MovableObject extends DrawableObject {
                 this.currentImageAction = 0;
             }
         }, 100);
-    }
-
-    stopWalkingEnemies() {
-        clearInterval(this.walkingInterval);
-        clearInterval(this.movingRightInterval);
-        clearInterval(this.movingLeftInterval);
     }
 
     removeFromMap() {

@@ -8,9 +8,12 @@ class Demon extends MovableObject {
     hitBoxY = 70;
 
     speed = 0.5;
-    LP = 25;
+    LP = 20;
     MP = 0;
     doesDMG = 10;
+
+    standing = false;
+    isMovingLeft = true;
     
     IMAGES_IDLE = [
         'img/wizard-saga/monsters/PNG/demon/Idle1.png',
@@ -62,10 +65,11 @@ class Demon extends MovableObject {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
-        this.animateWalkingEnemies(175);
         this.moveLeft(this.speed, 1000 / 60);
+        this.animateWalkingEnemies(225);
 
-        this.posiX = 900 + Math.random() * 10000;
+        // this.posiX = 900 + Math.random() * 10000;
+        this.posiX = 2100;
         this.posiY = canvasHeight - this.height + 23;
     }
 }
