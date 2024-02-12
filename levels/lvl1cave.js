@@ -36,7 +36,15 @@ const lvl1Cave = new Level(
         new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 4085, 406)
     ],
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
-        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_ground_shadow.png', 120, 120, 3050, 365),
+        new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 3030, 340),
+        new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow2.png', 128, 128, 2800, 365, 'Defender')
+    ],
+    [   // itemsOnArea (posiX, posiY, 0, item, 0)
+        new RedPotion(745, 205, 0),
+        new BlueMineral(1100, 250, 0, 'M1', 0),
+        new BlueMineral(1200, 250, 0, 'M1', 0),
+        new BlueMineral(1300, 250, 0, 'M1', 0),
+        new RedMineral(1665, 135, 0, 'M1')
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120 , 3150, 370),

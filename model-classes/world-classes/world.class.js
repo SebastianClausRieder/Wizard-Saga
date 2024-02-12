@@ -6,6 +6,14 @@ class World {
     moveableObject = new MovableObject();
     
     character = new Character();
+    charSkills = [   // skills
+        new MeleeAttack1(),
+        new MeleeAttack2(),
+        new Fireball(),
+        new Fireburst(),
+        new UseLessMana(),
+        new Defender()
+    ];
     charATK = [];
     enemyATK = [];
     itemDrop = [];
@@ -34,6 +42,7 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollosins();
+        this.loadItemOnArea();
     }
 
     checkCollosins() {
@@ -56,7 +65,7 @@ class World {
 
                 } else {
                     if (this.character.isColliding(enemy) && !enemy.dead) {
-                        this.character.LP -= enemy.doesDMG;
+                        this.character.getDMG(enemy.doesDMG);
                         this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
                         this.hitCharacter();
                     }
@@ -95,6 +104,7 @@ class World {
         this.meleeAttack2();
         this.magicAttack1();
         this.magicAttack2();
+        
         this.medusaAttack();
     }
 
@@ -124,14 +134,24 @@ class World {
     }
 
     magicAttack1() {
-        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && this.character.MP >= 15 && !this.character.attack && !this.character.onLoad) {
-            this.keyboard.keyIsHold_MAGIC1 = true;
-            this.character.fireballAttack = true;
-            this.fireballFly = true;
-            this.character.MP -= 15;
-            this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
-            this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
+        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && !this.character.attack && !this.character.onLoad) {
+            if (this.character.useLessManaActive) {
+                if (this.character.MP >= 5) {
+                    this.useFireball();
+                }
+            } else if (this.character.MP >= 10) {
+                this.useFireball();
+            }
         }
+    }
+
+    useFireball() {
+        this.keyboard.keyIsHold_MAGIC1 = true;
+        this.character.fireballAttack = true;
+        this.fireballFly = true;
+        this.character.useMana(10);
+        this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
+        this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
     }
 
     fireball() {
@@ -142,16 +162,26 @@ class World {
     }
 
     magicAttack2() {
-        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && this.character.MP >= 20 && !this.character.attack && !this.character.onLoad) {
-            this.keyboard.keyIsHold_MAGIC2 = true;
-            let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
-            this.charATK.push(fireburst);
-            this.character.attackAnimation(this.character.IMAGES_FIREBURST);
-            this.character.doesDMG = 20;
-            this.character.MP -= 20;
-            this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
-            this.checkHitEnemy();
+        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && !this.character.attack && !this.character.onLoad) {
+            if (this.character.useLessManaActive) {
+                if (this.character.MP >= 10) {
+                    this.useFireburst();
+                }
+            } else if (this.character.MP >= 20) {
+                this.useFireburst();
+            }
         }
+    }
+
+    useFireburst() {
+        this.keyboard.keyIsHold_MAGIC2 = true;
+        let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
+        this.charATK.push(fireburst);
+        this.character.attackAnimation(this.character.IMAGES_FIREBURST);
+        this.character.doesDMG = 20;
+        this.character.useMana(20);
+        this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
+        this.checkHitEnemy();
     }
 
     medusaAttack() {
@@ -242,11 +272,11 @@ class World {
         } else if (enemy instanceof Demon) {
             return new BlueMineral(enemy.posiX, enemy.posiY, 0.1, 0.6, 0.3);
         } else if (enemy instanceof SmallDragon) {
-            return new RedMineral(enemy.posiX, enemy.posiY - 35);
+            return new RedMineral(enemy.posiX, enemy.posiY - 35, 1, '');
         } else if (enemy instanceof UsableObjectChest) {
-            return new BluePotion(enemy.posiX, enemy.posiY);
+            return new BluePotion(enemy.posiX, enemy.posiY, 1);
         } else {
-            return new RedMineral(enemy.posiX, enemy.posiY);
+            return new RedMineral(enemy.posiX, enemy.posiY, 1, '');
         }
     }
 
@@ -362,6 +392,8 @@ class World {
         this.lvl.usableObject.forEach((object) => {
             if (object instanceof UsableObjectDoor) {
                 this.useDoor(object);
+            } else if (object instanceof UsableObjectTotem) {
+                this.learnSkill(object);
             }
         });
     }
@@ -370,35 +402,46 @@ class World {
         if (this.character.isColliding(object) && this.keyboard.UP && !this.keyboard.keyIsHold_UP) {
             this.keyboard.keyIsHold_UP = true;
             this.character.onLoad = true;
-            let newLoadSequenz = new LoadSequenz(this.cam_X, this.cam_Y, this);
+            let newLoadSequenz = new LoadSequenz(this);
             this.loadSequenz.push(newLoadSequenz);
             this.loadSequenz[0].startLoadSequenz();
             setTimeout(() => {
                 if (!this.inCave) {
-                    this.gosInCave();
+                    this.goInCave();
                 } else {
-                    this.gosOutFromCave();
+                    this.goOutFromCave();
                 }
             }, 1500);
         }
     }
 
-    gosInCave() {
+    goInCave() {
         this.inCave = true;
         this.lvl = lvl1Cave;
         this.character.moveCamPosiY = 1;
         this.loadSequenz[0].endLoadSequenz();
     }
 
-    gosOutFromCave() {
+    goOutFromCave() {
         this.inCave = false;
         this.lvl = lvl1;
         this.character.moveCamPosiY = 250;
         this.loadSequenz[0].endLoadSequenz();
     }
 
-    openTreasure(object) {
+    learnSkill(object) {
+        if (this.character.isColliding(object) && this.keyboard.UP && !this.keyboard.keyIsHold_UP && !object.totemSkillIsLearnd) {
+            this.keyboard.keyIsHold_UP = true;
+            object.totemSkillIsLearnd = true;
+            object.world = this;
+            object.learnNewSkill();
+        }
+    }
 
+    loadItemOnArea() {
+        this.lvl.itemsOnArea.forEach((item) => {
+            this.itemDrop.push(item);
+        });
     }
 
     setWorld() {
@@ -419,19 +462,6 @@ class World {
         this.addObjectsToMap(this.lvl.cloud01);
         this.addObjectsToMap(this.lvl.path01);
         this.addObjectsToMap(this.lvl.usableObject);
-       
-        this.ctx.translate(this.cam_X, this.cam_Y);
-        // <--- place vor fixed objects --->
-
-        this.addToMap(this.lifeStatusBar);
-        this.addToMap(this.manaStatusBar);
-        this.addToMap(this.redMineralStatusBar);
-        this.addToMap(this.blueMineralStatusBar);
-        this.addToMap(this.redPotionStatusBar);
-        this.addToMap(this.bluePotionStatusBar);
-
-        // <--- place vor fixed objects endes --->
-        this.ctx.translate(-this.cam_X, -this.cam_Y);
         
         this.addObjectsToMap(this.lvl.enemies);
         
@@ -442,9 +472,21 @@ class World {
         this.addObjectsToMap(this.itemDrop);
         this.addObjectsToMap(this.lvl.platformsFG);
 
+        this.ctx.translate(this.cam_X, this.cam_Y);
+       
+        // <--- place for fixed objects --->
+
+        this.addToMap(this.lifeStatusBar);
+        this.addToMap(this.manaStatusBar);
+        this.addToMap(this.redMineralStatusBar);
+        this.addToMap(this.blueMineralStatusBar);
+        this.addToMap(this.redPotionStatusBar);
+        this.addToMap(this.bluePotionStatusBar);
+        this.addObjectsToMap(this.charSkills);
+        
         this.addObjectsToMap(this.loadSequenz);
 
-        this.ctx.translate(this.cam_X, this.cam_Y);
+        // <--- place for fixed objects endes --->
 
         let self = this;
         requestAnimationFrame(function() {
@@ -466,7 +508,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }

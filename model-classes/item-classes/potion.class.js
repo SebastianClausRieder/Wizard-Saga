@@ -27,7 +27,7 @@ class BluePotion extends MovableObject {
         'img/wizard-saga/potions/PNG/Transperent/Icon3-light.png'
     ];
 
-    constructor(NPCposiX, NPCposiY) {
+    constructor(NPCposiX, NPCposiY, ID) {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.loadImages(this.IMAGES_BLUE_POTION);
         this.posiX = NPCposiX + 15;
@@ -35,7 +35,11 @@ class BluePotion extends MovableObject {
         
         this.mainPosiY = NPCposiY + 20;
 
-        this.dropItem(this.IMAGES_BLUE_POTION);
+        if (ID <= 0) {
+            this.itemDrop(this.IMAGES_BLUE_POTION);
+        } else {
+            this.dropItem(this.IMAGES_BLUE_POTION);
+        }
     }
 }
 
@@ -68,7 +72,7 @@ class RedPotion extends MovableObject {
         'img/wizard-saga/potions/PNG/Transperent/Icon1-light.png'
     ];
 
-    constructor(NPCposiX, NPCposiY) {
+    constructor(NPCposiX, NPCposiY, ID) {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.loadImages(this.IMAGES_RED_POTION);
         this.posiX = NPCposiX + 15;
@@ -76,6 +80,10 @@ class RedPotion extends MovableObject {
         
         this.mainPosiY = NPCposiY + 20;
 
-        this.dropItem(this.IMAGES_RED_POTION);
+        if (ID <= 0) {
+            this.itemDrop(this.IMAGES_RED_POTION);
+        } else {
+            this.dropItem(this.IMAGES_RED_POTION);
+        }
     }
 }

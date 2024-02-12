@@ -21,6 +21,9 @@ class MovableObject extends DrawableObject {
     MP;
     doesDMG;
 
+    skill;
+    totemSkillIsLearnd = false;
+
     firstChance = 0;
     secondChance = 0;
     thirdChance = 0;
@@ -44,9 +47,9 @@ class MovableObject extends DrawableObject {
     collidedPlatform = false;
     onLoad = false;
 
-    firstChance = 0.5; // Höhere Chance für erste Variable
-    secondChance = 0.3; // Mittlere Chance für zweite Variable
-    thirdChance = 0.2; // Geringere Chance für dritte Variable
+    firstChance = 0.5; // Höhere Chance für erste Variable      \
+    secondChance = 0.3; // Mittlere Chance für zweite Variable    > muss zusammen 1 ergeben!
+    thirdChance = 0.2; // Geringere Chance für dritte Variable  /
 
 
     world;

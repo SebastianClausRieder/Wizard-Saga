@@ -10,7 +10,7 @@ class SmallDragon extends MovableObject {
     speed = 0.5;
     LP = 30;
     MP = 0;
-    doesDMG = 10;
+    doesDMG = 20;
 
     IMAGES_IDLE = [
         'img/wizard-saga/monsters/PNG/small_dragon/Idle1.png',
@@ -80,7 +80,7 @@ class SmallDragon extends MovableObject {
                 this.attackDelay = true;
                 const randomDelay = Math.floor(Math.random() * (8000 - 4000 + 1)) + 4000;
                 setTimeout(() => {
-                    this.doesDMG = 15;
+                    this.doesDMG = 30;
                     this.hitBoxX = 15;
 					this.hitBoxWidth = 95;
                     this.enemyAttack();
@@ -101,7 +101,7 @@ class SmallDragon extends MovableObject {
                 this.enemyDirection();
                 this.attack = false;
                 this.attackDelay = false;
-                this.doesDMG = 10;
+                this.doesDMG = 20;
                 this.hitBoxX = 45;
 				this.hitBoxWidth = 65;
                 this.resetImageCache();

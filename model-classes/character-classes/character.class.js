@@ -25,6 +25,12 @@ class Character extends MovableObject {
     running = false;
     attack = false;
 
+    skillUseLessMana = false;
+    skillDefender = false;
+
+    useLessManaActive = false;
+    defenderActive = false;
+
     IMAGES_IDLE = [
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
@@ -163,10 +169,12 @@ class Character extends MovableObject {
         this.animateJumpingCharacter();
         this.jumpAnimation();
         this.checkCharPosiX();
+        this.useLessMana();
+        this.defender();
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
-        this.posiX = 3000;
+        this.posiX = 2450;
     }
 
     animateIdle() {
@@ -323,5 +331,43 @@ class Character extends MovableObject {
                 });
             }
         }, 125);
+    }
+
+    useLessMana() {
+        setInterval(() => {
+            if (this.world.keyboard.USELESSMANA && !this.world.keyboard.keyIsHold_USELESSMANA && this.skillUseLessMana && !this.useLessManaActive && this.world.blueMineralStatusBar.collectedBlueMineral >= 50) {
+                this.world.keyboard.keyIsHold_USELESSMANA = true;
+                this.useLessManaActive = true;
+                this.world.blueMineralStatusBar.collectedBlueMineral -= 50;
+                this.world.charSkills[4].activateUseLessMana(this.world);
+            }
+        }, 1000 / 60);
+    }
+
+    useMana(consumption) {
+        if (this.useLessManaActive) {
+            this.MP -= consumption / 2;
+        } else {
+            this.MP -= consumption;
+        }
+    }
+
+    defender() {
+        setInterval(() => {
+            if (this.world.keyboard.DEFENDER && !this.world.keyboard.keyIsHold_DEFENDER && this.skillDefender && !this.defenderActive && this.world.redMineralStatusBar.collectedRedMineral >= 50) {
+                this.world.keyboard.keyIsHold_DEFENDER = true;
+                this.defenderActive = true;
+                this.world.redMineralStatusBar.collectedRedMineral -= 50;
+                this.world.charSkills[5].activateDefender(this.world);
+            }
+        }, 1000 / 60);
+    }
+
+    getDMG(DMG) {
+        if (this.defenderActive) {
+            this.LP -= DMG / 2;
+        } else {
+            this.LP -= DMG;
+        }
     }
 }

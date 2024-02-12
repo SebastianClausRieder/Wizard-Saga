@@ -10,7 +10,7 @@ class Endboss01 extends MovableObject {
     speed = 0.5;
     LP = 100;
     MP = 100;
-    doesDMG = 25;
+    doesDMG = 30;
 
     endBoss = true;
 

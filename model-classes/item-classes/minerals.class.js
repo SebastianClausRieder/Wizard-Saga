@@ -77,7 +77,21 @@ class BlueMineral extends MovableObject {
         
         this.mainPosiY = canvasHeight - this.height - 25;
 
-        this.executeRandomAction();
+        if (dropRatA <= 0) {
+            this.drawMineral(dropRatB);
+        } else {
+            this.executeRandomAction();
+        }
+    }
+
+    drawMineral(lvl) {
+        if (lvl == "M1") { this.value = 5 }
+        if (lvl == "M2") { this.value = 10 }
+        if (lvl == "M3") { this.value = 20 }
+
+        const IMAGE_ARRAY_Variable = `IMAGES_BLUE_${lvl}`;
+        const IMAGE_ARRAY = this[IMAGE_ARRAY_Variable];
+        this.itemDrop(IMAGE_ARRAY);
     }
 
     executeRandomAction() {
@@ -159,7 +173,7 @@ class RedMineral extends MovableObject {
         'img/wizard-saga/minerals/PNG/Transperent/Icon3-light.png'
     ];
 
-    constructor(NPCposiX, NPCposiY) {
+    constructor(NPCposiX, NPCposiY, ID, ilvl) {
         super().loadImage('img/wizard-saga/characters/empty-box.png');
         this.loadImages(this.IMAGES_RED_M1);
         this.loadImages(this.IMAGES_RED_M2);
@@ -169,7 +183,21 @@ class RedMineral extends MovableObject {
         
         this.mainPosiY = canvasHeight - this.height - 25;
 
-        this.executeRandomAction();
+        if (ID <= 0) {
+            this.drawMineral(ilvl);
+        } else {
+            this.executeRandomAction();
+        }
+    }
+
+    drawMineral(lvl) {
+        if (lvl == "M1") { this.value = 5 }
+        if (lvl == "M2") { this.value = 10 }
+        if (lvl == "M3") { this.value = 20 }
+
+        const IMAGE_ARRAY_Variable = `IMAGES_RED_${lvl}`;
+        const IMAGE_ARRAY = this[IMAGE_ARRAY_Variable];
+        this.itemDrop(IMAGE_ARRAY);
     }
 
     executeRandomAction() {

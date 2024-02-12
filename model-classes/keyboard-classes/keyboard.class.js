@@ -8,6 +8,8 @@ class Keyboard {
     ATTACK2 = false;
     MAGIC1 = false;
     MAGIC2 = false;
+    USELESSMANA = false;
+    DEFENDER = false;
     RUN = false;
 
     
@@ -17,4 +19,6 @@ class Keyboard {
     keyIsHold_ATTACK2 = false;
     keyIsHold_MAGIC1 = false;
     keyIsHold_MAGIC2 = false;
+    keyIsHold_USELESSMANA = false;
+    keyIsHold_DEFENDER = false;
 }

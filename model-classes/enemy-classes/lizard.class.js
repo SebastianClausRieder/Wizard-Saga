@@ -10,7 +10,7 @@ class Lizard extends MovableObject {
     speed = 0.15 + Math.random() * 0.5;
     LP = 10;
     MP = 0;
-    doesDMG = 5;
+    doesDMG = 10;
 
     standing = false;
     isMovingLeft = true;

@@ -2,6 +2,9 @@ class LoadSequenz extends MovableObject {
     width = 1000;
     height = 530;
 
+    posiX = 0;
+    posiY = 0;
+
     world;
 
     IMAGE_STARTLOADSEQUENZ = [
@@ -32,13 +35,10 @@ class LoadSequenz extends MovableObject {
         'img/wizard-saga/loadsequenz/loadsequenz00.png'
     ];
 
-    constructor(cam_X, cam_Y, world) {
+    constructor(world) {
         super().loadImage('img/wizard-saga/loadsequenz/loadsequenz00.png');
         this.loadImages(this.IMAGE_STARTLOADSEQUENZ);
         this.loadImages(this.IMAGE_ENDLOADSEQUENZ);
-
-        this.posiX = cam_X;
-        this.posiY = cam_Y;
 
         this.world = world;
     }

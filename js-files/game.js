@@ -34,6 +34,18 @@ document.addEventListener('keydown', (event) => {
         keyboard.JUMP = true;
     }
 
+    if (event.code == "Digit1") {
+        keyboard.MAGIC1 = true;
+    }
+
+    if (event.code == "Digit2") {
+        keyboard.MAGIC2 = true;
+    }
+
+    if (event.code == "Digit3") {
+        keyboard.USELESSMANA = true;
+    }
+
     if (event.code == "Digit4") {
         keyboard.ATTACK1 = true;
     }
@@ -42,12 +54,8 @@ document.addEventListener('keydown', (event) => {
         keyboard.ATTACK2 = true;
     }
 
-    if (event.code == "Digit1") {
-        keyboard.MAGIC1 = true;
-    }
-
-    if (event.code == "Digit2") {
-        keyboard.MAGIC2 = true;
+    if (event.code == "Digit6") {
+        keyboard.DEFENDER = true;
     }
 
     if (event.code == "ShiftLeft") {
@@ -82,6 +90,21 @@ document.addEventListener('keyup', (event) => {
         keyboard.keyIsHold_JUMP = false;
     }
 
+    if (event.code == "Digit1") {
+        keyboard.MAGIC1 = false;
+        keyboard.keyIsHold_MAGIC1 = false;
+    }
+
+    if (event.code == "Digit2") {
+        keyboard.MAGIC2 = false;
+        keyboard.keyIsHold_MAGIC2 = false;
+    }
+
+    if (event.code == "Digit3") {
+        keyboard.USELESSMANA = false;
+        keyboard.keyIsHold_USELESSMANA = false;
+    }
+
     if (event.code == "Digit4") {
         keyboard.ATTACK1 = false;
         keyboard.keyIsHold_ATTACK1 = false;
@@ -92,14 +115,9 @@ document.addEventListener('keyup', (event) => {
         keyboard.keyIsHold_ATTACK2 = false;
     }
 
-    if (event.code == "Digit1") {
-        keyboard.MAGIC1 = false;
-        keyboard.keyIsHold_MAGIC1 = false;
-    }
-
-    if (event.code == "Digit2") {
-        keyboard.MAGIC2 = false;
-        keyboard.keyIsHold_MAGIC2 = false;
+    if (event.code == "Digit6") {
+        keyboard.DEFENDER = false;
+        keyboard.keyIsHold_DEFENDER = false;
     }
 
     if (event.code == "ShiftLeft") {

@@ -10,7 +10,7 @@ class Demon extends MovableObject {
     speed = 0.5;
     LP = 20;
     MP = 0;
-    doesDMG = 10;
+    doesDMG = 20;
 
     standing = false;
     isMovingLeft = true;

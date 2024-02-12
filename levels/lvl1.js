@@ -83,7 +83,15 @@ const lvl1 = new Level(
     
     ],
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
-        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 3050, 365)
+        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 3050, 365),
+        new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow3.png', 128, 128, 2500, 365, 'use less Mana'),
+    ],
+    [   // itemsOnArea (posiX, posiY, 0, item, 0)
+        new RedPotion(745, 205, 0),
+        new BlueMineral(1100, 250, 0, 'M1', 0),
+        new BlueMineral(1200, 250, 0, 'M1', 0),
+        new BlueMineral(1300, 250, 0, 'M1', 0),
+        new RedMineral(1665, 135, 0, 'M1')
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 350, 375),
@@ -96,8 +104,17 @@ const lvl1 = new Level(
         new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 1600, 355)
     ],
     [   // enemies
-        ...Array(numLizards).fill().map(() => new Lizard()),
-        ...Array(numDemons).fill().map(() => new Demon()),
+        // ...Array(numLizards).fill().map(() => new Lizard()),
+        // ...Array(numDemons).fill().map(() => new Demon()),
+        new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 2000, 265),
         new Endboss01()
+    ],
+    [   // skills
+        new MeleeAttack1(),
+        new MeleeAttack2(),
+        new Fireball(),
+        new Fireburst(),
+        new UseLessMana(),
+        new Defender()
     ]
 );
