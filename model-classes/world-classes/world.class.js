@@ -114,6 +114,7 @@ class World {
             this.character.comboAttack = true;
             let attack1 = new CharAttack1(this.character.posiX, this.character.posiY, this.character.otherDirection);
             this.charATK.push(attack1);
+            this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
             this.character.attackAnimation(this.character.IMAGES_ATTACK1);
             this.character.doesDMG = 5;
             this.checkHitEnemy();
@@ -124,8 +125,11 @@ class World {
         if (this.keyboard.ATTACK2 && this.character.comboAttack && !this.keyboard.keyIsHold_ATTACK2) {
             this.keyboard.keyIsHold_ATTACK2 = true;
             setTimeout(() => {
+                this.character.secondAttack = true;
                 let attack2 = new CharAttack2(this.character.posiX, this.character.posiY, this.character.otherDirection);
                 this.charATK.push(attack2);
+                this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
+                this.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon-dark.png');
                 this.character.attackAnimation(this.character.IMAGES_ATTACK2);
                 this.character.doesDMG = 10;
                 this.checkHitEnemy();
@@ -151,6 +155,7 @@ class World {
         this.fireballFly = true;
         this.character.useMana(10);
         this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
+        this.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon-dark.png')
         this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
     }
 
@@ -177,6 +182,7 @@ class World {
         this.keyboard.keyIsHold_MAGIC2 = true;
         let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
         this.charATK.push(fireburst);
+        this.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon-dark.png')
         this.character.attackAnimation(this.character.IMAGES_FIREBURST);
         this.character.doesDMG = 20;
         this.character.useMana(20);

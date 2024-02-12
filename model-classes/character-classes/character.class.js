@@ -25,9 +25,9 @@ class Character extends MovableObject {
     running = false;
     attack = false;
 
+    secondAttack = false;
     skillUseLessMana = false;
     skillDefender = false;
-
     useLessManaActive = false;
     defenderActive = false;
 
@@ -114,10 +114,10 @@ class Character extends MovableObject {
     ];
 
     IMAGES_ATTACK2 = [
-        'img/wizard-saga/characters/Fire-Wizard/secound-attack/secound-attack-01.png',
-        'img/wizard-saga/characters/Fire-Wizard/secound-attack/secound-attack-02.png',
-        'img/wizard-saga/characters/Fire-Wizard/secound-attack/secound-attack-03.png',
-        'img/wizard-saga/characters/Fire-Wizard/secound-attack/secound-attack-04.png'
+        'img/wizard-saga/characters/Fire-Wizard/second-attack/second-attack-01.png',
+        'img/wizard-saga/characters/Fire-Wizard/second-attack/second-attack-02.png',
+        'img/wizard-saga/characters/Fire-Wizard/second-attack/second-attack-03.png',
+        'img/wizard-saga/characters/Fire-Wizard/second-attack/second-attack-04.png'
     ];
 
     IMAGES_FIREBALLMOVE = [
@@ -304,6 +304,7 @@ class Character extends MovableObject {
                 this.world.charATK = [];
                 this.isItAnComboAttack();
                 this.isItAnFireballAttack();
+                this.resetSkillImage(IMAGES);
             }
         }, 125);
     }
@@ -318,6 +319,20 @@ class Character extends MovableObject {
         if (this.fireballAttack) {
             this.fireballAttack = false;
             this.world.fireball();
+        }
+    }
+
+    resetSkillImage(IMAGE) {
+        console.log(IMAGE);
+        
+        if (IMAGE[0].includes('first-attack') && !this.secondAttack) {
+            this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
+        } else if (IMAGE[0].includes('second-attack')) {
+            this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
+            this.world.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon.png');
+            this.secondAttack = false;
+        } else if (IMAGE[0].includes('fireburst')) {
+            this.world.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon.png');
         }
     }
 
