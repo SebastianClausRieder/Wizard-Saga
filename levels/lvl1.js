@@ -25,8 +25,8 @@ for (let i = 0; i < pathCount; i++) {
     myPaths.push(path);
 }
 
-const numLizards = 5;
-const numDemons = 1;
+const numLizards = 15;
+const numDemons = 10;
 
 const lvl1 = new Level(
     bgMounten,

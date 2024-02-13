@@ -57,7 +57,7 @@ class SmallDragon extends MovableObject {
         'img/wizard-saga/monsters/PNG/small_dragon/Death4.png'
     ];
 
-    constructor(posiX) {
+    constructor(posiX, placeToMove) {
         super().loadImage('img/wizard-saga/monsters/PNG/small_dragon/Idle1.png');
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_WALKING);
@@ -68,7 +68,11 @@ class SmallDragon extends MovableObject {
         this.checkPosition();
         this.randomAttack();
 
-        this.mainPosiX = posiX + Math.random() * 600;
+        if (placeToMove) {
+            this.mainPosiX = posiX + Math.random() * 300;
+        } else {
+            this.mainPosiX = posiX;
+        }
         this.posiX = this.mainPosiX;
         this.posiY = canvasHeight - this.height + 15;
         this.walkArea = 300;

@@ -10,6 +10,10 @@ body {
     margin: 0;
 }
 
+h1 {
+    display: none;
+}
+
 canvas {
     background-color: #4aa4e0;
 }
