@@ -31,6 +31,9 @@ class Character extends MovableObject {
     useLessManaActive = false;
     defenderActive = false;
 
+    bluePotionDelay = false;
+    redPotionDelay = false;
+
     IMAGES_IDLE = [
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
@@ -171,6 +174,7 @@ class Character extends MovableObject {
         this.checkCharPosiX();
         this.useLessMana();
         this.defender();
+        this.usePotion();
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
@@ -348,10 +352,10 @@ class Character extends MovableObject {
 
     useLessMana() {
         setInterval(() => {
-            if (this.world.keyboard.USELESSMANA && !this.world.keyboard.keyIsHold_USELESSMANA && this.skillUseLessMana && !this.useLessManaActive && this.world.blueMineralStatusBar.collectedBlueMineral >= 50) {
+            if (this.world.keyboard.USELESSMANA && !this.world.keyboard.keyIsHold_USELESSMANA && this.skillUseLessMana && !this.useLessManaActive && this.world.blueMineralStatusBar.collectedBlueMineral >= 100) {
                 this.world.keyboard.keyIsHold_USELESSMANA = true;
                 this.useLessManaActive = true;
-                this.world.blueMineralStatusBar.collectedBlueMineral -= 50;
+                this.world.blueMineralStatusBar.collectedBlueMineral -= 100;
                 this.world.charSkills[4].activateUseLessMana(this.world);
             }
         }, 1000 / 60);
@@ -381,6 +385,42 @@ class Character extends MovableObject {
             this.LP -= DMG / 2;
         } else {
             this.LP -= DMG;
+        }
+    }
+
+    usePotion() {
+        setInterval(() => {
+            if (this.world.keyboard.BLUEPOTION && !this.world.keyboard.keyIsHold_BLUEPOTION && !this.bluePotionDelay && this.world.bluePotionStatusBar.collectedBluePotion >= 1) {
+                this.world.keyboard.keyIsHold_BLUEPOTION = true;
+                this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion-dark.png');
+                this.drinkPotion('blue');
+                setTimeout(() => {
+                    this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
+                    this.bluePotionDelay = false;
+                }, 30000);
+            }
+
+            if (this.world.keyboard.REDPOTION && !this.world.keyboard.keyIsHold_REDPOTION && !this.redPotionDelay && this.world.redPotionStatusBar.collectedRedPotion >= 1) {
+                this.world.keyboard.keyIsHold_REDPOTION = true;
+                this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion-dark.png');
+                this.drinkPotion('red');
+                setTimeout(() => {
+                    this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
+                    this.redPotionDelay = false;
+                }, 30000);
+            }
+        }, 1000 / 60);
+    }
+
+    drinkPotion(potion) {
+        if (potion == 'blue') {
+            this.world.bluePotionStatusBar.collectedBluePotion -= 1;
+            this.MP = 100;
+            this.world.manaStatusBar.setPercentage(this.MP, this.world.manaStatusBar.MANA_BAR);
+        } else if (potion == 'red') {
+            this.world.redPotionStatusBar.collectedRedPotion -= 1;
+            this.LP = 100;
+            this.world.lifeStatusBar.setPercentage(this.LP, this.world.lifeStatusBar.LIFE_BAR);
         }
     }
 }

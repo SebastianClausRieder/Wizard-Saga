@@ -12,7 +12,9 @@ class World {
         new Fireball(),
         new Fireburst(),
         new UseLessMana(),
-        new Defender()
+        new Defender(),
+        new BluePotionUse(),
+        new RedPotionUse()
     ];
     charATK = [];
     enemyATK = [];

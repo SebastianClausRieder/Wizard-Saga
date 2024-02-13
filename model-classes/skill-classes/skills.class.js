@@ -131,3 +131,29 @@ class Defender extends MovableObject {
         }, 1000);
     }
 }
+
+class BluePotionUse extends MovableObject {
+    width = 35;
+    height = 35;
+
+    posiX = 950;
+
+    constructor() {
+        super().loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
+
+        this.posiY = canvasHeight - this.height - 20;
+    }
+}
+
+class RedPotionUse extends MovableObject {
+    width = 35;
+    height = 35;
+
+    posiX = 910;
+
+    constructor() {
+        super().loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
+
+        this.posiY = canvasHeight - this.height - 20;
+    }
+}

@@ -11,6 +11,8 @@ class Keyboard {
     USELESSMANA = false;
     DEFENDER = false;
     RUN = false;
+    BLUEPOTION = false;
+    REDPOTION = false;
 
     
     keyIsHold_UP = false;
@@ -21,4 +23,6 @@ class Keyboard {
     keyIsHold_MAGIC2 = false;
     keyIsHold_USELESSMANA = false;
     keyIsHold_DEFENDER = false;
+    keyIsHold_BLUEPOTION = false;
+    keyIsHold_REDPOTION = false;
 }

@@ -74,7 +74,7 @@ class SmallDragon extends MovableObject {
             this.mainPosiX = posiX;
         }
         this.posiX = this.mainPosiX;
-        this.posiY = canvasHeight - this.height + 15;
+        this.posiY = canvasHeight - this.height + 20;
         this.walkArea = 300;
     }
 

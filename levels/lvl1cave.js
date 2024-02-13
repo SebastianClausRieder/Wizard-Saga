@@ -41,7 +41,7 @@ const lvl1Cave = new Level(
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
         new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 3030, 340),
         new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow2.png', 128, 128, 5175, 365, 'Defender'),
-        new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 7650, 340),
+        new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 7650, 340)
     ],
     [   // itemsOnArea (posiX, posiY, 0, item, 0)
         new BlueMineral(3115, 230, 0, 'M1', 0),
@@ -60,6 +60,7 @@ const lvl1Cave = new Level(
         new BlueMineral(7938, 180, 0, 'M2', 0),
         new BlueMineral(8188, 230, 0, 'M1', 0),
         new BlueMineral(8438, 180, 0, 'M2', 0),
+        new RedPotion(9200, 350, 0)
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120 , 3150, 370),
@@ -74,7 +75,7 @@ const lvl1Cave = new Level(
         new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 6975, 340),
         new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 7475, 340),
         new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 7975, 340),
-        new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 8475, 340),
+        new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 8475, 340)
     ],
     myPathsCave,
     [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)

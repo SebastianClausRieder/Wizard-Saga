@@ -14,6 +14,7 @@ function init() {
 // Events
 
 document.addEventListener('keydown', (event) => {
+    // console.log(event)
     if (event.code == "KeyA" || event.code == "ArrowLeft") {
         keyboard.LEFT = true;
     }
@@ -60,6 +61,14 @@ document.addEventListener('keydown', (event) => {
 
     if (event.code == "ShiftLeft") {
         keyboard.RUN = true;
+    }
+
+    if (event.code == "KeyB") {
+        keyboard.BLUEPOTION = true;
+    }
+
+    if (event.code == "KeyR") {
+        keyboard.REDPOTION = true;
     }
 
     if (event.code == "F10") {
@@ -122,5 +131,15 @@ document.addEventListener('keyup', (event) => {
 
     if (event.code == "ShiftLeft") {
         keyboard.RUN = false;
+    }
+
+    if (event.code == "KeyB") {
+        keyboard.BLUEPOTION = false;
+        keyboard.keyIsHold_BLUEPOTION = false;
+    }
+
+    if (event.code == "KeyR") {
+        keyboard.REDPOTION = false;
+        keyboard.keyIsHold_REDPOTION = false;
     }
 });

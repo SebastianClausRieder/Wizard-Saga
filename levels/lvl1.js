@@ -117,10 +117,11 @@ const lvl1 = new Level(
     myPaths,
     [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)
         new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 1600, 355),
-        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 5500, 355)
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 5500, 355),
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 10400, 355)
     ],
     [   // enemies
-        // ...Array(numLizards).fill().map(() => new Lizard()),
+        ...Array(numLizards).fill().map(() => new Lizard()),
         ...Array(numDemons).fill().map(() => new Demon()),
         new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 2000, 265),
         new Endboss01()
