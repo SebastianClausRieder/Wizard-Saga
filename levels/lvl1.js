@@ -85,36 +85,44 @@ const lvl1 = new Level(
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
         new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 3050, 365),
         new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow3.png', 128, 128, 2500, 365, 'use less Mana'),
+        new UsableObjectDoor('img/wizard-saga/area-objects/PNG/Objects_separately/Cave_entrance3_grass_shadow.png', 120, 120, 7650, 365)
     ],
     [   // itemsOnArea (posiX, posiY, 0, item, 0)
         new RedPotion(745, 205, 0),
         new BlueMineral(1100, 250, 0, 'M1', 0),
         new BlueMineral(1200, 250, 0, 'M1', 0),
         new BlueMineral(1300, 250, 0, 'M1', 0),
-        new RedMineral(1665, 135, 0, 'M1')
+        new RedMineral(1665, 135, 0, 'M1'),
+        new RedMineral(4040, 20, 0, 'M3'),
+        new BlueMineral(5490, 140, 0, 'M3', 0),
+        new BlueMineral(5630, 140, 0, 'M3', 0),
+        new BlueMineral(6530, 240, 0, 'M2', 0),
+        new BlueMineral(6580, 240, 0, 'M2', 0),
+        new RedMineral(6630, 180, 0, 'M3'),
+        new BlueMineral(6630, 240, 0, 'M2', 0),
+        new BlueMineral(6680, 240, 0, 'M2', 0),
+        new BlueMineral(6730, 240, 0, 'M2', 0)
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 350, 375),
         new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 2000, 290),
         new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 650, 260),
-        new Platform01('img/wizard-saga/platforms/finisht-platform/platform7x6.png', 375, 435, 3000, 70)
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform7x6.png', 375, 435, 3000, 70),
+        new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 3975, 350),
+        new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 4075, 300),
+        new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 4215, 350),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform7x6.png', 375, 435, 7400, 70),
+        new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120, 7650, 50)
     ],
     myPaths,
     [   // platformsFG (imagePath, imageW, imageH, imageX, imageY)
-        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 1600, 355)
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 1600, 355),
+        new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 5500, 355)
     ],
     [   // enemies
         // ...Array(numLizards).fill().map(() => new Lizard()),
         // ...Array(numDemons).fill().map(() => new Demon()),
         new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 2000, 265),
         new Endboss01()
-    ],
-    [   // skills
-        new MeleeAttack1(),
-        new MeleeAttack2(),
-        new Fireball(),
-        new Fireburst(),
-        new UseLessMana(),
-        new Defender()
     ]
 );

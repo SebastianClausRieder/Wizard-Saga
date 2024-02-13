@@ -19,7 +19,7 @@ class DrawableObject {
     enemyClasses = [Lizard, Demon, SmallDragon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
     itemClasses = [BlueMineral, RedMineral, BluePotion, RedPotion];
-    platformClasses = [Platform01, Platform02, Platform03, Platform04Wall];
+    platformClasses = [Platform01, Platform02, Platform03, Platform04Wall, Platform05];
     usableObjectClasses = [UsableObjectDoor, UsableObjectChest, UsableObjectTotem];
 
     world;

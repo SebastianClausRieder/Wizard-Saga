@@ -114,7 +114,7 @@ class World {
             this.character.comboAttack = true;
             let attack1 = new CharAttack1(this.character.posiX, this.character.posiY, this.character.otherDirection);
             this.charATK.push(attack1);
-            this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
+            this.showSkillDelay();
             this.character.attackAnimation(this.character.IMAGES_ATTACK1);
             this.character.doesDMG = 5;
             this.checkHitEnemy();
@@ -128,8 +128,7 @@ class World {
                 this.character.secondAttack = true;
                 let attack2 = new CharAttack2(this.character.posiX, this.character.posiY, this.character.otherDirection);
                 this.charATK.push(attack2);
-                this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
-                this.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon-dark.png');
+                this.showSkillDelay();
                 this.character.attackAnimation(this.character.IMAGES_ATTACK2);
                 this.character.doesDMG = 10;
                 this.checkHitEnemy();
@@ -155,7 +154,7 @@ class World {
         this.fireballFly = true;
         this.character.useMana(10);
         this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
-        this.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon-dark.png')
+        this.showSkillDelay();
         this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
     }
 
@@ -182,12 +181,19 @@ class World {
         this.keyboard.keyIsHold_MAGIC2 = true;
         let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
         this.charATK.push(fireburst);
-        this.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon-dark.png')
+        this.showSkillDelay();
         this.character.attackAnimation(this.character.IMAGES_FIREBURST);
         this.character.doesDMG = 20;
         this.character.useMana(20);
         this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
         this.checkHitEnemy();
+    }
+
+    showSkillDelay() {
+        this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
+        this.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon-dark.png');
+        this.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon-dark.png');
+        this.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon-dark.png');
     }
 
     medusaAttack() {
@@ -218,6 +224,7 @@ class World {
                 }
             } else {
                 if (this.charATK[0].isColliding(enemy) && !enemy.dead) {
+                    enemy.dead = true;
                     this.whatsHitet(enemy);
                 }
             }
@@ -261,7 +268,6 @@ class World {
     }
 
     isEnemyDead(enemy) {
-        enemy.dead = true;
         enemy.cancelHurts();
         enemy.animateDeath(enemy.IMAGES_DEAD);
         setTimeout(() => {
@@ -423,14 +429,18 @@ class World {
 
     goInCave() {
         this.inCave = true;
+        this.itemDrop = [];
         this.lvl = lvl1Cave;
+        this.loadItemOnArea();
         this.character.moveCamPosiY = 1;
         this.loadSequenz[0].endLoadSequenz();
     }
 
     goOutFromCave() {
         this.inCave = false;
+        this.itemDrop = [];
         this.lvl = lvl1;
+        this.loadItemOnArea();
         this.character.moveCamPosiY = 250;
         this.loadSequenz[0].endLoadSequenz();
     }
@@ -514,7 +524,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }

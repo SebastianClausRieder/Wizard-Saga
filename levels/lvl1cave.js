@@ -37,13 +37,14 @@ const lvl1Cave = new Level(
     ],
     [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
         new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 3030, 340),
-        new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow2.png', 128, 128, 2800, 365, 'Defender')
+        new UsableObjectTotem('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow2.png', 128, 128, 7800, 365, 'Defender'),
+        new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 7650, 340),
     ],
     [   // itemsOnArea (posiX, posiY, 0, item, 0)
-        new RedPotion(745, 205, 0),
-        new BlueMineral(1100, 250, 0, 'M1', 0),
-        new BlueMineral(1200, 250, 0, 'M1', 0),
-        new BlueMineral(1300, 250, 0, 'M1', 0),
+        new BlueMineral(3115, 230, 0, 'M1', 0),
+        new BlueMineral(3185, 230, 0, 'M1', 0),
+        new BlueMineral(3255, 230, 0, 'M1', 0),
+        new RedPotion(3545, 200, 0),
         new RedMineral(1665, 135, 0, 'M1')
     ],
     [   // platformsBG (imagePath, imageW, imageH, imageX, imageY)

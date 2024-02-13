@@ -174,7 +174,7 @@ class Character extends MovableObject {
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
-        this.posiX = 2450;
+        this.posiX = 7650;
     }
 
     animateIdle() {
@@ -303,8 +303,8 @@ class Character extends MovableObject {
                 this.currentImageIdle = 0;
                 this.world.charATK = [];
                 this.isItAnComboAttack();
+                this.resetSkillImage();
                 this.isItAnFireballAttack();
-                this.resetSkillImage(IMAGES);
             }
         }, 125);
     }
@@ -312,6 +312,8 @@ class Character extends MovableObject {
     isItAnComboAttack() {
         if (this.comboAttack) {
             this.comboAttack = false;
+        } else {
+            this.secondAttack = false;
         }
     }
 
@@ -322,16 +324,11 @@ class Character extends MovableObject {
         }
     }
 
-    resetSkillImage(IMAGE) {
-        console.log(IMAGE);
-        
-        if (IMAGE[0].includes('first-attack') && !this.secondAttack) {
-            this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
-        } else if (IMAGE[0].includes('second-attack')) {
+    resetSkillImage() {
+        if (!this.fireballAttack && !this.secondAttack) {
             this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
             this.world.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon.png');
-            this.secondAttack = false;
-        } else if (IMAGE[0].includes('fireburst')) {
+            this.world.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon.png');
             this.world.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon.png');
         }
     }

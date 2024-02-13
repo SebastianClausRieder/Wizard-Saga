@@ -1,6 +1,6 @@
 class Platform01 extends MovableObject {
     hitBoxWidth = 220;
-    hitBoxHeight = 90;
+    hitBoxHeight = 25;
     hitBoxX = 15;
     hitBoxY = 15;
 
@@ -53,6 +53,22 @@ class Platform04Wall extends MovableObject {
     hitBoxWidth = 605;
     hitBoxHeight = 470;
     hitBoxX = 7;
+    hitBoxY = 15;
+
+    constructor(imagePath, imageW, imageH, imageX, imageY) {
+        super().loadImage(imagePath);
+        
+        this.width = imageW;
+        this.height = imageH;
+
+        this.posiX = imageX;
+        this.posiY = imageY;
+    }
+}
+class Platform05 extends MovableObject {
+    hitBoxWidth = 100;
+    hitBoxHeight = 25;
+    hitBoxX = 4;
     hitBoxY = 15;
 
     constructor(imagePath, imageW, imageH, imageX, imageY) {

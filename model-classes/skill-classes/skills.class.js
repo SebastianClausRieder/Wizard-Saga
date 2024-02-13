@@ -2,7 +2,7 @@ class MeleeAttack1 extends MovableObject {
     width = 35;
     height = 35;
 
-    posiX = 750;
+    posiX = 870;
 
     constructor() {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
@@ -15,7 +15,7 @@ class MeleeAttack2 extends MovableObject {
     width = 35;
     height = 35;
 
-    posiX = 790;
+    posiX = 910;
 
     constructor() {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon.png');
@@ -28,7 +28,7 @@ class Fireball extends MovableObject {
     width = 35;
     height = 35;
 
-    posiX = 830;
+    posiX = 750;
 
     constructor() {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon.png');
@@ -41,7 +41,7 @@ class Fireburst extends MovableObject {
     width = 35;
     height = 35;
 
-    posiX = 870;
+    posiX = 790;
 
     constructor() {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon.png');
@@ -54,7 +54,7 @@ class UseLessMana extends MovableObject {
     width = 35;
     height = 35;
 
-    posiX = 910;
+    posiX = 830;
 
     IMAGE_USELESSMANA = [
         'img/wizard-saga/skill-icon/wizard-skills/uselessmana/uselessmana-icon-10.png',

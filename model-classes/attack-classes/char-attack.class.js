@@ -94,7 +94,7 @@ class CharAttackFireball extends MovableObject {
             if (this.currentImageAttack >= this.IMAGES_FIREBALL.length) {
                 clearInterval(fireballAnimation);
                 this.world.fireballFly = false;
-                this.world.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon.png');
+                this.world.character.resetSkillImage();
                 this.currentImageAttack = 0;
                 this.currentImageAction = 0;
                 this.currentImageIdle = 0;
