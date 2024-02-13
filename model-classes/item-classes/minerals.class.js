@@ -96,7 +96,6 @@ class BlueMineral extends MovableObject {
 
     executeRandomAction() {
         const randomNumber = Math.random();
-        console.log('randomNumber', randomNumber);
 
         if (randomNumber < this.firstChance) {
             this.firstVariable(this.IMAGES_BLUE_M1, this.color);
@@ -202,7 +201,6 @@ class RedMineral extends MovableObject {
 
     executeRandomAction() {
         const randomNumber = Math.random();
-        console.log('randomNumber', randomNumber);
 
         if (randomNumber < this.firstChance) {
             this.firstVariable(this.IMAGES_RED_M1);

@@ -68,8 +68,7 @@ class Demon extends MovableObject {
         this.moveLeft(this.speed, 1000 / 60);
         this.animateWalkingEnemies(225);
 
-        // this.posiX = 900 + Math.random() * 10000;
-        this.posiX = 2100;
+        this.posiX = 2100 + Math.random() * 9000;
         this.posiY = canvasHeight - this.height + 23;
     }
 }

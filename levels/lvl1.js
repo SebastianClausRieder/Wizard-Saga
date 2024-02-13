@@ -121,7 +121,7 @@ const lvl1 = new Level(
     ],
     [   // enemies
         // ...Array(numLizards).fill().map(() => new Lizard()),
-        // ...Array(numDemons).fill().map(() => new Demon()),
+        ...Array(numDemons).fill().map(() => new Demon()),
         new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 2000, 265),
         new Endboss01()
     ]

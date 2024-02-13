@@ -174,11 +174,12 @@ class Character extends MovableObject {
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
-        this.posiX = 6250;
+        this.posiX = 50;
     }
 
     animateIdle() {
         setInterval(() => {
+            // console.log(this.speedWalk, '<-- Walk and Run -->', this.speedRun);
             if (!this.moving && !this.falling && !this.hurts && !this.dead && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
             }

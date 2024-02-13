@@ -224,7 +224,6 @@ class World {
                 }
             } else {
                 if (this.charATK[0].isColliding(enemy) && !enemy.dead) {
-                    enemy.dead = true;
                     this.whatsHitet(enemy);
                 }
             }
@@ -256,6 +255,7 @@ class World {
         if (enemy.LP > 0 && !enemy.hurts) {
             this.isEnemyLPnotZero(enemy);
         } else if (enemy.LP <= 0) {
+            enemy.dead = true;
             this.isEnemyDead(enemy);
         }
     }
