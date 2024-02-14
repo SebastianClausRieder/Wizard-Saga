@@ -12,3 +12,15 @@ function element(inputID) {
 
 let canvasHeight = 500;
 let canvasWidth = 1000;
+
+// start Display
+
+function goToInstructionDisplay() {
+    element('instructionMonitor').classList.remove('d-none');
+    element('startMonitor').classList.add('d-none');
+}
+
+function closeInstructionDisplay() {
+    element('instructionMonitor').classList.add('d-none');
+    element('startMonitor').classList.remove('d-none');
+}

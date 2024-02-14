@@ -51,12 +51,47 @@
 
 </head>
 <body onload="init()">
+    <div class="game-display-contain">
+        <canvas id="game-display" width="1000" height="530">
 
-    <h1>Wizard Saga</h1>
+        </canvas>
 
-    <canvas id="game-display" width="1000" height="530">
-
-    </canvas>
-    
+        <div id="startMonitor" class="start-monitor">
+            <img src="img/wizard-saga/headline/wizard-saga-headline.png" class="main-headline">
+            <div class="under-headline-contain">
+                <div class="button-contain">
+                    <button class="front-button" onclick="goToInstructionDisplay()"><img src="img/wizard-saga/headline/instructions-btn.png" class="button-img"></button>
+                    <button class="front-button" onclick="startGame()"><img src="img/wizard-saga/headline/play-btn.png" class="button-img"></button>
+                </div>
+                <img src="img/wizard-saga/platforms/finisht-platform/platform2x2.png" class="deko platform-1">
+                <img src="img/wizard-saga/characters/Fire-Wizard/fireburst/Fireburst-09.png" class="deko character">
+                <img src="img/wizard-saga/monsters/PNG/lizard/Idle3.png" class="deko lizard">
+                <img src="img/wizard-saga/monsters/PNG/demon/Idle3.png" class="deko demon">
+                <img src="img/wizard-saga/monsters/PNG/small_dragon/Idle3.png" class="deko small-dragon">
+                <img src="img/wizard-saga/monsters/PNG/medusa/Idle3.png" class="deko medusa">
+                <img src="img/wizard-saga/minerals/PNG/Transperent/Icon12.png" class="deko mineral01">
+                <img src="img/wizard-saga/minerals/PNG/Transperent/Icon25.png" class="deko mineral02">
+                <img src="img/wizard-saga/minerals/PNG/Transperent/Icon33.png" class="deko mineral03">
+                <img src="img/wizard-saga/minerals/PNG/Transperent/Icon40.png" class="deko mineral04">
+                <img src="img/wizard-saga/potions/PNG/Transperent/Icon3.png" class="deko potion01">
+                <img src="img/wizard-saga/potions/PNG/Transperent/Icon1.png" class="deko potion02">
+            </div>
+        </div>
+        <div id="instructionMonitor" class="instruction-monitor d-none">
+            <img src="img/wizard-saga/headline/clear-mark-blue.png"class="go-back" onclick="closeInstructionDisplay()">
+            <div class="text-contain">
+                <h1>Game Instructions</h1>
+                <li class="instruction">Key Instruction</li>
+                <ul class="u-instruction"><b>A</b> or <b>Left Arrow</b> for Walk left and <b>D</b> or <b>Right Arrow</b> for Walk right.</ul>
+                <ul class="u-instruction">If you press and hold <b>ShiftLeft</b> by using <b>A</b> or <b>D</b> the Character will Run.</ul>
+                <ul class="u-instruction"><b>W</b> or <b>Up Arrow</b> to interact with Doors or Totems.</ul>
+                <ul class="u-instruction"><b>Space</b> to Jump.</ul>
+                <ul class="u-instruction"><b>1</b> to <b>6</b> are your skills. "If a skill is grayed out, you cant use it."</ul>
+                <ul class="u-instruction"><b>R</b> to use Red Potion or <b>B</b> to use Blue Potion.</ul>
+                <ul class="u-instruction">For Fullscreen press <b>F10</b>.</ul>
+                <li class="instruction">To finish the game you have to collect the star.</li>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
