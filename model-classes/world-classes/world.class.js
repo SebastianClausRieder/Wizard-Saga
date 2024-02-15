@@ -21,6 +21,10 @@ class World {
     itemDrop = [];
     loadSequenz = [];
 
+    background_sound = new Audio('audio/background-music-02.mp3');
+    background_cave = new Audio('audio/background-cave.mp3');
+
+    backgroundMusicInterV;
 
     canvas;
     ctx;
@@ -45,6 +49,7 @@ class World {
         this.setWorld();
         this.checkCollosins();
         this.loadItemOnArea();
+        // this.playBGMusic();
     }
 
     checkCollosins() {
@@ -91,8 +96,10 @@ class World {
 
     hitCharacter() {
         if (this.character.LP > 0) {
+            this.moveableObject.playAudio(this.character.hurt_sound, 1);
             this.character.animateHurts(this.character.IMAGES_HURT);
         } else {
+            this.moveableObject.playAudio(this.character.death_sound, 1);
             this.character.resetImageCache();
             this.character.animateDeath(this.character.IMAGES_DEAD);
             setTimeout(() => {
@@ -119,6 +126,7 @@ class World {
             this.showSkillDelay();
             this.character.attackAnimation(this.character.IMAGES_ATTACK1);
             this.character.doesDMG = 5;
+            this.moveableObject.playAudio(this.character.meleeHit1_sound, 0.9);
             this.checkHitEnemy();
         }
     }
@@ -133,6 +141,7 @@ class World {
                 this.showSkillDelay();
                 this.character.attackAnimation(this.character.IMAGES_ATTACK2);
                 this.character.doesDMG = 10;
+                this.moveableObject.playAudio(this.character.meleeHit2_sound, 0.9);
                 this.checkHitEnemy();
             }, 250);
         }
@@ -157,6 +166,7 @@ class World {
         this.character.useMana(10);
         this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
         this.showSkillDelay();
+        this.moveableObject.playAudio(this.character.fireball1_sound, 0.9);
         this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
     }
 
@@ -165,6 +175,7 @@ class World {
         fireball.world = this;
         this.charATK.push(fireball);
         this.character.doesDMG = 15;
+        this.moveableObject.playAudio(this.character.fireball2_sound, 1.2);
     }
 
     magicAttack2() {
@@ -188,6 +199,7 @@ class World {
         this.character.doesDMG = 20;
         this.character.useMana(20);
         this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
+        this.moveableObject.playAudio(this.character.fireburst_sound, 2);
         this.checkHitEnemy();
     }
 
@@ -466,6 +478,22 @@ class World {
         this.character.world = this;
         this.drawableObject.world = this;
         this.moveableObject.world = this;
+    }
+
+    playBGMusic() {
+        this.backgroundMusicInterV = setInterval(() => {
+            if (this.inCave) {
+                this.background_sound.pause();
+                this.background_cave.volume = 0.1;
+                this.background_cave.playbackRate = 0.5;
+                this.background_cave.play();
+            } else {
+                this.background_cave.pause();
+                this.background_sound.volume = 0.2;
+                this.background_sound.playbackRate = 1;
+                this.background_sound.play();
+            }
+        }, 125);
     }
 
     draw() {

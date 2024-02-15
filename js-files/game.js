@@ -8,8 +8,6 @@ let keyboard = new Keyboard();
 
 function init() {
     canvas = element('game-display');
-    element('startMonitor').classList.add('d-none');
-    world = new World(canvas, keyboard);
 }
 
 function startGame() {

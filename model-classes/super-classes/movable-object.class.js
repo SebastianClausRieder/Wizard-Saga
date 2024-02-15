@@ -362,4 +362,13 @@ class MovableObject extends DrawableObject {
             this.playActionAnimation(IMAGES);
         }, 250);
     }
+
+    // Audio
+
+    playAudio(sound, speed) {
+        sound.pause();
+        sound.volume = 1;
+        sound.playbackRate = speed;
+        sound.play();
+    }
 }

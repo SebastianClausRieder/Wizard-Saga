@@ -19,6 +19,16 @@ class Character extends MovableObject {
     walking_sound = new Audio('audio/walking.mp3');
     running_sound = new Audio('audio/walking.mp3');
     jumping_sound = new Audio('audio/jumping.mp3');
+    meleeHit1_sound = new Audio('audio/sword-swing.mp3');
+    meleeHit2_sound = new Audio('audio/sword-stab.mp3');
+    fireball1_sound = new Audio('audio/fireball-cast.mp3');
+    fireball2_sound = new Audio('audio/fireball-fly.mp3');
+    fireburst_sound = new Audio('audio/fireburst.mp3');
+    hurt_sound = new Audio('audio/hurt.mp3');
+    death_sound = new Audio('audio/death.mp3');
+    endFight_sound = new Audio('audio/bossfight-begin.mp3');
+
+    endFightInterV;
 
     moving = false;
     walking = false;
@@ -343,10 +353,21 @@ class Character extends MovableObject {
             if (this.posiX >= 9500) {
                 world.lvl.enemies.forEach(enemy => {
                     if (enemy instanceof Endboss01) {
+                        this.playEndSound();
                         enemy.randomAttack();
                     }
                 });
             }
+        }, 125);
+    }
+
+    playEndSound() {
+        clearInterval(this.world.backgroundMusicInterV);
+        this.endFightInterV = setInterval(() => {
+            this.endFight_sound.pause();
+            this.endFight_sound.volume = 0.5;
+            this.endFight_sound.playbackRate = 1;
+            this.endFight_sound.play();
         }, 125);
     }
 
