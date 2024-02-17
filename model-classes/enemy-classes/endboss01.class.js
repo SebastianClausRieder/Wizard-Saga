@@ -8,10 +8,11 @@ class Endboss01 extends MovableObject {
     hitBoxY = 45;
 
     speed = 0.5;
-    LP = 100;
+    LP = 150;
     MP = 100;
     doesDMG = 30;
 
+    endbossAttackInterV;
     endBoss = true;
 
     IMAGES_IDLE = [
@@ -80,7 +81,7 @@ class Endboss01 extends MovableObject {
     }
 
     randomAttack() {
-        setInterval(() => {
+        this.endbossAttackInterV = setInterval(() => {
             if (!this.attackDelay && !this.hurts) {
                 this.attackDelay = true;
                 const randomDelay = Math.floor(Math.random() * (5000 - 2500 + 1)) + 2500;
@@ -100,13 +101,17 @@ class Endboss01 extends MovableObject {
 
             if (this.currentImageAttack >= this.IMAGES_ATTACK.length) {
                 clearInterval(enemyAttackInterV);
-                this.enemyDoesAttack = true;
                 this.enemyDirection();
-                this.attack = false;
-                this.attackDelay = false;
-                this.doesDMG = 0;
+                this.doReset();
                 this.resetImageCache();
             }
         }, 225);
+    }
+
+    doReset() {
+        this.enemyDoesAttack = true;
+        this.attack = false;
+        this.attackDelay = false;
+        this.doesDMG = 0;
     }
 }

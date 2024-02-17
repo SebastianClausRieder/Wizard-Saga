@@ -47,9 +47,9 @@ class MovableObject extends DrawableObject {
     collidedPlatform = false;
     onLoad = false;
 
-    firstChance = 0.5; // Höhere Chance für erste Variable      \
-    secondChance = 0.3; // Mittlere Chance für zweite Variable    > muss zusammen 1 ergeben!
-    thirdChance = 0.2; // Geringere Chance für dritte Variable  /
+    firstChance = 0.5; // Higher chance for first variable      \
+    secondChance = 0.3; // Medium chance for second variable     > must add up to 1!
+    thirdChance = 0.2; // Lower chance for third variable       /
 
 
     world;
@@ -246,10 +246,10 @@ class MovableObject extends DrawableObject {
         const platformLeft = mo.posiX + mo.hitBoxX;
     
         return (
-            charBottom >= platformTop && // Charakter untere Kante über oder auf der Plattform oberen Kante
-            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Charakter obere Kante unter oder auf der Plattform unteren Kante
-            this.posiX + this.hitBoxX < platformLeft && // Charakter rechte Seite links von der Plattform
-            charRight > platformLeft // Charakter rechte Seite rechts von der Plattform
+            charBottom >= platformTop && // Character bottom edge above or on the platform top edge
+            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Character top edge under or on the platform bottom edge
+            this.posiX + this.hitBoxX < platformLeft && // Character right side to the left of the platform
+            charRight > platformLeft // Character right side to the right of the platform
         );
     }
 
@@ -260,10 +260,10 @@ class MovableObject extends DrawableObject {
         const platformRight = mo.posiX + mo.hitBoxX + mo.hitBoxWidth;
     
         return (
-            charBottom >= platformTop && // Charakter untere Kante über oder auf der Plattform oberen Kante
-            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Charakter obere Kante unter oder auf der Plattform unteren Kante
+            charBottom >= platformTop && // Character bottom edge above or on the platform top edge
+            this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight && // Character top edge under or on the platform bottom edge
             charLeft < platformRight && // Charakter linke Seite links von der Plattform
-            charLeft + this.hitBoxWidth > platformRight // Charakter rechte Seite rechts von der Plattform
+            charLeft + this.hitBoxWidth > platformRight // Character right side to the right of the platform
         );
     }
 
@@ -272,7 +272,7 @@ class MovableObject extends DrawableObject {
         const enemyTop = mo.posiY + mo.hitBoxY;
         
         return (
-            charBottom <= enemyTop && charBottom - mo.posiY >= 0 &&// Charakter untere Kante über Gegner obere Kante
+            charBottom <= enemyTop && charBottom - mo.posiY >= 0 && // Character bottom edge over opponent top edge
             this.posiX + this.hitBoxX < mo.posiX + mo.hitBoxX + mo.hitBoxWidth &&
             this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX
         );

@@ -7,13 +7,13 @@ class Character extends MovableObject {
     hitBoxX = 45;
     hitBoxY = 35;
 
-    speedWalk = 1.5;
+    speedWalk = 2;
     speedRun = 3;
     world;
     moveCamPosiY = 250;
 
     LP = 100;
-    MP = 100;
+    MP = 0;
     doesDMG = 0;
 
     walking_sound = new Audio('audio/walking.mp3');
@@ -193,7 +193,6 @@ class Character extends MovableObject {
 
     animateIdle() {
         setInterval(() => {
-            // console.log(this.speedWalk, '<-- Walk and Run -->', this.speedRun);
             if (!this.moving && !this.falling && !this.hurts && !this.dead && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
             }
@@ -216,13 +215,10 @@ class Character extends MovableObject {
         setInterval(() => {
             this.walking_sound.pause();
             this.walking_sound.volume = 0.2;
+            this.running_sound.playbackRate = 1.1;
             if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_WALK);
-                this.moving = true;
-                this.walking = true;
-                this.running = false;
-                this.currentImageIdle = 0;
-                this.walking_sound.play();
+                this.manageWalk();
             } else {
                 this.walking_sound.currentTime = 0;
                 if (!this.running) {
@@ -230,7 +226,15 @@ class Character extends MovableObject {
                     this.currentImageWalk = 0;
                 }
             }
-        }, 125);         
+        }, 125);
+    }
+
+    manageWalk() {
+        this.moving = true;
+        this.walking = true;
+        this.running = false;
+        this.currentImageIdle = 0;
+        this.walking_sound.play();
     }
 
     animateRunCharacter() {
@@ -252,11 +256,7 @@ class Character extends MovableObject {
             this.running_sound.playbackRate = 1.1;
             if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
                 this.playMoveAnimation(this.IMAGES_RUN);
-                this.moving = true;
-                this.running = true;
-                this.walking = false;
-                this.currentImageIdle = 0;
-                this.running_sound.play();
+                this.manageRun();
             } else {
                 if (!this.walking) {
                     this.moving = false;
@@ -265,6 +265,14 @@ class Character extends MovableObject {
                 }
             }
         }, 125);   
+    }
+
+    manageRun() {
+        this.moving = true;
+        this.running = true;
+        this.walking = false;
+        this.currentImageIdle = 0;
+        this.running_sound.play();
     }
 
     camPosition() {
@@ -311,17 +319,21 @@ class Character extends MovableObject {
             
             if (this.currentImageAttack >= IMAGES.length) {
                 clearInterval(attack);
-                this.attack = false;
-                this.doesDMG = 0;
-                this.currentImageAttack = 0;
-                this.currentImageAction = 0;
-                this.currentImageIdle = 0;
-                this.world.charATK = [];
+                this.doReset();
                 this.isItAnComboAttack();
                 this.resetSkillImage();
                 this.isItAnFireballAttack();
             }
         }, 125);
+    }
+
+    doReset() {
+        this.attack = false;
+        this.doesDMG = 0;
+        this.currentImageAttack = 0;
+        this.currentImageAction = 0;
+        this.currentImageIdle = 0;
+        this.world.charATK = [];
     }
 
     isItAnComboAttack() {
@@ -364,7 +376,6 @@ class Character extends MovableObject {
     playEndSound() {
         clearInterval(this.world.backgroundMusicInterV);
         this.endFightInterV = setInterval(() => {
-            this.endFight_sound.pause();
             this.endFight_sound.volume = 0.5;
             this.endFight_sound.playbackRate = 1;
             this.endFight_sound.play();

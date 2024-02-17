@@ -1,5 +1,5 @@
 class World {
-    lvl = lvl1;
+    lvl = createLvl1();
     inCave = false;
 
     drawableObject = new DrawableObject();
@@ -49,7 +49,7 @@ class World {
         this.setWorld();
         this.checkCollosins();
         this.loadItemOnArea();
-        // this.playBGMusic();
+        this.playBGMusic();
     }
 
     checkCollosins() {
@@ -94,7 +94,7 @@ class World {
         });
     }
 
-    hitCharacter() {
+    hitCharacter(enemy) {
         if (this.character.LP > 0) {
             this.moveableObject.playAudio(this.character.hurt_sound, 1);
             this.character.animateHurts(this.character.IMAGES_HURT);
@@ -103,8 +103,8 @@ class World {
             this.character.resetImageCache();
             this.character.animateDeath(this.character.IMAGES_DEAD);
             setTimeout(() => {
-                console.log('you are dead');
-            }, 5000);
+                this.drawEndScreen(true);
+            }, 3000);
         }
     }
 
@@ -215,19 +215,19 @@ class World {
             if (enemy instanceof Endboss01) {
                 if (enemy.enemyDoesAttack) {
                     enemy.enemyDoesAttack = false;
-                    this.stoneBlowBegin();
+                    this.stoneBlowBegin(enemy);
                 }
             }
         });
     }
 		
-    stoneBlowBegin() {
+    stoneBlowBegin(enemy) {
         let enemyAttack = new StoneBlow(this.character.posiX, this.character.posiY);
         enemyAttack.world = this;
         this.enemyATK.push(enemyAttack);
         this.character.LP -= 20;
         this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
-        this.hitCharacter();
+        this.hitCharacter(enemy);
     }
 
     checkHitEnemy() {
@@ -301,8 +301,10 @@ class World {
             return new RedMineral(enemy.posiX, enemy.posiY - 35, 1, '');
         } else if (enemy instanceof UsableObjectChest) {
             return new BluePotion(enemy.posiX, enemy.posiY, 1);
+        } else if (enemy instanceof Endboss01) {
+            return new Star();
         } else {
-            return new RedMineral(enemy.posiX, enemy.posiY, 1, '');
+            return new BlueMineral(enemy.posiX, enemy.posiY, 0.5, 0.3, 0.2);
         }
     }
 
@@ -317,6 +319,10 @@ class World {
                     this.bluePotionStatusBar.collectBluePotion();
                 } else if (item instanceof RedPotion) {
                     this.redPotionStatusBar.collectRedPotion();
+                } else if (item instanceof Star) {
+                    setTimeout(() => {
+                        this.drawEndScreen(false);
+                    }, 3000);
                 }
                 this.itemDrop.splice(index, 1);
             }
@@ -444,7 +450,7 @@ class World {
     goInCave() {
         this.inCave = true;
         this.itemDrop = [];
-        this.lvl = lvl1Cave;
+        this.lvl = createLvl1Cave();
         this.loadItemOnArea();
         this.character.moveCamPosiY = 1;
         this.loadSequenz[0].endLoadSequenz();
@@ -453,7 +459,7 @@ class World {
     goOutFromCave() {
         this.inCave = false;
         this.itemDrop = [];
-        this.lvl = lvl1;
+        this.lvl = createLvl1();
         this.loadItemOnArea();
         this.character.moveCamPosiY = 250;
         this.loadSequenz[0].endLoadSequenz();
@@ -483,17 +489,34 @@ class World {
     playBGMusic() {
         this.backgroundMusicInterV = setInterval(() => {
             if (this.inCave) {
-                this.background_sound.pause();
-                this.background_cave.volume = 0.1;
-                this.background_cave.playbackRate = 0.5;
-                this.background_cave.play();
+                this.musicInCave();
             } else {
-                this.background_cave.pause();
-                this.background_sound.volume = 0.2;
-                this.background_sound.playbackRate = 1;
-                this.background_sound.play();
+                this.musicInWorld();
             }
         }, 125);
+    }
+
+    musicInCave() {
+        this.background_sound.pause();
+        this.background_cave.volume = 0.1;
+        this.background_cave.playbackRate = 0.5;
+        this.background_cave.play();
+    }
+
+    musicInWorld() {
+        this.background_cave.pause();
+        this.background_sound.volume = 0.2;
+        this.background_sound.playbackRate = 1;
+        this.background_sound.play();
+    }
+
+    drawEndScreen(dead) {
+        clearAllIntervals();
+        this.character.endFight_sound.pause();
+        this.background_sound.pause();
+        this.background_cave.pause();
+        element('endMonitor').classList.remove('d-none');
+        showEndScreen(dead);
     }
 
     draw() {
@@ -554,7 +577,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
+        mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }

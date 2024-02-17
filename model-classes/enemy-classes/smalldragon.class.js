@@ -103,13 +103,17 @@ class SmallDragon extends MovableObject {
             if (this.currentImageAttack >= this.IMAGES_ATTACK.length) {
                 clearInterval(enemyAttackInterV);
                 this.enemyDirection();
-                this.attack = false;
-                this.attackDelay = false;
-                this.doesDMG = 20;
-                this.hitBoxX = 45;
-				this.hitBoxWidth = 65;
+                this.doReset();
                 this.resetImageCache();
             }
         }, 225);
+    }
+
+    doReset() {
+        this.attack = false;
+        this.attackDelay = false;
+        this.doesDMG = 20;
+        this.hitBoxX = 45;
+        this.hitBoxWidth = 65;
     }
 }

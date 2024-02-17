@@ -27,9 +27,9 @@ class ManaStatusBar extends DrawableObject {
     ];
 
     constructor() {
-        super().loadImage('img/wizard-saga/statusbars/mana-bar/mana-bar-100.png');
+        super().loadImage('img/wizard-saga/statusbars/mana-bar/mana-bar-00.png');
         this.loadImages(this.MANA_BAR);
-        this.setPercentage(100, this.MANA_BAR);
+        this.setPercentage(0, this.MANA_BAR);
         this.posiX = 35;
         this.posiY = 55;
     }

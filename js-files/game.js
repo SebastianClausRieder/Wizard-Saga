@@ -12,70 +12,40 @@ function init() {
 
 function startGame() {
     element('startMonitor').classList.add('d-none');
+    element('endMonitor').classList.add('d-none');
     world = new World(canvas, keyboard);
 }
 
 // Events
 
 document.addEventListener('keydown', (event) => {
-    // console.log(event)
-    if (event.code == "KeyA" || event.code == "ArrowLeft") {
-        keyboard.LEFT = true;
+    const keyMappings = {
+        'KeyA': 'LEFT',
+        'ArrowLeft': 'LEFT',
+        'KeyD': 'RIGHT',
+        'ArrowRight': 'RIGHT',
+        'KeyW': 'UP',
+        'ArrowUp': 'UP',
+        'KeyS': 'DOWN',
+        'ArrowDown': 'DOWN',
+        'Space': 'JUMP',
+        'Digit1': 'MAGIC1',
+        'Digit2': 'MAGIC2',
+        'Digit3': 'USELESSMANA',
+        'Digit4': 'ATTACK1',
+        'Digit5': 'ATTACK2',
+        'Digit6': 'DEFENDER',
+        'ShiftLeft': 'RUN',
+        'KeyB': 'BLUEPOTION',
+        'KeyR': 'REDPOTION'
+    };
+
+    const key = keyMappings[event.code];
+    if (key) {
+        keyboard[key] = true;
     }
 
-    if (event.code == "KeyD" || event.code == "ArrowRight") {
-        keyboard.RIGHT = true;
-    }
-
-    if (event.code == "KeyW" || event.code == "ArrowUp") {
-        keyboard.UP = true;
-    }
-
-    if (event.code == "KeyS" || event.code == "ArrowDown") {
-        keyboard.DOWN = true;
-    }
-
-    if (event.code == "Space") {
-        keyboard.JUMP = true;
-    }
-
-    if (event.code == "Digit1") {
-        keyboard.MAGIC1 = true;
-    }
-
-    if (event.code == "Digit2") {
-        keyboard.MAGIC2 = true;
-    }
-
-    if (event.code == "Digit3") {
-        keyboard.USELESSMANA = true;
-    }
-
-    if (event.code == "Digit4") {
-        keyboard.ATTACK1 = true;
-    }
-
-    if (event.code == "Digit5") {
-        keyboard.ATTACK2 = true;
-    }
-
-    if (event.code == "Digit6") {
-        keyboard.DEFENDER = true;
-    }
-
-    if (event.code == "ShiftLeft") {
-        keyboard.RUN = true;
-    }
-
-    if (event.code == "KeyB") {
-        keyboard.BLUEPOTION = true;
-    }
-
-    if (event.code == "KeyR") {
-        keyboard.REDPOTION = true;
-    }
-
-    if (event.code == "F10") {
+    if (event.code === 'F10') {
         canvas.requestFullscreen();
     }
 });

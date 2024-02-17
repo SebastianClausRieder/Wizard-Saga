@@ -18,7 +18,7 @@ class DrawableObject {
 
     enemyClasses = [Lizard, Demon, SmallDragon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];
-    itemClasses = [BlueMineral, RedMineral, BluePotion, RedPotion];
+    itemClasses = [BlueMineral, RedMineral, BluePotion, RedPotion, Star];
     platformClasses = [Platform01, Platform02, Platform03, Platform04Wall, Platform05];
     usableObjectClasses = [UsableObjectDoor, UsableObjectChest, UsableObjectTotem];
 
@@ -39,8 +39,6 @@ class DrawableObject {
 
     draw(ctx) {
         ctx.drawImage(this.img, this.posiX, this.posiY, this.width, this.height);
-        // ctx.drawImage(this.img, 0, 0, this.img.width,    this.img.height,     // source rectangle
-        //            0, 0, this.canvas.width, this.canvas.height); // destination rectangle
     }
 
     drawFrame(ctx) {

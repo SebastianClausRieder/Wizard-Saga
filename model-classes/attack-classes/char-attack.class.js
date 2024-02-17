@@ -83,25 +83,33 @@ class CharAttackFireball extends MovableObject {
     flyingFireball() {
         const fireballAnimation = setInterval(() => {
             this.playActionAnimation(this.IMAGES_FIREBALL);
-            if (this.otherDirection) {
-                this.posiX -= this.speedFly;
-            } else {
-                this.posiX += this.speedFly;
-            }
+            this.checkDirection();
             this.currentImageAttack++;
             this.world.checkHitEnemy();
 
             if (this.currentImageAttack >= this.IMAGES_FIREBALL.length) {
                 clearInterval(fireballAnimation);
-                this.world.fireballFly = false;
-                this.world.character.resetSkillImage();
-                this.currentImageAttack = 0;
-                this.currentImageAction = 0;
-                this.currentImageIdle = 0;
-                this.world.character.doesDMG = 0;
-                this.world.charATK = [];
+                this.doReset();
             }
         }, 100);
+    }
+
+    checkDirection() {
+        if (this.otherDirection) {
+            this.posiX -= this.speedFly;
+        } else {
+            this.posiX += this.speedFly;
+        }
+    }
+
+    doReset() {
+        this.world.fireballFly = false;
+        this.world.character.resetSkillImage();
+        this.currentImageAttack = 0;
+        this.currentImageAction = 0;
+        this.currentImageIdle = 0;
+        this.world.character.doesDMG = 0;
+        this.world.charATK = [];
     }
 }
 

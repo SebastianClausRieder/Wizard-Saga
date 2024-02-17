@@ -1,0 +1,55 @@
+@media all and (min-width: 601px) and (max-width: 1000px) {
+    
+    canvas {
+        border-radius: 0;
+        border: 0;
+    }
+
+    /* Instruction Display */
+
+    .go-back {
+        width: 20px;
+    }
+
+    .text-contain {
+        gap: 5px;
+    }
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .instruction {
+        font-size: 18px;
+    }
+
+    /* End Display */
+
+    .end-message {
+        font-size: 18px;
+    }
+
+    .end-image-contain {
+        gap: 5px;
+    }
+
+    .end-image {
+        width: 200px;
+    }
+}
+
+@media all and (max-width: 600px) {
+
+    body {
+        background-image: url(img/wizard-saga/background/dark-portal-flip-divice.jpg);
+    }
+    
+    canvas {
+        border-radius: 0;
+        border: 0;
+    }
+
+    .start-monitor, .instruction-monitor, .end-monitor {
+        display: none;
+    }
+}
