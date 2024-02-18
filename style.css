@@ -49,6 +49,16 @@ canvas {
 
 /* Canvas Smartphones end */
 
+/* Button Area */
+
+.play-button {
+    width: 32px;
+    height: 32px;
+
+    display: none;
+    position: absolute;
+}
+
 .start-monitor, .instruction-monitor, .end-monitor {
     width: 95%;
     height: 94.4%;

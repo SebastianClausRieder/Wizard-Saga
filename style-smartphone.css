@@ -5,6 +5,30 @@
         border: 0;
     }
 
+    .play-button {
+        display: flex;
+    }
+
+    #btnLeft {
+        bottom: 20px; left: 20px;
+    }
+
+    #btnRight {
+        bottom: 20px; left: 70px;
+    }
+
+    #btnAction {
+        bottom: 55px; left: 45px;
+    }
+
+    #btnRun {
+        bottom: 50px; right: 70px;
+    }
+
+    #btnJump {
+        bottom: 100px; right: 70px;
+    }
+
     /* Instruction Display */
 
     .go-back {

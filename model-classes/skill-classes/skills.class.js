@@ -1,60 +1,170 @@
 class MeleeAttack1 extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 870;
+    posiX = 850;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.ATTACK1 = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.ATTACK1 = false;
+        this.world.keyboard.keyIsHold_ATTACK1 = false;
     }
 }
 
 class MeleeAttack2 extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 910;
+    posiX = 900;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon.png');
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.ATTACK2 = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.ATTACK2 = false;
+        this.world.keyboard.keyIsHold_ATTACK2 = false;
     }
 }
 
 class Fireball extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 750;
+    posiX = 700;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon.png');
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.MAGIC1 = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.MAGIC1 = false;
+        this.world.keyboard.keyIsHold_MAGIC1 = false;
     }
 }
 
 class Fireburst extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 790;
+    posiX = 750;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon.png');
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.MAGIC2 = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.MAGIC2 = false;
+        this.world.keyboard.keyIsHold_MAGIC2 = false;
     }
 }
 
 class UseLessMana extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 830;
+    posiX = 800;
+
+    world;
 
     IMAGE_USELESSMANA = [
         'img/wizard-saga/skill-icon/wizard-skills/uselessmana/uselessmana-icon-10.png',
@@ -69,11 +179,15 @@ class UseLessMana extends MovableObject {
         'img/wizard-saga/skill-icon/wizard-skills/uselessmana/uselessmana-icon-01.png'
     ];
 
-    constructor() {
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/uselessmana/uselessmana-icon-dark.png');
         this.loadImages(this.IMAGE_USELESSMANA);
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
     activateUseLessMana(world) {
@@ -89,13 +203,36 @@ class UseLessMana extends MovableObject {
             }
         }, 1000);
     }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.USELESSMANA = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.USELESSMANA = false;
+        this.world.keyboard.keyIsHold_USELESSMANA = false;
+    }
 }
 
 class Defender extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
     posiX = 950;
+
+    world;
 
     IMAGE_DEFENDER = [
         'img/wizard-saga/skill-icon/wizard-skills/defender/defender-icon-10.png',
@@ -110,11 +247,15 @@ class Defender extends MovableObject {
         'img/wizard-saga/skill-icon/wizard-skills/defender/defender-icon-01.png'
     ];
 
-    constructor() {
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/defender/defender-icon-dark.png');
         this.loadImages(this.IMAGE_DEFENDER);
 
-        this.posiY = canvasHeight - this.height + 23;
+        this.posiY = canvasHeight - this.height + 25;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
     activateDefender(world) {
@@ -130,30 +271,105 @@ class Defender extends MovableObject {
             }
         }, 1000);
     }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.DEFENDER = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.DEFENDER = false;
+        this.world.keyboard.keyIsHold_DEFENDER = false;
+    }
 }
 
 class BluePotionUse extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
     posiX = 950;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
 
-        this.posiY = canvasHeight - this.height - 20;
+        this.posiY = canvasHeight - this.height - 30;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.BLUEPOTION = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.BLUEPOTION = false;
+        this.world.keyboard.keyIsHold_BLUEPOTION = false;
     }
 }
 
 class RedPotionUse extends MovableObject {
-    width = 35;
-    height = 35;
+    width = 45;
+    height = 45;
 
-    posiX = 910;
+    posiX = 950;
 
-    constructor() {
+    world;
+
+    constructor(world) {
         super().loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
 
-        this.posiY = canvasHeight - this.height - 20;
+        this.posiY = canvasHeight - this.height - 85;
+        this.world = world;
+
+        canvas.addEventListener('touchstart', this.handleTouchStart.bind(this));
+        canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    }
+
+    handleTouchStart(event) {
+        const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
+        const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
+    
+        const { x, y } = convertTouchCoordinates(touchX, touchY);
+    
+        console.log('Skalierte Touch-Koordinaten:', x, y);
+    
+        if (x >= this.posiX && x <= this.posiX + this.width &&
+            y >= this.posiY && y <= this.posiY + this.height) {
+                console.log('touch on');
+            this.world.keyboard.REDPOTION = true;
+        }
+    }
+
+    handleTouchEnd(event) {
+        console.log('touch off');
+        this.world.keyboard.REDPOTION = false;
+        this.world.keyboard.keyIsHold_REDPOTION = false;
     }
 }

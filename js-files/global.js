@@ -14,8 +14,8 @@ function clearAllIntervals() {
 
 // Canvas
 
-const canvasHeight = 500;
 const canvasWidth = 1000;
+const canvasHeight = 500;
 
 // Start and Instruction Display
 

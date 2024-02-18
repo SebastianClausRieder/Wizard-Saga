@@ -80,11 +80,15 @@
 
 <body onload="init()">
     <div class="game-display-contain">
-        <canvas id="game-display" width="1000" height="530">
+        <canvas id="game-display" width="1000" height="530"></canvas>
 
-        </canvas>
+        <img id="btnLeft" class="play-button" src="img/wizard-saga/touch-button/arrow-left.png">
+        <img id="btnRight" class="play-button" src="img/wizard-saga/touch-button/arrow-right.png">
+        <img id="btnAction" class="play-button" src="img/wizard-saga/touch-button/action.png">
+        <img id="btnRun" class="play-button" src="img/wizard-saga/touch-button/run.png">
+        <img id="btnJump" class="play-button" src="img/wizard-saga/touch-button/jump.png">
 
-        <div id="startMonitor" class="start-monitor">
+        <div id="startMonitor" class="start-monitor d-none">
             <div class="button-contain">
                 <button class="front-button" onclick="goToInstructionDisplay()"><img
                         src="img/wizard-saga/headline/instructions-btn.png" class="button-img"></button>

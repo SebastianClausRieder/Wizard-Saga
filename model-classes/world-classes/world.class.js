@@ -7,14 +7,14 @@ class World {
     
     character = new Character();
     charSkills = [   // skills
-        new MeleeAttack1(),
-        new MeleeAttack2(),
-        new Fireball(),
-        new Fireburst(),
-        new UseLessMana(),
-        new Defender(),
-        new BluePotionUse(),
-        new RedPotionUse()
+        new MeleeAttack1(this),
+        new MeleeAttack2(this),
+        new Fireball(this),
+        new Fireburst(this),
+        new UseLessMana(this),
+        new Defender(this),
+        new BluePotionUse(this),
+        new RedPotionUse(this)
     ];
     charATK = [];
     enemyATK = [];
@@ -254,6 +254,7 @@ class World {
 
     hitChest(enemy) {
         enemy.loadImage('img/wizard-saga/platforms/PNG/Details/chest-open.png');
+        enemy.hurts = true;
         setTimeout(() => {
             let item = this.whatItemDrop(enemy);
             enemy.removeFromMap();
@@ -577,7 +578,7 @@ class World {
         }
 
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
         if (mo instanceof RedMineralStatusBar || mo instanceof BlueMineralStatusBar || mo instanceof RedPotionStatusBar || mo instanceof BluePotionStatusBar) {
             mo.drawText(this.ctx, this.redMineralStatusBar.collectedRedMineral, this.blueMineralStatusBar.collectedBlueMineral, this.redPotionStatusBar.collectedRedPotion, this.bluePotionStatusBar.collectedBluePotion);
         }
