@@ -13,8 +13,6 @@ class DrawableObject {
     currentImageWalk = 0;
     currentImageAction = 0;
     currentImageAttack = 0;
-    
-    collectedRedMineral = 0;
 
     enemyClasses = [Lizard, Demon, SmallDragon, Endboss01];
     attackClasses = [CharAttack1, CharAttack2, CharAttackFireball, CharAttackFireburst];

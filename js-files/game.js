@@ -9,13 +9,11 @@ let keyboard = new Keyboard();
 function init() {
     canvas = element('game-display');
     bindBtsPressEvents();
-    world = new World(canvas, keyboard);
 }
 
 function startGame() {
     element('startMonitor').classList.add('d-none');
     element('endMonitor').classList.add('d-none');
-    element('playBtnContain').classList.remove('d-none');
     world = new World(canvas, keyboard);
 }
 
@@ -49,7 +47,11 @@ document.addEventListener('keydown', (event) => {
     }
 
     if (event.code === 'F10') {
-        canvas.requestFullscreen();
+        checkElementForFullscreen();
+    }
+
+    if (event.code === 'KeyP') {
+        backgroundMusicOnOff();
     }
 });
 
@@ -106,9 +108,9 @@ document.addEventListener('keyup', (event) => {
         keyboard.keyIsHold_DEFENDER = false;
     }
 
-    if (event.code == "ShiftLeft") {
-        keyboard.RUN = false;
-    }
+    // if (event.code == "ShiftLeft") {
+    //     keyboard.RUN = false;
+    // }
 
     if (event.code == "KeyB") {
         keyboard.BLUEPOTION = false;
@@ -123,6 +125,7 @@ document.addEventListener('keyup', (event) => {
 
 function bindBtsPressEvents() {
     element('btnLeft').addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.LEFT = true;
     });
 
@@ -131,6 +134,7 @@ function bindBtsPressEvents() {
     });
     
     element('btnRight').addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.RIGHT = true;
     });
 
@@ -139,6 +143,7 @@ function bindBtsPressEvents() {
     });
     
     element('btnAction').addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.UP = true;
     });
 
@@ -148,6 +153,7 @@ function bindBtsPressEvents() {
     });
     
     element('btnJump').addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.JUMP = true;
     });
 
@@ -157,12 +163,58 @@ function bindBtsPressEvents() {
     });
     
     element('btnRun').addEventListener('touchstart', (e) => {
+        e.preventDefault();
         keyboard.RUN = true;
     });
 
-    element('btnRun').addEventListener('touchend', (e) => {
-        keyboard.RUN = false;
+    // element('btnRun').addEventListener('touchend', (e) => {
+    //     keyboard.RUN = false;
+    // });
+    
+    element('btnFS').addEventListener('touchstart', (e) => {
+        checkElementForFullscreen();
     });
+    
+    element('btnSound').addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        backgroundMusicOnOff();
+    });
+}
+
+function checkElementForFullscreen() {
+    if (element('startMonitor').classList.contains('d-none') && element('instructionMonitor').classList.contains('d-none')) {
+        enterFullscreen(canvas);
+    } else {
+        enterFullscreen(element('game-screen'));
+    }
+}
+
+function enterFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    }
+}
+
+function backgroundMusicOnOff() {
+    if (world.backgroundMusic) {
+        world.backgroundMusic = false;
+        clearInterval(world.backgroundMusicInterV);
+        stopMusic();
+        element('btnSound').src = 'img/wizard-saga/touch-button/speaker-off.png';
+    } else {
+        world.backgroundMusic = true;
+        world.playBGMusic();
+        element('btnSound').src = 'img/wizard-saga/touch-button/speaker-on.png';
+    }
+}
+
+function stopMusic() {
+    world.background_cave.pause();
+    world.background_sound.pause();
 }
 
 // Ursprüngliche Größe des Canvas

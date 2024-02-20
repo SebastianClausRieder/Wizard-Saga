@@ -4,9 +4,16 @@ class World {
 
     drawableObject = new DrawableObject();
     moveableObject = new MovableObject();
+
+    lifeStatusBar = new LifeStatusBar();
+    manaStatusBar = new ManaStatusBar();
+    blueMineralStatusBar = new BlueMineralStatusBar();
+    redMineralStatusBar = new RedMineralStatusBar();
+    bluePotionStatusBar = new BluePotionStatusBar();
+    redPotionStatusBar = new RedPotionStatusBar();
     
     character = new Character();
-    charSkills = [   // skills
+    charSkills = [
         new MeleeAttack1(this),
         new MeleeAttack2(this),
         new Fireball(this),
@@ -25,19 +32,13 @@ class World {
     background_cave = new Audio('audio/background-cave.mp3');
 
     backgroundMusicInterV;
+    backgroundMusic = false;
 
     canvas;
     ctx;
     keyboard;
     cam_X;
     cam_Y;
-
-    lifeStatusBar = new LifeStatusBar();
-    manaStatusBar = new ManaStatusBar();
-    blueMineralStatusBar = new BlueMineralStatusBar();
-    redMineralStatusBar = new RedMineralStatusBar();
-    bluePotionStatusBar = new BluePotionStatusBar();
-    redPotionStatusBar = new RedPotionStatusBar();
 
     fireballFly = false;
 
@@ -236,6 +237,10 @@ class World {
                 if (this.charATK[0].isColliding(enemy) && !enemy.dead && !enemy.hurts) {
                     this.whatsHitet(enemy);
                 }
+            } else if (enemy instanceof UsableObjectChest && this.charATK[0] instanceof CharAttack1) {
+                if (this.charATK[0].isColliding(enemy) && !enemy.dead && !enemy.hurts) {
+                    this.whatsHitet(enemy);
+                }
             } else {
                 if (this.charATK[0].isColliding(enemy) && !enemy.dead) {
                     this.whatsHitet(enemy);
@@ -254,13 +259,15 @@ class World {
 
     hitChest(enemy) {
         enemy.loadImage('img/wizard-saga/platforms/PNG/Details/chest-open.png');
-        enemy.hurts = true;
-        setTimeout(() => {
-            let item = this.whatItemDrop(enemy);
-            enemy.removeFromMap();
-            this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
-            this.itemDrop.push(item);
-        }, 2000);
+        if (!enemy.dead) {
+            enemy.dead = true;
+            setTimeout(() => {
+                    let item = this.whatItemDrop(enemy);
+                    enemy.removeFromMap();
+                    this.lvl.enemies = this.lvl.enemies.filter(enemy => !enemy.toBeRemoved);
+                    this.itemDrop.push(item);
+            }, 2000);
+        }
     }
 
     hitEnemy(enemy) {
@@ -278,7 +285,9 @@ class World {
     isEnemyLPnotZero(enemy) {
         enemy.animateHurts(enemy.IMAGES_HURT);
         setTimeout(() => {
-            enemy.enemyDirection();
+            if (!enemy.dead) {
+                enemy.enemyDirection();
+            }
         }, 1500);
     }
 
@@ -453,7 +462,7 @@ class World {
         this.itemDrop = [];
         this.lvl = createLvl1Cave();
         this.loadItemOnArea();
-        this.character.moveCamPosiY = 1;
+        this.character.moveCamPosiY = -100;
         this.loadSequenz[0].endLoadSequenz();
     }
 
@@ -489,12 +498,18 @@ class World {
 
     playBGMusic() {
         this.backgroundMusicInterV = setInterval(() => {
-            if (this.inCave) {
-                this.musicInCave();
-            } else {
-                this.musicInWorld();
+            if (this.backgroundMusic) {
+                this.playMusic();
             }
         }, 125);
+    }
+
+    playMusic() {
+        if (this.inCave) {
+            this.musicInCave();
+        } else {
+            this.musicInWorld();
+        }
     }
 
     musicInCave() {

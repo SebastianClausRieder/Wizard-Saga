@@ -14,11 +14,11 @@
     }
 
     #btnRight {
-        bottom: 20px; left: 70px;
+        bottom: 20px; left: 100px;
     }
 
     #btnAction {
-        bottom: 55px; left: 45px;
+        bottom: 60px; left: 60px;
     }
 
     #btnRun {
@@ -27,6 +27,14 @@
 
     #btnJump {
         bottom: 100px; right: 70px;
+    }
+
+    #btnFS {
+        top: 40px; right: 40px;
+    }
+
+    #btnSound {
+        top: 40px; right: 90px;
     }
 
     /* Instruction Display */
@@ -68,12 +76,7 @@
         background-image: url(img/wizard-saga/background/dark-portal-flip-divice.jpg);
     }
     
-    canvas {
-        border-radius: 0;
-        border: 0;
-    }
-
-    .start-monitor, .instruction-monitor, .end-monitor {
+    .game-display-contain {
         display: none;
     }
 }

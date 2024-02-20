@@ -88,7 +88,7 @@ function createLvl1Cave() {
         [   // enemies
             new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 3845, 135),
             new SmallDragon(3300, true),
-            new SmallDragon(3700, true),
+            new SmallDragon(3600, true),
             new SmallDragon(4885, false),
             new SmallDragon(6000, true),
             new SmallDragon(6500, true),

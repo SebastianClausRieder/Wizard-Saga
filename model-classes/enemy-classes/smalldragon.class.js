@@ -95,18 +95,24 @@ class SmallDragon extends MovableObject {
 
     enemyAttack() {
         const enemyAttackInterV = setInterval(() => {
-            this.playActionAnimation(this.IMAGES_ATTACK);
-            this.attack = true;
-            this.currentImageAttack++;
-            this.stopWalkingEnemies();
+            if (!this.dead) {
+                this.startAttackAnimation();
 
-            if (this.currentImageAttack >= this.IMAGES_ATTACK.length) {
-                clearInterval(enemyAttackInterV);
-                this.enemyDirection();
-                this.doReset();
-                this.resetImageCache();
+                if (this.currentImageAttack >= this.IMAGES_ATTACK.length) {
+                    clearInterval(enemyAttackInterV);
+                    this.enemyDirection();
+                    this.doReset();
+                    this.resetImageCache();
+                }
             }
         }, 225);
+    }
+
+    startAttackAnimation() {
+        this.playActionAnimation(this.IMAGES_ATTACK);
+        this.attack = true;
+        this.currentImageAttack++;
+        this.stopWalkingEnemies();
     }
 
     doReset() {

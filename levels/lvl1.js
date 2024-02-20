@@ -122,8 +122,8 @@ function createLvl1() {
             new Platform02('img/wizard-saga/platforms/finisht-platform/platformWithHoles5x4.png', 305, 245, 10500, 355)
         ],
         [   // enemies
-            // ...Array(numLizards).fill().map(() => new Lizard()),
-            // ...Array(numDemons).fill().map(() => new Demon()),
+            ...Array(numLizards).fill().map(() => new Lizard()),
+            ...Array(numDemons).fill().map(() => new Demon()),
             new UsableObjectChest('img/wizard-saga/platforms/PNG/Details/chest-close.png', 64, 64, 2000, 265),
             new Endboss01()
         ]

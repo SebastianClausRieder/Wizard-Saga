@@ -30,7 +30,7 @@ class Character extends MovableObject {
 
     endFightInterV;
 
-    moving = false;
+    imgMoving = false;
     walking = false;
     running = false;
     attack = false;
@@ -177,6 +177,7 @@ class Character extends MovableObject {
         this.animateIdle();
         this.animateWalkingCharacter();
         this.animateRunCharacter();
+        this.setFalse();
         this.camPosition();
         this.applyGravity();
         this.animateJumpingCharacter();
@@ -193,7 +194,7 @@ class Character extends MovableObject {
 
     animateIdle() {
         setInterval(() => {
-            if (!this.moving && !this.falling && !this.hurts && !this.dead && !this.attack) {
+            if (!this.imgMoving && !this.falling && !this.hurts && !this.dead && !this.attack) {
                 this.playIdleAnimation(this.IMAGES_IDLE);
             }
         }, 225);
@@ -201,36 +202,44 @@ class Character extends MovableObject {
 
     animateWalkingCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
-                this.posiX += this.speedWalk;
-                this.otherDirection = false;
-            }
-            
-            if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
-                this.posiX -= this.speedWalk;
-                this.otherDirection = true;
-            }
+            this.walkCharacter();
         }, 1000 /60);
 
         setInterval(() => {
             this.walking_sound.pause();
             this.walking_sound.volume = 0.2;
-            this.running_sound.playbackRate = 1.1;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
-                this.playMoveAnimation(this.IMAGES_WALK);
-                this.manageWalk();
-            } else {
-                this.walking_sound.currentTime = 0;
-                if (!this.running) {
-                    this.moving = false;
-                    this.currentImageWalk = 0;
-                }
-            }
+            this.walking_sound.playbackRate = 1.1;
+            this.walkCharacterAnimation();
         }, 125);
     }
 
+    walkCharacter() {
+        if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
+            this.posiX += this.speedWalk;
+            this.otherDirection = false;
+        }
+        
+        if (this.world.keyboard.LEFT && !this.running && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
+            this.posiX -= this.speedWalk;
+            this.otherDirection = true;
+        }
+    }
+
+    walkCharacterAnimation() {
+        if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
+            this.playMoveAnimation(this.IMAGES_WALK);
+            this.manageWalk();
+        } else {
+            this.walking_sound.currentTime = 0;
+            if (!this.running) {
+                this.imgMoving = false;
+                this.currentImageWalk = 0;
+            }
+        }
+    }
+
     manageWalk() {
-        this.moving = true;
+        this.imgMoving = true;
         this.walking = true;
         this.running = false;
         this.currentImageIdle = 0;
@@ -239,40 +248,56 @@ class Character extends MovableObject {
 
     animateRunCharacter() {
         setInterval(() => {
-            if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
-                this.posiX += this.speedRun;
-                this.otherDirection = false;
-            }
-            
-            if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
-                this.posiX -= this.speedRun;
-                this.otherDirection = true;
-            }
+            this.runCharacter();
         }, 1000 /60);
 
         setInterval(() => {
             this.running_sound.pause();
             this.running_sound.volume = 0.3;
-            this.running_sound.playbackRate = 1.1;
-            if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
-                this.playMoveAnimation(this.IMAGES_RUN);
-                this.manageRun();
-            } else {
-                if (!this.walking) {
-                    this.moving = false;
-                    this.running = false;
-                    this.currentImageWalk = 0;
-                }
-            }
+            this.running_sound.playbackRate = 1.3;
+            this.runCharacterAnimation();
         }, 125);   
     }
 
+    runCharacter() {
+        if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
+            this.posiX += this.speedRun;
+            this.otherDirection = false;
+        }
+        
+        if (this.world.keyboard.LEFT && this.world.keyboard.RUN && this.posiX > 0 && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformRight) {
+            this.posiX -= this.speedRun;
+            this.otherDirection = true;
+        }
+    }
+
+    runCharacterAnimation() {
+        if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
+            this.playMoveAnimation(this.IMAGES_RUN);
+            this.manageRun();
+        } else {
+            if (!this.walking) {
+                this.imgMoving = false;
+                this.running = false;
+                this.currentImageWalk = 0;
+            }
+        }
+    }
+
     manageRun() {
-        this.moving = true;
+        this.imgMoving = true;
         this.running = true;
         this.walking = false;
         this.currentImageIdle = 0;
         this.running_sound.play();
+    }
+
+    setFalse() {
+        setInterval(() => {
+            if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                this.world.keyboard.RUN = false;
+            }
+        }, 100);
     }
 
     camPosition() {
@@ -355,8 +380,8 @@ class Character extends MovableObject {
         if (!this.fireballAttack && !this.secondAttack) {
             this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
             this.world.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon.png');
-            this.world.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon.png');
-            this.world.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon.png');
+            this.world.charSkills[2].loadImage(this.world.charSkills[2].currentSkillIcon);
+            this.world.charSkills[3].loadImage(this.world.charSkills[3].currentSkillIcon);
         }
     }
 
@@ -423,25 +448,33 @@ class Character extends MovableObject {
     usePotion() {
         setInterval(() => {
             if (this.world.keyboard.BLUEPOTION && !this.world.keyboard.keyIsHold_BLUEPOTION && !this.bluePotionDelay && this.world.bluePotionStatusBar.collectedBluePotion >= 1) {
-                this.world.keyboard.keyIsHold_BLUEPOTION = true;
-                this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion-dark.png');
-                this.drinkPotion('blue');
-                setTimeout(() => {
-                    this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
-                    this.bluePotionDelay = false;
-                }, 30000);
+                this.useBluePotion();
             }
 
             if (this.world.keyboard.REDPOTION && !this.world.keyboard.keyIsHold_REDPOTION && !this.redPotionDelay && this.world.redPotionStatusBar.collectedRedPotion >= 1) {
-                this.world.keyboard.keyIsHold_REDPOTION = true;
-                this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion-dark.png');
-                this.drinkPotion('red');
-                setTimeout(() => {
-                    this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
-                    this.redPotionDelay = false;
-                }, 30000);
+                this.useRedPotion();
             }
         }, 1000 / 60);
+    }
+
+    useBluePotion() {
+        this.world.keyboard.keyIsHold_BLUEPOTION = true;
+        this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion-dark.png');
+        this.drinkPotion('blue');
+        setTimeout(() => {
+            this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
+            this.bluePotionDelay = false;
+        }, 30000);
+    }
+
+    useRedPotion() {
+        this.world.keyboard.keyIsHold_REDPOTION = true;
+        this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion-dark.png');
+        this.drinkPotion('red');
+        setTimeout(() => {
+            this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
+            this.redPotionDelay = false;
+        }, 30000);
     }
 
     drinkPotion(potion) {

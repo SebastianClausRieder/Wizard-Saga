@@ -22,6 +22,7 @@ class MovableObject extends DrawableObject {
     doesDMG;
 
     skill;
+    currentSkillIcon;
     totemSkillIsLearnd = false;
 
     firstChance = 0;
@@ -370,5 +371,53 @@ class MovableObject extends DrawableObject {
         sound.volume = 1;
         sound.playbackRate = speed;
         sound.play();
+    }
+
+    // Skills
+
+    characterHaveEnoughMana(withULM, withoutULM, skillImage, skillImageDark) {
+        setInterval(() => {
+            if (this.world.character.useLessManaActive) {
+                if (this.world.character.MP >= withULM) {
+                    this.setSkillImage(skillImage);
+                } else {
+                    this.setSkillImageDark(skillImageDark);
+                }
+            } else if (this.world.character.MP >= withoutULM) {
+                this.setSkillImage(skillImage);
+            } else {
+                this.setSkillImageDark(skillImageDark);
+            }
+        }, 100);
+    }
+
+    characterHaveEnoughBlueMinerals(consumption, skillImage, skillImageDark) {
+        setInterval(() => {
+            if (this.world.blueMineralStatusBar.collectedBlueMineral >= consumption) {
+                this.setSkillImage(skillImage);
+            } else {
+                this.setSkillImageDark(skillImageDark);
+            }
+        }, 100);
+    }
+
+    characterHaveEnoughRedMinerals(consumption, skillImage, skillImageDark) {
+        setInterval(() => {
+            if (this.world.redMineralStatusBar.collectedRedMineral >= consumption) {
+                this.setSkillImage(skillImage);
+            } else {
+                this.setSkillImageDark(skillImageDark);
+            }
+        }, 100);
+    }
+
+    setSkillImage(skillImage) {
+        this.currentSkillIcon = skillImage;
+        this.loadImage(skillImage);
+    }
+
+    setSkillImageDark(skillImageDark) {
+        this.currentSkillIcon = skillImageDark;
+        this.loadImage(skillImageDark);
     }
 }
