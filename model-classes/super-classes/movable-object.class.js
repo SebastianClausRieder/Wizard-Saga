@@ -55,70 +55,31 @@ class MovableObject extends DrawableObject {
 
     world;
 
-    animation() {
-        this.moveLeft(0.1, 1000 / 60);
-    }
-
-    bgAnimation() {
-        this.moveRight(0.03, 1000 / 60);
-    }
-
-    animateIdle() {
-        setInterval(() => {
-            if (this.standing && !this.attack) {
-                this.playIdleAnimation(this.IMAGES_IDLE);
-            }
-        }, 225);
-    }
-
-    animateWalkingEnemies(fps) {
-        this.walkingInterval = setInterval(() => {
-                this.playMoveAnimation(this.IMAGES_WALKING);
-        }, fps);
-    }
-
-    playIdleAnimation(IMAGES) {
-        let i = this.currentImageIdle % IMAGES.length;
-        this.images(IMAGES, i);
-        this.currentImageIdle++;
-    }
-
-    playMoveAnimation(IMAGES) {
-        let i = this.currentImageWalk % IMAGES.length;
-        this.images(IMAGES, i);
-        this.currentImageWalk++;
-    }
-
-    playActionAnimation(IMAGES) {
-        let i = this.currentImageAction % IMAGES.length;
-        this.images(IMAGES, i);
-        this.currentImageAction++;
-    }
-
-    images(IMAGES, i) {
-        let path = IMAGES[i];
-        this.img = this.imageCache[path];
-    }
-
-    resetImageCache() {
-        this.currentImageAction = 0;
-        this.currentImageAttack = 0;
-        this.currentImageIdle = 0;
-        this.currentImageWalk = 0;
-    }
-
+    /**
+     * Allows the object to move to the right.
+     * @param {number} speed determines how fast the object is moving.
+     * @param {number} fps speed of repetition rate.
+     */
     moveRight(speed, fps) {
         this.movingRightInterval = setInterval(() => {
             this.posiX += speed;
         }, fps);
     }
 
+    /**
+     * Allows the object to move to the left.
+     * @param {number} speed determines how fast the object is moving.
+     * @param {number} fps speed of repetition rate.
+     */
     moveLeft(speed, fps) {
         this.movingLeftInterval = setInterval(() => {
             this.posiX -= speed;
         }, fps);
     }
 
+    /**
+     * Checks what position the opponent is currently in and lets him continue in the right direction after taking a short break.
+     */
     checkPosition() {
         setInterval(() => {
             const randomDelay = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000;
@@ -132,6 +93,10 @@ class MovableObject extends DrawableObject {
         }, 250);
     }
 
+    /**
+     * Allows the opponent to continue moving to the right after their pause.
+     * @param {number} randomDelay determines the duration of the break.
+     */
     letMoveRight(randomDelay) {
         this.isMovingRight = true;
         this.isMovingLeft = false;
@@ -145,11 +110,18 @@ class MovableObject extends DrawableObject {
         }, randomDelay);
     }
 
+    /**
+     * Starts the moving.
+     */
     beginMoveRight() {
         this.standing = false;
         this.moveRight(this.speed, 1000 / 60)
     }
 
+    /**
+     * Allows the opponent to continue moving to the left after their pause.
+     * @param {number} randomDelay determines the duration of the break.
+     */
     letMoveLeft(randomDelay) {
         this.isMovingRight = false;
         this.isMovingLeft = true;
@@ -163,11 +135,18 @@ class MovableObject extends DrawableObject {
         }, randomDelay);
     }
 
+    /**
+     * Starts the moving.
+     */
     beginMoveLeft() {
         this.standing = false;
         this.moveLeft(this.speed, 1000 / 60);
     }
 
+    /**
+     * Changes the direction in which the opponent moves.
+     * @param {string} moveDirection current move direction.
+     */
     doOtherDirection(moveDirection) {
         if (this.endBoss) {
 
@@ -180,24 +159,34 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Lets the opponent go in the right direction.
+     * @param {string} moveDirection 
+     */
     startMoving(moveDirection) {
         if (this.hurts) {
             setTimeout(() => {
                 this.animateWalkingEnemies(225);
                 this[`beginMove${moveDirection}`]();
-            }, 1500);
+            }, 2000);
         } else {
             this.animateWalkingEnemies(225);
             this[`beginMove${moveDirection}`]();
         }
     }
 
+    /**
+     * Stop all enemy movement animations.
+     */
     stopWalkingEnemies() {
         clearInterval(this.walkingInterval);
         clearInterval(this.movingRightInterval);
         clearInterval(this.movingLeftInterval);
     }
 
+    /**
+     * Checks which direction the opponent ran before receiving or dealing an attack.
+     */
     enemyDirection() {
         if (this.isMovingLeft && !this.standing) {
             this.moveLeft(this.speed, 1000 / 60);
@@ -208,10 +197,17 @@ class MovableObject extends DrawableObject {
         }
     }
 
+    /**
+     * Makes the character jump.
+     * @param {number} height of Jump.
+     */
     jump(height) {
         this.gravitaSpeed = height;
     }
 
+    /**
+     * Applies gravity.
+     */
     applyGravity() {
         const gravityInterV = setInterval(() => {
             if (this.isAboveGround() || this.gravitaSpeed > 0) {
@@ -229,10 +225,19 @@ class MovableObject extends DrawableObject {
         }, 1000 / 30);
     }
 
+    /**
+     * Checks whether you are higher than the main height.
+     * @returns true or false.
+     */
     isAboveGround() {
         return this.posiY < this.mainPosiY
     }
 
+    /**
+     * Checks whether you collided with an object.
+     * @param {object} mo object you collided with.
+     * @returns true or false.
+     */
     isColliding(mo) {
         return this.posiX + this.hitBoxX + this.hitBoxWidth > mo.posiX + mo.hitBoxX &&
             this.posiY + this.hitBoxY + this.hitBoxHeight > mo.posiY + mo.hitBoxY &&
@@ -240,6 +245,11 @@ class MovableObject extends DrawableObject {
             this.posiY + this.hitBoxY < mo.posiY + mo.hitBoxY + mo.hitBoxHeight;
     }
 
+    /**
+     * Checks whether you collided with an rock wall from left.
+     * @param {object} mo object you collided with.
+     * @returns true or false.
+     */
     isCollidingLeft(mo) {
         const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
         const platformTop = mo.posiY + mo.hitBoxY;
@@ -254,6 +264,11 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    /**
+     * Checks whether you collided with an rock wall from right.
+     * @param {object} mo object you collided with.
+     * @returns true or false.
+     */
     isCollidingRight(mo) {
         const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
         const platformTop = mo.posiY + mo.hitBoxY;
@@ -268,6 +283,11 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    /**
+     * Checks whether you collided with an enemy from above.
+     * @param {object} mo object you collided with.
+     * @returns true or false.
+     */
     isHittingFromAbove(mo) {
         const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
         const enemyTop = mo.posiY + mo.hitBoxY;
@@ -279,6 +299,11 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    /**
+     * Checks whether you are standing under a platform.
+     * @param {object} platform object you collided with.
+     * @returns true or false.
+     */
     isInPosiXFromPlatform(platform) {
         return (
             this.posiX + this.hitBoxX + this.hitBoxWidth >= platform.posiX + platform.hitBoxX &&
@@ -286,6 +311,11 @@ class MovableObject extends DrawableObject {
         );
     }
 
+    /**
+     * Checks whether you are standing on a platform.
+     * @param {object} platform object you collided with.
+     * @returns true or false.
+     */
     isOverThePlatform(platform) {
         const charBottom = this.posiY + this.hitBoxY + this.hitBoxHeight;
         const platformTop = platform.posiY + platform.hitBoxY;
@@ -293,6 +323,10 @@ class MovableObject extends DrawableObject {
         return charBottom <= platformTop
     }
 
+    /**
+     * Plays the hurts animation.
+     * @param {array} IMAGES_HURT for the hurts Animation.
+     */
     animateHurts(IMAGES_HURT) {
         this.hurts = true;
         this.hurtsInterval = setInterval(() => {
@@ -304,6 +338,9 @@ class MovableObject extends DrawableObject {
         }, 100);
     }
 
+    /**
+     * Cancels the hurts animation.
+     */
     cancelHurts() {
         clearInterval(this.hurtsInterval);
         this.intervalSequenz = 0;
@@ -311,6 +348,10 @@ class MovableObject extends DrawableObject {
         this.hurts = false;
     }
 
+    /**
+     * Plays the death animation.
+     * @param {array} IMAGES_DEAD for the death Animation.
+     */
     animateDeath(IMAGES_DEAD) {
         this.dead = true;
         const deadInterval = setInterval(() => {
@@ -324,27 +365,46 @@ class MovableObject extends DrawableObject {
         }, 100);
     }
 
+    /**
+     * Gives defeated enemies the status "toBeRemoved = true" so that the system knows that they can be deleted from the array.
+     */
     removeFromMap() {
         this.toBeRemoved = true;
     }
 
     // Item Drop
 
+    /**
+     * Determines the value of the item based on the drop chance.
+     * @param {array} IMAGE_ARRAY Item Array
+     */
     firstVariable(IMAGE_ARRAY) {
         this.value += 5;
         this.dropItem(IMAGE_ARRAY);
     }
 
+    /**
+     * Determines the value of the item based on the drop chance.
+     * @param {array} IMAGE_ARRAY Item Array
+     */
     secondVariable(IMAGE_ARRAY) {
         this.value += 10;
         this.dropItem(IMAGE_ARRAY);
     }
 
+    /**
+     * Determines the value of the item based on the drop chance.
+     * @param {array} IMAGE_ARRAY Item Array
+     */
     thirdVariable(IMAGE_ARRAY) {
         this.value += 20;
         this.dropItem(IMAGE_ARRAY);
     }
 
+    /**
+     * Starts the drop animation.
+     * @param {array} IMAGE_ARRAY Item Array
+     */
     dropItem(IMAGE_ARRAY) {
         this.dropAnimation(IMAGE_ARRAY[0])
         setTimeout(() => {
@@ -352,12 +412,20 @@ class MovableObject extends DrawableObject {
         }, 1500);
     }
 
+    /**
+     * Drop Animation.
+     * @param {string} IMAGE single image for the drop animation.
+     */
     dropAnimation(IMAGE) {
         this.loadImage(IMAGE);
         this.gravitaSpeed = 10;
         this.applyGravity();
     }
 
+    /**
+     * Plays the item animation.
+     * @param {array} IMAGES Item Array
+     */
     itemDrop(IMAGES) {
         setInterval(() => {
             this.playActionAnimation(IMAGES);
@@ -366,58 +434,15 @@ class MovableObject extends DrawableObject {
 
     // Audio
 
+    /**
+     * Plays a sound.
+     * @param {audio} sound what will Played.
+     * @param {number} speed in which the sound is played.
+     */
     playAudio(sound, speed) {
         sound.pause();
         sound.volume = 1;
         sound.playbackRate = speed;
         sound.play();
-    }
-
-    // Skills
-
-    characterHaveEnoughMana(withULM, withoutULM, skillImage, skillImageDark) {
-        setInterval(() => {
-            if (this.world.character.useLessManaActive) {
-                if (this.world.character.MP >= withULM) {
-                    this.setSkillImage(skillImage);
-                } else {
-                    this.setSkillImageDark(skillImageDark);
-                }
-            } else if (this.world.character.MP >= withoutULM) {
-                this.setSkillImage(skillImage);
-            } else {
-                this.setSkillImageDark(skillImageDark);
-            }
-        }, 100);
-    }
-
-    characterHaveEnoughBlueMinerals(consumption, skillImage, skillImageDark) {
-        setInterval(() => {
-            if (this.world.blueMineralStatusBar.collectedBlueMineral >= consumption) {
-                this.setSkillImage(skillImage);
-            } else {
-                this.setSkillImageDark(skillImageDark);
-            }
-        }, 100);
-    }
-
-    characterHaveEnoughRedMinerals(consumption, skillImage, skillImageDark) {
-        setInterval(() => {
-            if (this.world.redMineralStatusBar.collectedRedMineral >= consumption) {
-                this.setSkillImage(skillImage);
-            } else {
-                this.setSkillImageDark(skillImageDark);
-            }
-        }, 100);
-    }
-
-    setSkillImage(skillImage) {
-        this.currentSkillIcon = skillImage;
-        this.loadImage(skillImage);
-    }
-
-    setSkillImageDark(skillImageDark) {
-        this.currentSkillIcon = skillImageDark;
-        this.loadImage(skillImageDark);
     }
 }

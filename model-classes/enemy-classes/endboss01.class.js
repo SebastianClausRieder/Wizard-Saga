@@ -80,6 +80,9 @@ class Endboss01 extends MovableObject {
         this.posiY = canvasHeight - this.height + 15;
     }
 
+    /**
+     * Calculate when Medusa will attack.
+     */
     randomAttack() {
         this.endbossAttackInterV = setInterval(() => {
             if (!this.attackDelay && !this.hurts) {
@@ -92,6 +95,9 @@ class Endboss01 extends MovableObject {
         }, 250);
     }
 
+    /**
+     * Causes Medusa to attack.
+     */
     enemyAttack() {
         const enemyAttackInterV = setInterval(() => {
             this.playActionAnimation(this.IMAGES_ATTACK);
@@ -108,6 +114,9 @@ class Endboss01 extends MovableObject {
         }, 225);
     }
 
+    /**
+     * Reset Image Caches after Attack.
+     */
     doReset() {
         this.enemyDoesAttack = true;
         this.attack = false;

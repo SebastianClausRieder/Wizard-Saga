@@ -80,6 +80,9 @@ class CharAttackFireball extends MovableObject {
         this.flyingFireball();
     }
 
+    /**
+     * Makes the fireball fly.
+     */
     flyingFireball() {
         const fireballAnimation = setInterval(() => {
             this.playActionAnimation(this.IMAGES_FIREBALL);
@@ -94,6 +97,9 @@ class CharAttackFireball extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Check in which direction the fireball should fly.
+     */
     checkDirection() {
         if (this.otherDirection) {
             this.posiX -= this.speedFly;
@@ -102,6 +108,9 @@ class CharAttackFireball extends MovableObject {
         }
     }
 
+    /**
+     * Reset all Images for the fireball.
+     */
     doReset() {
         this.world.fireballFly = false;
         this.world.character.resetSkillImage();

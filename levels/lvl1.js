@@ -1,4 +1,6 @@
-// bgMountens01
+/**
+ * Load bgMounten01.
+ */
 const bgMounten = [];
 const mountainCount = 11;
 const mountainDistanceIncrement = 999;
@@ -15,7 +17,9 @@ for (let i = 0; i < mountainCount; i++) {
     bgMounten.push(mountain);
 }
 
-// path01
+/**
+ * Load path01.
+ */
 const myPaths = [];
 const pathCount = 67;
 const pathDistanceIncrement = 159;
@@ -25,9 +29,16 @@ for (let i = 0; i < pathCount; i++) {
     myPaths.push(path);
 }
 
+/**
+ * Determine how many of these enemies appear in the game.
+ */
 const numLizards = 15;
 const numDemons = 10;
 
+/**
+ * Creates everything that belongs to level 1.
+ * @returns the Level.
+ */
 function createLvl1() {
     return new Level(
         bgMounten,

@@ -6,11 +6,17 @@ let keyboard = new Keyboard();
 
 // Funktions
 
+/**
+ * Gives Canvas the Document value and loads the buttons.
+ */
 function init() {
     canvas = element('game-display');
     bindBtsPressEvents();
 }
 
+/**
+ * Hides everything except the canvas and starts the Game.
+ */
 function startGame() {
     element('startMonitor').classList.add('d-none');
     element('endMonitor').classList.add('d-none');
@@ -19,6 +25,9 @@ function startGame() {
 
 // Events
 
+/**
+ * Loads the necessary keys for key down.
+ */
 document.addEventListener('keydown', (event) => {
     const keyMappings = {
         'KeyA': 'LEFT',
@@ -55,6 +64,9 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
+/**
+ * Loads the necessary keys for key up.
+ */
 document.addEventListener('keyup', (event) => {
     if (event.code == "KeyA" || event.code == "ArrowLeft") {
         keyboard.LEFT = false;
@@ -123,6 +135,9 @@ document.addEventListener('keyup', (event) => {
     }
 });
 
+/**
+ * Loads the buttons.
+ */
 function bindBtsPressEvents() {
     element('btnLeft').addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -171,9 +186,9 @@ function bindBtsPressEvents() {
     //     keyboard.RUN = false;
     // });
     
-    element('btnFS').addEventListener('touchstart', (e) => {
-        checkElementForFullscreen();
-    });
+    // element('btnFS').addEventListener('touchstart', (e) => {
+    //     checkElementForFullscreen();
+    // });
     
     element('btnSound').addEventListener('touchstart', (e) => {
         e.preventDefault();
@@ -181,6 +196,9 @@ function bindBtsPressEvents() {
     });
 }
 
+/**
+ * Checks which element goes into the full screen.
+ */
 function checkElementForFullscreen() {
     if (element('startMonitor').classList.contains('d-none') && element('instructionMonitor').classList.contains('d-none')) {
         enterFullscreen(canvas);
@@ -189,6 +207,10 @@ function checkElementForFullscreen() {
     }
 }
 
+/**
+ * Starts the full screen.
+ * @param {ID} element ID for the full screen. 
+ */
 function enterFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -199,6 +221,9 @@ function enterFullscreen(element) {
     }
 }
 
+/**
+ * Turns the background music on or off.
+ */
 function backgroundMusicOnOff() {
     if (world.backgroundMusic) {
         world.backgroundMusic = false;
@@ -212,15 +237,24 @@ function backgroundMusicOnOff() {
     }
 }
 
+/**
+ * Stop the background music.
+ */
 function stopMusic() {
     world.background_cave.pause();
     world.background_sound.pause();
 }
 
-// Ursprüngliche Größe des Canvas
+// Touch scaling
+
+// Original size of the canvas.
 const originalCanvasWidth = 1000;
 const originalCanvasHeight = 530;
 
+/**
+ * Calculate the scale factors.
+ * @returns the new scale factors.
+ */
 function calculateScaleFactors() {
     const currentCanvasWidth = canvas.clientWidth;
     const currentCanvasHeight = canvas.clientHeight;
@@ -231,7 +265,12 @@ function calculateScaleFactors() {
     return { scaleX, scaleY };
 }
 
-// Funktion zur Umrechnung der Touch-Koordinaten
+/**
+ * Touch coordinate conversion function.
+ * @param {number} touchX coordinate
+ * @param {number} touchY coordinate
+ * @returns Correct location of the touch coordinate.
+ */
 function convertTouchCoordinates(touchX, touchY) {
     const { scaleX, scaleY } = calculateScaleFactors();
 
@@ -241,7 +280,9 @@ function convertTouchCoordinates(touchX, touchY) {
     return { x: scaledX, y: scaledY };
 }
 
-// Beispiel: Fenstergröße ändert sich (z. B. bei Umorientierung des Geräts)
+/**
+ * Reacts when the window size changes.
+ */
 window.addEventListener('resize', () => {
     const { scaleX, scaleY } = calculateScaleFactors();
 });

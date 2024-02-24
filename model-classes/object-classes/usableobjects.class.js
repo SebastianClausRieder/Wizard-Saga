@@ -52,15 +52,18 @@ class UsableObjectTotem extends MovableObject {
         this.skill = skill;
     }
 
+    /**
+     * Lets the character learn a new skill.
+     */
     learnNewSkill() {
         if (this.skill == 'use less Mana') {
             this.loadImage('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow3_light.png');
             this.world.charSkills[4].loadImage('img/wizard-saga/skill-icon/wizard-skills/uselessmana/uselessmana-icon.png');
-            this.world.character.skillUseLessMana = true;
+            this.world.characterTwo.skillUseLessMana = true;
         } else if (this.skill == 'Defender') {
             this.loadImage('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Dark_totem_dark_shadow2_light.png');
             this.world.charSkills[5].loadImage('img/wizard-saga/skill-icon/wizard-skills/defender/defender-icon.png');
-            this.world.character.skillDefender = true;
+            this.world.characterTwo.skillDefender = true;
         }
     }
 }

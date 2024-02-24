@@ -43,6 +43,9 @@ class LoadSequenz extends MovableObject {
         this.world = world;
     }
 
+    /**
+     * Starts the Load sequenz.
+     */
     startLoadSequenz() {
         const startLoadSequenzInterV = setInterval(() => {
             this.playActionAnimation(this.IMAGE_STARTLOADSEQUENZ);
@@ -54,6 +57,9 @@ class LoadSequenz extends MovableObject {
         }, 125);
     }
 
+    /**
+     * Ends the Load sequenz.
+     */
     endLoadSequenz() {
         const endLoadSequenzInterV = setInterval(() => {
             this.playActionAnimation(this.IMAGE_ENDLOADSEQUENZ);

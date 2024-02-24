@@ -8,6 +8,9 @@ function element(inputID) {
     return document.getElementById(inputID);
 }
 
+/**
+ * Clear all Intervals if the Game is Loos or Win.
+ */
 function clearAllIntervals() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
 }
@@ -21,12 +24,18 @@ const canvasHeight = 500;
 
 let endScreen = false;
 
+/**
+ * Opens the Instructions menu and closes everything else.
+ */
 function goToInstructionDisplay() {
     element('instructionMonitor').classList.remove('d-none');
     element('startMonitor').classList.add('d-none');
     element('endMonitor').classList.add('d-none');
 }
 
+/**
+ * Closes the Instructions menu and opens the Start menu or the End menu.
+ */
 function closeInstructionDisplay() {
     element('instructionMonitor').classList.add('d-none');
     if (!endScreen) {
@@ -38,6 +47,10 @@ function closeInstructionDisplay() {
 
 // End Display
 
+/**
+ * Opens the End Menu after the game has been lost (dead = true) or won (dead = false).
+ * @param {boolean} dead true or false
+ */
 function showEndScreen(dead) {
     endScreen = true;
     if (!dead) {

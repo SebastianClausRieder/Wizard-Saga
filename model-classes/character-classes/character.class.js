@@ -36,13 +36,6 @@ class Character extends MovableObject {
     attack = false;
 
     secondAttack = false;
-    skillUseLessMana = false;
-    skillDefender = false;
-    useLessManaActive = false;
-    defenderActive = false;
-
-    bluePotionDelay = false;
-    redPotionDelay = false;
 
     IMAGES_IDLE = [
         'img/wizard-saga/characters/Fire-Wizard/idle/idle-01.png',
@@ -183,15 +176,15 @@ class Character extends MovableObject {
         this.animateJumpingCharacter();
         this.jumpAnimation();
         this.checkCharPosiX();
-        this.useLessMana();
-        this.defender();
-        this.usePotion();
 
         this.mainPosiY = canvasHeight - this.height - 25;
         this.posiY = canvasHeight - this.height - 25;
         this.posiX = 50;
     }
 
+    /**
+     * Animates the character's Idel function.
+     */
     animateIdle() {
         setInterval(() => {
             if (!this.imgMoving && !this.falling && !this.hurts && !this.dead && !this.attack) {
@@ -200,6 +193,9 @@ class Character extends MovableObject {
         }, 225);
     }
 
+    /**
+     * Animates the character's walk function.
+     */
     animateWalkingCharacter() {
         setInterval(() => {
             this.walkCharacter();
@@ -213,6 +209,9 @@ class Character extends MovableObject {
         }, 125);
     }
 
+    /**
+     * Check whether and in which direction the character goes.
+     */
     walkCharacter() {
         if (this.world.keyboard.RIGHT && !this.running && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
             this.posiX += this.speedWalk;
@@ -225,6 +224,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Starts the flow of images to the walk animation and controls sound playback.
+     */
     walkCharacterAnimation() {
         if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && !this.running && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
             this.playMoveAnimation(this.IMAGES_WALK);
@@ -238,6 +240,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Manage Walk Animation.
+     */
     manageWalk() {
         this.imgMoving = true;
         this.walking = true;
@@ -246,6 +251,9 @@ class Character extends MovableObject {
         this.walking_sound.play();
     }
 
+    /**
+     * Animates the character's run function.
+     */
     animateRunCharacter() {
         setInterval(() => {
             this.runCharacter();
@@ -259,6 +267,9 @@ class Character extends MovableObject {
         }, 125);   
     }
 
+    /**
+     * Checks whether and in which direction the character is running.
+     */
     runCharacter() {
         if (this.world.keyboard.RIGHT && this.world.keyboard.RUN && this.posiX < this.world.lvl.lvl_end && !this.dead && !this.attack && !this.onLoad && !this.collidingPlatformLeft) {
             this.posiX += this.speedRun;
@@ -271,6 +282,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Starts the flow of images to the run animation and controls sound playback.
+     */
     runCharacterAnimation() {
         if ((this.world.keyboard.RIGHT || this.world.keyboard.LEFT) && this.world.keyboard.RUN && !this.falling && !this.hurts && !this.dead && !this.attack && !this.onLoad && (!this.collidingPlatformLeft || !this.collidingPlatformRight)) {                
             this.playMoveAnimation(this.IMAGES_RUN);
@@ -284,6 +298,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Manage Run Animation.
+     */
     manageRun() {
         this.imgMoving = true;
         this.running = true;
@@ -292,6 +309,9 @@ class Character extends MovableObject {
         this.running_sound.play();
     }
 
+    /**
+     * Sets keyboard.RUN to false as soon as no more movement is registered.
+     */
     setFalse() {
         setInterval(() => {
             if (!this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
@@ -300,6 +320,9 @@ class Character extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Checks and controls the in-game camera.
+     */
     camPosition() {
         setInterval(() => {
             if (this.posiX > 500) {
@@ -312,6 +335,9 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Controls the jump animation.
+     */
     animateJumpingCharacter() {
         setInterval(() => {
             this.jumping_sound.playbackRate = 1;
@@ -323,6 +349,9 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Checks whether the character jumps or falls.
+     */
     jumpAnimation() {
         setInterval(() => {
             if (this.gravitaSpeed > 0) {
@@ -336,6 +365,10 @@ class Character extends MovableObject {
         }, 1000 / 60);
     }
 
+    /**
+     * Plays the attack animation.
+     * @param {Array} IMAGES Images of the character's various attacks.
+     */
     attackAnimation(IMAGES) {
         const attack = setInterval(() => {
             this.playActionAnimation(IMAGES);
@@ -352,6 +385,9 @@ class Character extends MovableObject {
         }, 125);
     }
 
+    /**
+     * Reset Image Caches after Attack.
+     */
     doReset() {
         this.attack = false;
         this.doesDMG = 0;
@@ -361,6 +397,9 @@ class Character extends MovableObject {
         this.world.charATK = [];
     }
 
+    /**
+     * Checks whether a combo attack has been carried out.
+     */
     isItAnComboAttack() {
         if (this.comboAttack) {
             this.comboAttack = false;
@@ -369,13 +408,19 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether a fireball attack has been carried out.
+     */
     isItAnFireballAttack() {
         if (this.fireballAttack) {
             this.fireballAttack = false;
-            this.world.fireball();
+            this.world.worldTwo.fireball();
         }
     }
 
+    /**
+     * Reset the Skill Icon Images.
+     */
     resetSkillImage() {
         if (!this.fireballAttack && !this.secondAttack) {
             this.world.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon.png');
@@ -385,6 +430,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the character has reached a certain position to start the final boss attack.
+     */
     checkCharPosiX() {
         setInterval(() => {
             if (this.posiX >= 9500) {
@@ -398,6 +446,9 @@ class Character extends MovableObject {
         }, 125);
     }
 
+    /**
+     * Plays a battle music as soon as you approach the final boss.
+     */
     playEndSound() {
         clearInterval(this.world.backgroundMusicInterV);
         this.endFightInterV = setInterval(() => {
@@ -405,87 +456,5 @@ class Character extends MovableObject {
             this.endFight_sound.playbackRate = 1;
             this.endFight_sound.play();
         }, 125);
-    }
-
-    useLessMana() {
-        setInterval(() => {
-            if (this.world.keyboard.USELESSMANA && !this.world.keyboard.keyIsHold_USELESSMANA && this.skillUseLessMana && !this.useLessManaActive && this.world.blueMineralStatusBar.collectedBlueMineral >= 100) {
-                this.world.keyboard.keyIsHold_USELESSMANA = true;
-                this.useLessManaActive = true;
-                this.world.blueMineralStatusBar.collectedBlueMineral -= 100;
-                this.world.charSkills[4].activateUseLessMana(this.world);
-            }
-        }, 1000 / 60);
-    }
-
-    useMana(consumption) {
-        if (this.useLessManaActive) {
-            this.MP -= consumption / 2;
-        } else {
-            this.MP -= consumption;
-        }
-    }
-
-    defender() {
-        setInterval(() => {
-            if (this.world.keyboard.DEFENDER && !this.world.keyboard.keyIsHold_DEFENDER && this.skillDefender && !this.defenderActive && this.world.redMineralStatusBar.collectedRedMineral >= 50) {
-                this.world.keyboard.keyIsHold_DEFENDER = true;
-                this.defenderActive = true;
-                this.world.redMineralStatusBar.collectedRedMineral -= 50;
-                this.world.charSkills[5].activateDefender(this.world);
-            }
-        }, 1000 / 60);
-    }
-
-    getDMG(DMG) {
-        if (this.defenderActive) {
-            this.LP -= DMG / 2;
-        } else {
-            this.LP -= DMG;
-        }
-    }
-
-    usePotion() {
-        setInterval(() => {
-            if (this.world.keyboard.BLUEPOTION && !this.world.keyboard.keyIsHold_BLUEPOTION && !this.bluePotionDelay && this.world.bluePotionStatusBar.collectedBluePotion >= 1) {
-                this.useBluePotion();
-            }
-
-            if (this.world.keyboard.REDPOTION && !this.world.keyboard.keyIsHold_REDPOTION && !this.redPotionDelay && this.world.redPotionStatusBar.collectedRedPotion >= 1) {
-                this.useRedPotion();
-            }
-        }, 1000 / 60);
-    }
-
-    useBluePotion() {
-        this.world.keyboard.keyIsHold_BLUEPOTION = true;
-        this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion-dark.png');
-        this.drinkPotion('blue');
-        setTimeout(() => {
-            this.world.charSkills[6].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-blue-potion.png');
-            this.bluePotionDelay = false;
-        }, 30000);
-    }
-
-    useRedPotion() {
-        this.world.keyboard.keyIsHold_REDPOTION = true;
-        this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion-dark.png');
-        this.drinkPotion('red');
-        setTimeout(() => {
-            this.world.charSkills[7].loadImage('img/wizard-saga/skill-icon/wizard-skills/use-red-potion.png');
-            this.redPotionDelay = false;
-        }, 30000);
-    }
-
-    drinkPotion(potion) {
-        if (potion == 'blue') {
-            this.world.bluePotionStatusBar.collectedBluePotion -= 1;
-            this.MP = 100;
-            this.world.manaStatusBar.setPercentage(this.MP, this.world.manaStatusBar.MANA_BAR);
-        } else if (potion == 'red') {
-            this.world.redPotionStatusBar.collectedRedPotion -= 1;
-            this.LP = 100;
-            this.world.lifeStatusBar.setPercentage(this.LP, this.world.lifeStatusBar.LIFE_BAR);
-        }
     }
 }

@@ -2,6 +2,7 @@ class World {
     lvl = createLvl1();
     inCave = false;
 
+    worldTwo = new WorldTwo();
     drawableObject = new DrawableObject();
     moveableObject = new MovableObject();
 
@@ -12,7 +13,8 @@ class World {
     bluePotionStatusBar = new BluePotionStatusBar();
     redPotionStatusBar = new RedPotionStatusBar();
     
-    character = new Character();
+    character = new Character(this);
+    characterTwo = new CharacterTwo();
     charSkills = [
         new MeleeAttack1(this),
         new MeleeAttack2(this),
@@ -32,7 +34,7 @@ class World {
     background_cave = new Audio('audio/background-cave.mp3');
 
     backgroundMusicInterV;
-    backgroundMusic = false;
+    backgroundMusic = true;
 
     canvas;
     ctx;
@@ -49,23 +51,29 @@ class World {
         this.draw();
         this.setWorld();
         this.checkCollosins();
-        this.loadItemOnArea();
-        this.playBGMusic();
+        this.worldTwo.loadItemOnArea();
+        this.worldTwo.playBGMusic();
     }
 
+    /**
+     * Start a few checks.
+     */
     checkCollosins() {
         setInterval(() => {
             this.checkCollosinWithEnemy();
-            this.checkJumpOnLizard();
-            this.checkUseAttackKey();
+            this.worldTwo.checkJumpOnLizard();
+            this.worldTwo.checkUseAttackKey();
             this.checkEarnItem();
-            this.checkIsCollidingPlatform();
-            this.checkJumpOnPlatform();
-            this.checkCollidingUsableObject();
+            this.worldTwo.checkIsCollidingPlatform();
+            this.worldTwo.checkJumpOnPlatform();
+            this.worldTwo.checkCollidingUsableObject();
             this.enemyCollidingPlatform();
         }, 1000 / 60);
     }
 
+    /**
+     * Checks collision with opponent.
+     */
     checkCollosinWithEnemy() {
         if (!this.character.hurts && !this.character.dead) {
             this.lvl.enemies.forEach((enemy) => {
@@ -73,7 +81,7 @@ class World {
 
                 } else {
                     if (this.character.isColliding(enemy) && !enemy.dead) {
-                        this.character.getDMG(enemy.doesDMG);
+                        this.characterTwo.getDMG(enemy.doesDMG);
                         this.lifeStatusBar.setPercentage(this.character.LP, this.lifeStatusBar.LIFE_BAR);
                         this.hitCharacter();
                     }
@@ -82,19 +90,10 @@ class World {
         }
     }
 
-    checkJumpOnLizard() {
-        this.lvl.enemies.forEach((enemy) => {
-            if (enemy instanceof Lizard) {
-                if (this.character.isHittingFromAbove(enemy) && !enemy.dead && !this.character.hurts && this.character.posiY >= 335) {
-                    enemy.stopWalkingEnemies();
-                    enemy.LP = 0;
-                    enemy.intervalSequenz = 0;
-                    this.isEnemyDead(enemy);
-                }
-            }
-        });
-    }
-
+    /**
+     * Checks whether your LP are running low.
+     * @param {class} enemy that you collided with.
+     */
     hitCharacter(enemy) {
         if (this.character.LP > 0) {
             this.moveableObject.playAudio(this.character.hurt_sound, 1);
@@ -109,108 +108,9 @@ class World {
         }
     }
 
-    checkUseAttackKey() {
-        this.meleeAttack1();
-        this.meleeAttack2();
-        this.magicAttack1();
-        this.magicAttack2();
-        
-        this.medusaAttack();
-    }
-
-    meleeAttack1() {
-        if (this.keyboard.ATTACK1 && !this.keyboard.keyIsHold_ATTACK1 && !this.character.attack && !this.character.onLoad) {
-            this.keyboard.keyIsHold_ATTACK1 = true;
-            this.character.comboAttack = true;
-            let attack1 = new CharAttack1(this.character.posiX, this.character.posiY, this.character.otherDirection);
-            this.charATK.push(attack1);
-            this.showSkillDelay();
-            this.character.attackAnimation(this.character.IMAGES_ATTACK1);
-            this.character.doesDMG = 5;
-            this.moveableObject.playAudio(this.character.meleeHit1_sound, 0.9);
-            this.checkHitEnemy();
-        }
-    }
-
-    meleeAttack2() {
-        if (this.keyboard.ATTACK2 && this.character.comboAttack && !this.keyboard.keyIsHold_ATTACK2) {
-            this.keyboard.keyIsHold_ATTACK2 = true;
-            setTimeout(() => {
-                this.character.secondAttack = true;
-                let attack2 = new CharAttack2(this.character.posiX, this.character.posiY, this.character.otherDirection);
-                this.charATK.push(attack2);
-                this.showSkillDelay();
-                this.character.attackAnimation(this.character.IMAGES_ATTACK2);
-                this.character.doesDMG = 10;
-                this.moveableObject.playAudio(this.character.meleeHit2_sound, 0.9);
-                this.checkHitEnemy();
-            }, 250);
-        }
-    }
-
-    magicAttack1() {
-        if (this.keyboard.MAGIC1 && !this.keyboard.keyIsHold_MAGIC1 && !this.fireballFly && !this.character.attack && !this.character.onLoad) {
-            if (this.character.useLessManaActive) {
-                if (this.character.MP >= 5) {
-                    this.useFireball();
-                }
-            } else if (this.character.MP >= 10) {
-                this.useFireball();
-            }
-        }
-    }
-
-    useFireball() {
-        this.keyboard.keyIsHold_MAGIC1 = true;
-        this.character.fireballAttack = true;
-        this.fireballFly = true;
-        this.character.useMana(10);
-        this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
-        this.showSkillDelay();
-        this.moveableObject.playAudio(this.character.fireball1_sound, 0.9);
-        this.character.attackAnimation(this.character.IMAGES_FIREBALLMOVE);
-    }
-
-    fireball() {
-        let fireball = new CharAttackFireball(this.character.posiX, this.character.posiY, this.character.otherDirection);
-        fireball.world = this;
-        this.charATK.push(fireball);
-        this.character.doesDMG = 15;
-        this.moveableObject.playAudio(this.character.fireball2_sound, 1.2);
-    }
-
-    magicAttack2() {
-        if (this.keyboard.MAGIC2 && !this.keyboard.keyIsHold_MAGIC2 && !this.character.attack && !this.character.onLoad) {
-            if (this.character.useLessManaActive) {
-                if (this.character.MP >= 10) {
-                    this.useFireburst();
-                }
-            } else if (this.character.MP >= 20) {
-                this.useFireburst();
-            }
-        }
-    }
-
-    useFireburst() {
-        this.keyboard.keyIsHold_MAGIC2 = true;
-        let fireburst = new CharAttackFireburst(this.character.posiX, this.character.posiY, this.character.otherDirection);
-        this.charATK.push(fireburst);
-        this.showSkillDelay();
-        this.character.attackAnimation(this.character.IMAGES_FIREBURST);
-        this.character.doesDMG = 20;
-        this.character.useMana(20);
-        this.manaStatusBar.setPercentage(this.character.MP, this.manaStatusBar.MANA_BAR);
-        this.moveableObject.playAudio(this.character.fireburst_sound, 2);
-        this.checkHitEnemy();
-    }
-
-    showSkillDelay() {
-        this.charSkills[0].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack1-icon-dark.png');
-        this.charSkills[1].loadImage('img/wizard-saga/skill-icon/wizard-skills/meleeattack/meleeattack2-icon-dark.png');
-        this.charSkills[2].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireball/fireball-icon-dark.png');
-        this.charSkills[3].loadImage('img/wizard-saga/skill-icon/wizard-skills/fireburst/fireburst-icon-dark.png');
-    }
-
+    /**
+     * Checks whether Medusa's "doesAttack" is true and then starts the Stone Blow Attack.
+     */
     medusaAttack() {
         this.lvl.enemies.forEach(enemy => {
             if (enemy instanceof Endboss01) {
@@ -221,7 +121,11 @@ class World {
             }
         });
     }
-		
+
+    /**
+     * The Stone Blow attack begins.
+     * @param {class} enemy class from Medusa.
+     */
     stoneBlowBegin(enemy) {
         let enemyAttack = new StoneBlow(this.character.posiX, this.character.posiY);
         enemyAttack.world = this;
@@ -231,6 +135,9 @@ class World {
         this.hitCharacter(enemy);
     }
 
+    /**
+     * Checks whether you hit an opponent with a skill.
+     */
     checkHitEnemy() {
         this.lvl.enemies.forEach((enemy, index) => {
             if (this.charATK[0] instanceof CharAttackFireball) {
@@ -249,15 +156,23 @@ class World {
         });
     }
 
+    /**
+     * Checks whether you hit an enemy or a box.
+     * @param {class} enemy class.
+     */
     whatsHitet(enemy) {
         if (enemy instanceof UsableObjectChest) {
-            this.hitChest(enemy);
+            this.openChest(enemy);
         } else {
             this.hitEnemy(enemy);
         }
     }
 
-    hitChest(enemy) {
+    /**
+     * Opens the chest you hit.
+     * @param {class} enemy is an Chest.
+     */
+    openChest(enemy) {
         enemy.loadImage('img/wizard-saga/platforms/PNG/Details/chest-open.png');
         if (!enemy.dead) {
             enemy.dead = true;
@@ -270,6 +185,10 @@ class World {
         }
     }
 
+    /**
+     * Check whether the opponent still has enough life points and take further action.
+     * @param {class} enemy class.
+     */
     hitEnemy(enemy) {
         enemy.stopWalkingEnemies();
         enemy.LP -= this.character.doesDMG;
@@ -282,6 +201,10 @@ class World {
         }
     }
 
+    /**
+     * Starts the hurts animation.
+     * @param {class} enemy class.
+     */
     isEnemyLPnotZero(enemy) {
         enemy.animateHurts(enemy.IMAGES_HURT);
         setTimeout(() => {
@@ -291,6 +214,10 @@ class World {
         }, 1500);
     }
 
+    /**
+     * Starts the dead animation and remove the enemy from map.
+     * @param {class} enemy class.
+     */
     isEnemyDead(enemy) {
         enemy.cancelHurts();
         enemy.animateDeath(enemy.IMAGES_DEAD);
@@ -302,6 +229,11 @@ class World {
         }, 2000);
     }
 
+    /**
+     * Checks which enemy was killed and drops an item accordingly.
+     * @param {class} enemy class.
+     * @returns the item to be dropped.
+     */
     whatItemDrop(enemy) {
         if (enemy instanceof Lizard) {
             return new BlueMineral(enemy.posiX, enemy.posiY, 0.5, 0.3, 0.2);
@@ -318,6 +250,9 @@ class World {
         }
     }
 
+    /**
+     * Checks what you have looted and initiates further steps.
+     */
     checkEarnItem() {
         this.itemDrop.forEach((item, index) => {
             if (this.character.isColliding(item)) {
@@ -339,26 +274,9 @@ class World {
         });
     }
 
-    checkIsCollidingPlatform() {
-        let collidingPlatform = false;
-
-        this.lvl.platformsFG.forEach((platform) => {
-            if (this.character.isCollidingLeft(platform)) {
-                collidingPlatform = true;
-                this.character.collidingPlatformLeft = true;
-            } else if (!collidingPlatform) {
-                this.character.collidingPlatformLeft = false;
-            }
-
-            if (this.character.isCollidingRight(platform)) {
-                collidingPlatform = true;
-                this.character.collidingPlatformRight = true;
-            } else if (!collidingPlatform) {
-                this.character.collidingPlatformRight = false;
-            }
-        });
-    }
-
+    /**
+     * Checks whether an opponent has collided with a platform.
+     */
     enemyCollidingPlatform() {
         this.lvl.enemies.forEach((enemy) => {
             if (enemy instanceof Demon) {
@@ -377,6 +295,10 @@ class World {
         });
     }
 
+    /**
+     * Causes the opponent to move left after a collision.
+     * @param {class} enemy class.
+     */
     letMoveLeft(enemy) {
         clearInterval(enemy.movingRightInterval);
         clearInterval(enemy.walkingInterval);
@@ -387,6 +309,10 @@ class World {
         enemy.enemyDirection();
     }
 
+    /**
+     * Causes the opponent to move right after a collision.
+     * @param {class} enemy class.
+     */
     letMoveRight(enemy) {
         clearInterval(enemy.movingLeftInterval);
         clearInterval(enemy.walkingInterval);
@@ -397,135 +323,10 @@ class World {
         enemy.enemyDirection();
     }
 
-    checkPlatformCollision(platform) {
-        if (this.character.isHittingFromAbove(platform)) {
-            this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
-            return true;
-        } else if (this.character.isInPosiXFromPlatform(platform) && this.character.isOverThePlatform(platform)) {
-            this.character.mainPosiY = platform.posiY - platform.hitBoxY - 70;
-            return true;
-        } else if (this.character.isInPosiXFromPlatform(platform)) {
-            return true;
-        }
-        return false;
-    }
-    
-    checkJumpOnPlatform() {
-        let onPlatform = false;
-    
-        this.lvl.platformsBG.forEach((platform) => {
-            if (this.checkPlatformCollision(platform)) {
-                onPlatform = true;
-            }
-        });
-    
-        this.lvl.platformsFG.forEach((platform) => {
-            if (this.checkPlatformCollision(platform)) {
-                onPlatform = true;
-            }
-        });
-    
-        if (!onPlatform && !this.character.jumping) {
-            this.character.mainPosiY = canvasHeight - this.character.height - 25;
-        }
-    }
-
-    checkCollidingUsableObject() {
-        this.lvl.usableObject.forEach((object) => {
-            if (object instanceof UsableObjectDoor) {
-                this.useDoor(object);
-            } else if (object instanceof UsableObjectTotem) {
-                this.learnSkill(object);
-            }
-        });
-    }
-
-    useDoor(object) {
-        if (this.character.isColliding(object) && this.keyboard.UP && !this.keyboard.keyIsHold_UP) {
-            this.keyboard.keyIsHold_UP = true;
-            this.character.onLoad = true;
-            let newLoadSequenz = new LoadSequenz(this);
-            this.loadSequenz.push(newLoadSequenz);
-            this.loadSequenz[0].startLoadSequenz();
-            setTimeout(() => {
-                if (!this.inCave) {
-                    this.goInCave();
-                } else {
-                    this.goOutFromCave();
-                }
-            }, 1500);
-        }
-    }
-
-    goInCave() {
-        this.inCave = true;
-        this.itemDrop = [];
-        this.lvl = createLvl1Cave();
-        this.loadItemOnArea();
-        this.character.moveCamPosiY = -100;
-        this.loadSequenz[0].endLoadSequenz();
-    }
-
-    goOutFromCave() {
-        this.inCave = false;
-        this.itemDrop = [];
-        this.lvl = createLvl1();
-        this.loadItemOnArea();
-        this.character.moveCamPosiY = 250;
-        this.loadSequenz[0].endLoadSequenz();
-    }
-
-    learnSkill(object) {
-        if (this.character.isColliding(object) && this.keyboard.UP && !this.keyboard.keyIsHold_UP && !object.totemSkillIsLearnd) {
-            this.keyboard.keyIsHold_UP = true;
-            object.totemSkillIsLearnd = true;
-            object.world = this;
-            object.learnNewSkill();
-        }
-    }
-
-    loadItemOnArea() {
-        this.lvl.itemsOnArea.forEach((item) => {
-            this.itemDrop.push(item);
-        });
-    }
-
-    setWorld() {
-        this.character.world = this;
-        this.drawableObject.world = this;
-        this.moveableObject.world = this;
-    }
-
-    playBGMusic() {
-        this.backgroundMusicInterV = setInterval(() => {
-            if (this.backgroundMusic) {
-                this.playMusic();
-            }
-        }, 125);
-    }
-
-    playMusic() {
-        if (this.inCave) {
-            this.musicInCave();
-        } else {
-            this.musicInWorld();
-        }
-    }
-
-    musicInCave() {
-        this.background_sound.pause();
-        this.background_cave.volume = 0.1;
-        this.background_cave.playbackRate = 0.5;
-        this.background_cave.play();
-    }
-
-    musicInWorld() {
-        this.background_cave.pause();
-        this.background_sound.volume = 0.2;
-        this.background_sound.playbackRate = 1;
-        this.background_sound.play();
-    }
-
+    /**
+     * Draws the EndScreen.
+     * @param {boolean} dead true or false.
+     */
     drawEndScreen(dead) {
         clearAllIntervals();
         this.character.endFight_sound.pause();
@@ -535,6 +336,20 @@ class World {
         showEndScreen(dead);
     }
 
+    /**
+     * Gives classes the world variable.
+     */
+    setWorld() {
+        this.worldTwo.world = this;
+        this.character.world = this;
+        this.characterTwo.world = this;
+        this.drawableObject.world = this;
+        this.moveableObject.world = this;
+    }
+
+    /**
+     * Draw all Objects in the Game on the Canvas.
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -579,6 +394,10 @@ class World {
         });
     }
 
+    /**
+     * Add objects to the Map.
+     * @param {objects} objects 
+     */
     addObjectsToMap(objects) {
         objects.forEach(o => {
             if (!o.toBeRemoved) {
@@ -587,6 +406,10 @@ class World {
         });
     }
 
+    /**
+     * Add one object to the Map.
+     * @param {object} mo 
+     */
     addToMap(mo) {
         if (mo.otherDirection) {
             this.mirroredImage(mo);
@@ -603,6 +426,10 @@ class World {
         }
     }
 
+    /**
+     * Reflects the objects.
+     * @param {object} mo 
+     */
     mirroredImage(mo) {
         this.ctx.save();
         if (mo instanceof Character) {
@@ -616,6 +443,10 @@ class World {
         mo.posiX = mo.posiX * -1;
     }
 
+    /**
+     * Restores the default direction.
+     * @param {object} mo 
+     */
     standartImage(mo) {
         this.ctx.restore();
         mo.posiX = mo.posiX * -1;

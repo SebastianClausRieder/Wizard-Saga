@@ -29,6 +29,9 @@ class StoneBlow extends MovableObject {
         this.stoneBlow();
     }
 
+    /**
+     * Animates Medusa's Stoneblow attack.
+     */
     stoneBlow() {
         const stoneBlowInterV = setInterval(() => {
                 this.playActionAnimation(this.IMAGES_STONE_BLOW);

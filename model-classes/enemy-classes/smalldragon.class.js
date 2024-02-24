@@ -78,6 +78,9 @@ class SmallDragon extends MovableObject {
         this.walkArea = 300;
     }
 
+    /**
+     * Calculate when Small Dragon will attack.
+     */
     randomAttack() {
         setInterval(() => {
             if (!this.attackDelay && !this.hurts) {
@@ -93,6 +96,9 @@ class SmallDragon extends MovableObject {
         }, 250);
     }
 
+    /**
+     * Causes Small Dragon to attack.
+     */
     enemyAttack() {
         const enemyAttackInterV = setInterval(() => {
             if (!this.dead) {
@@ -108,6 +114,9 @@ class SmallDragon extends MovableObject {
         }, 225);
     }
 
+    /**
+     * Plays the attack animation.
+     */
     startAttackAnimation() {
         this.playActionAnimation(this.IMAGES_ATTACK);
         this.attack = true;
@@ -115,6 +124,9 @@ class SmallDragon extends MovableObject {
         this.stopWalkingEnemies();
     }
 
+    /**
+     * Reset Image Caches after Attack.
+     */
     doReset() {
         this.attack = false;
         this.attackDelay = false;

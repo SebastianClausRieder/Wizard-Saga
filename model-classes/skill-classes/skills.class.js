@@ -16,6 +16,10 @@ class MeleeAttack1 extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -28,6 +32,10 @@ class MeleeAttack1 extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.ATTACK1 = false;
         this.world.keyboard.keyIsHold_ATTACK1 = false;
@@ -52,6 +60,10 @@ class MeleeAttack2 extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -64,6 +76,10 @@ class MeleeAttack2 extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.ATTACK2 = false;
         this.world.keyboard.keyIsHold_ATTACK2 = false;
@@ -91,6 +107,10 @@ class Fireball extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -103,6 +123,10 @@ class Fireball extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.MAGIC1 = false;
         this.world.keyboard.keyIsHold_MAGIC1 = false;
@@ -130,6 +154,10 @@ class Fireburst extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -142,6 +170,10 @@ class Fireburst extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.MAGIC2 = false;
         this.world.keyboard.keyIsHold_MAGIC2 = false;
@@ -183,6 +215,10 @@ class UseLessMana extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Activates the timer of Use less Mana.
+     * @param {class} world class.
+     */
     activateUseLessMana(world) {
         this.playActionAnimation(this.IMAGE_USELESSMANA);
         const useLessManaInterV = setInterval(() => {
@@ -197,6 +233,10 @@ class UseLessMana extends MovableObject {
         }, 1000);
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -209,6 +249,10 @@ class UseLessMana extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.USELESSMANA = false;
         this.world.keyboard.keyIsHold_USELESSMANA = false;
@@ -249,6 +293,10 @@ class Defender extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Activates the timer of Defender.
+     * @param {class} world class.
+     */
     activateDefender(world) {
         this.playActionAnimation(this.IMAGE_DEFENDER);
         const defenderInterV = setInterval(() => {
@@ -263,6 +311,10 @@ class Defender extends MovableObject {
         }, 1000);
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -275,6 +327,10 @@ class Defender extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.DEFENDER = false;
         this.world.keyboard.keyIsHold_DEFENDER = false;
@@ -299,6 +355,10 @@ class BluePotionUse extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -311,6 +371,10 @@ class BluePotionUse extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.BLUEPOTION = false;
         this.world.keyboard.keyIsHold_BLUEPOTION = false;
@@ -335,6 +399,10 @@ class RedPotionUse extends MovableObject {
         canvas.addEventListener('touchend', this.handleTouchEnd.bind(this));
     }
 
+    /**
+     * Checks whether the touch on the touchscreen matches the position of the skill icon and sets the necessary key to true.
+     * @param {class} event for this class.
+     */
     handleTouchStart(event) {
         const touchX = event.touches[0].clientX - canvas.getBoundingClientRect().left;
         const touchY = event.touches[0].clientY - canvas.getBoundingClientRect().top;
@@ -347,6 +415,10 @@ class RedPotionUse extends MovableObject {
         }
     }
 
+    /**
+     * Checks whether the skill icon is no longer touched and sets the necessary key including keyIsHold_key to false.
+     * @param {class} event for this class.
+     */
     handleTouchEnd(event) {
         this.world.keyboard.REDPOTION = false;
         this.world.keyboard.keyIsHold_REDPOTION = false;

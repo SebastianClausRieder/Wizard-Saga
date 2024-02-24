@@ -84,6 +84,10 @@ class BlueMineral extends MovableObject {
         }
     }
 
+    /**
+     * Creates a mineral on the map.
+     * @param {string} lvl for the value of the Mineral.
+     */
     drawMineral(lvl) {
         if (lvl == "M1") { this.value = 5 }
         if (lvl == "M2") { this.value = 10 }
@@ -94,6 +98,9 @@ class BlueMineral extends MovableObject {
         this.itemDrop(IMAGE_ARRAY);
     }
 
+    /**
+     * Determines the drop chance for an opponent's mineral and then determines its value.
+     */
     executeRandomAction() {
         const randomNumber = Math.random();
 
@@ -189,6 +196,10 @@ class RedMineral extends MovableObject {
         }
     }
 
+    /**
+     * Creates a mineral on the map.
+     * @param {string} lvl for the value of the Mineral.
+     */
     drawMineral(lvl) {
         if (lvl == "M1") { this.value = 5 }
         if (lvl == "M2") { this.value = 10 }
@@ -199,6 +210,9 @@ class RedMineral extends MovableObject {
         this.itemDrop(IMAGE_ARRAY);
     }
 
+    /**
+     * Determines the drop chance for an opponent's mineral and then determines its value.
+     */
     executeRandomAction() {
         const randomNumber = Math.random();
 

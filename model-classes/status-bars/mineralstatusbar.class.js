@@ -9,6 +9,10 @@ class RedMineralStatusBar extends DrawableObject {
         this.posiY = 100;
     }
 
+    /**
+     * Credits the value of the mineral.
+     * @param {number} number of Mineral Value 
+     */
     collectRedMineral(number) {
         this.collectedRedMineral += number;
     }
@@ -25,6 +29,10 @@ class BlueMineralStatusBar extends DrawableObject {
         this.posiY = 100;
     }
 
+    /**
+     * Credits the value of the mineral.
+     * @param {number} number of Mineral Value 
+     */
     collectBlueMineral(number) {
         this.collectedBlueMineral += number;
     }

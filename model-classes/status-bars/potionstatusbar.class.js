@@ -9,6 +9,9 @@ class RedPotionStatusBar extends DrawableObject {
         this.posiY = 35;
     }
 
+    /**
+     * Credit Potion.
+     */
     collectRedPotion() {
         this.collectedRedPotion++;
     }
@@ -25,6 +28,9 @@ class BluePotionStatusBar extends DrawableObject {
         this.posiY = 65;
     }
 
+    /**
+     * Credit Potion.
+     */
     collectBluePotion() {
         this.collectedBluePotion++;
     }

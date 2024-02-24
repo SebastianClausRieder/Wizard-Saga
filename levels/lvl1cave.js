@@ -1,4 +1,6 @@
-// bgMountens01
+/**
+ * Load bgMounten01 Cave.
+ */
 const bgMountenCave = [];
 const mountainCountCave = 11;
 const mountainDistanceIncrementCave = 959;
@@ -10,7 +12,9 @@ for (let j = 1; j <= 6; j++) {
     }
 }
 
-// path01
+/**
+ * Load path01 Cave.
+ */
 const myPathsCave = [];
 const pathCountCave = 66;
 const pathDistanceIncrementCave = 159;
@@ -20,6 +24,10 @@ for (let i = 0; i < pathCountCave; i++) {
     myPathsCave.push(path);
 }
 
+/**
+ * Creates everything that belongs to level 1 Cave.
+ * @returns the Level.
+ */
 function createLvl1Cave() {
     return new Level(
         bgMountenCave,
@@ -37,7 +45,24 @@ function createLvl1Cave() {
             new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 3245, 396),
             new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 3525, 408),
             new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 3805, 396),
-            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 4085, 406)
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 4085, 406),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 4365, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 4645, 408),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 4925, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 5485, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 5765, 408),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 6045, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 6325, 406),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 6605, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 6885, 408),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 7165, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 7445, 406),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 8005, 408),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 8285, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch1_1.png', 64, 64, 8565, 406),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 8845, 396),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch3_1.png', 64, 64, 9125, 408),
+            new ObjectTorch('img/wizard-saga/platforms/PNG/Details/torch2_1.png', 64, 64, 9405, 396)
         ],
         [   // usableObjects (imagePath, imageW, imageH, imageX, imageY)
             new UsableObjectDoor('img/wizard-saga/area-objects/caveObjects01/PNG/Objects_separately/128/Gates_dark_shadow3.png', 150, 170, 3030, 340),
@@ -49,11 +74,10 @@ function createLvl1Cave() {
             new BlueMineral(3185, 230, 0, 'M1', 0),
             new BlueMineral(3255, 230, 0, 'M1', 0),
             new RedPotion(3545, 200, 0),
-            new RedMineral(1665, 135, 0, 'M1'),
             new BlueMineral(5375, -10, 0, 'M2', 0),
             new BlueMineral(5525, -10, 0, 'M2', 0),
             new BlueMineral(5675, -10, 0, 'M2', 0),
-            new RedMineral(6085, 130, 0, 'M2', 0),
+            new RedMineral(6160, 130, 0, 'M2', 0),
             new BlueMineral(6938, 180, 0, 'M2', 0),
             new BlueMineral(7188, 230, 0, 'M1', 0),
             new BlueMineral(7438, 180, 0, 'M2', 0),
@@ -70,9 +94,9 @@ function createLvl1Cave() {
             new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 4975, 350),
             new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 5075, 275),
             new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 5175, 200),
-            new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 5925, 350),
             new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 6000, 200),
-            new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120 , 6050, 270),
+            new Platform01('img/wizard-saga/platforms/finisht-platform/platform4x2.png', 250, 120 , 6125, 270),
+            new Platform03('img/wizard-saga/platforms/finisht-platform/platform1x1.png', 64, 64, 6425, 350),
             new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 6975, 340),
             new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 7475, 340),
             new Platform05('img/wizard-saga/platforms/finisht-platform/platform2x2.png', 110, 110, 7975, 340),

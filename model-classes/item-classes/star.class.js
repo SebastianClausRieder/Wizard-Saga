@@ -40,6 +40,9 @@ class Star extends MovableObject {
         this.rotateStar();
     }
 
+    /**
+     * Let the Start Rotate.
+     */
     rotateStar() {
         setInterval(() => {
             this.playActionAnimation(this.IMAGE_STAR);
